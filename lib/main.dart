@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kangsayur/login/login.dart';
 import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
 import 'common/color_value.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home:  Register(),
+      home:  Login(),
     );
   }
 }
