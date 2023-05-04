@@ -1,12 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kangsayur/home/home_head.dart';
-import 'package:kangsayur/home/home_search.dart';
-import 'package:kangsayur/home/home_two.dart';
-import 'package:kangsayur/home/promo_list.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/promo_list.dart';
+
 
 import 'home_carousel.dart';
+import 'home_head.dart';
+import 'home_search.dart';
+import 'home_two.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

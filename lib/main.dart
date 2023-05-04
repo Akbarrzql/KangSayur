@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kangsayur/home/home.dart';
 import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/register/set_password.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
+import 'UI/bottom_nav/items/home/home.dart';
 import 'common/color_value.dart';
 import 'on_boarding/on_boarding_screen.dart';
 
