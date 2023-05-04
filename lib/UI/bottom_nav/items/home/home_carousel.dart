@@ -13,14 +13,18 @@ class _Home_carouselState extends State<Home_carousel> {
   Widget build(BuildContext context) {
     return   CarouselSlider(
         items: [
-          Image.asset("assets/images/carousel.png"),
-          Image.asset("assets/images/carousel.png"),
+          Image.asset("assets/images/carousel.png", fit: BoxFit.fill,),
+          Image.asset("assets/images/carousel.png", fit: BoxFit.fill,),
+          Image.asset("assets/images/carousel.png", fit: BoxFit.fill,),
         ],
         options: CarouselOptions(
-          viewportFraction: 0.87,
+          viewportFraction: 0.82,
+          // aspectRatio: 12 / 5,
+          enlargeCenterPage: false,
           padEnds: false,
           enableInfiniteScroll: false,
           height: 135,
+
         ));
   }
 }

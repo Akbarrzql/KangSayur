@@ -50,10 +50,7 @@ class _HomeState extends State<Home> {
                 height: 20,
               ),
               // Carousel
-              Padding(
-                padding: const EdgeInsets.only(left: 24.0),
-                child: Home_carousel(),
-              ),
+              Home_carousel(),
               SizedBox(
                 height: 35,
               ),
