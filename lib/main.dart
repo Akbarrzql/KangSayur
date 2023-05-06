@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kangsayur/UI/bottom_nav/items/katalog/katalog.dart';
 import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/register/set_password.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home:  Home(),
+      home:  Katalog(),
     );
   }
 }
