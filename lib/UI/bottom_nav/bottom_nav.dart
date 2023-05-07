@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
 
 class Bottom_Nav extends StatefulWidget {
@@ -25,8 +26,6 @@ class _Bottom_NavState extends State<Bottom_Nav> {
         return const Home();
       case 2:
         return const Home();
-      case 3:
-        return const Home();
       default:
         return const Home();
     }
@@ -38,7 +37,7 @@ class _Bottom_NavState extends State<Bottom_Nav> {
         body: _body(),
         bottomNavigationBar: Container(
           color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: BottomNavigationBar(
             currentIndex: currentIndex,
             onTap: (value) {
@@ -53,57 +52,82 @@ class _Bottom_NavState extends State<Bottom_Nav> {
             items: [
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/home_icon.png'),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SvgPicture.asset(
+                    "assets/icon/navbar/home.svg",
+                    width: 24,
+                    color: Colors.black,
+                  ),
                 ),
-                label: '',
+                label: 'Home',
                 activeIcon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/home_icon_filled.png'),
-                ),),
-              BottomNavigationBarItem(
-                label: '',
-                icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/menu_icon.png'),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SvgPicture.asset(
+                    "assets/icon/navbar/home.svg",
+                    width: 24,
+                    color: Colors.black,
+                  ),
                 ),
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SvgPicture.asset(
+                    "assets/icon/navbar/home.svg",
+                    width: 24,
+                    color: Colors.black,
+                  ),
+                ),
+                label: 'Catalog',
                 activeIcon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/menu_icon_filled.png'),
-                ),),
-              BottomNavigationBarItem(
-                label: '',
-                icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/statistic_icon.png'),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SvgPicture.asset(
+                    "assets/icon/navbar/home.svg",
+                    width: 24,
+                    color: Colors.black,
+                  ),
                 ),
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SvgPicture.asset(
+                    "assets/icon/navbar/home.svg",
+                    width: 24,
+                    color: Colors.black,
+                  ),
+                ),
+                label: 'Transaction',
                 activeIcon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/statistic_icon_filled.png'),
-                ),),
-              BottomNavigationBarItem(
-                label: '',
-                icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/counselor_icon.png'),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SvgPicture.asset(
+                    "assets/icon/navbar/home.svg",
+                    width: 24,
+                    color: Colors.black,
+                  ),
                 ),
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SvgPicture.asset(
+                    "assets/icon/navbar/home.svg",
+                    width: 24,
+                    color: Colors.black,
+                  ),
+                ),
+                label: 'Profile',
                 activeIcon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/counselor_icon_filled.png'),
-                ),),
-              BottomNavigationBarItem(
-                label: '',
-                icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/profile_icon.png'),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SvgPicture.asset(
+                    "assets/icon/navbar/home.svg",
+                    width: 24,
+                    color: Colors.black,
+                  ),
                 ),
-                activeIcon:  Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Image.asset('assets/bottom_navbar_icon/profile_icon.png'),
-                ),),
+              ),
             ],
           ),
-        )
-    );
+        ));
   }
 }
