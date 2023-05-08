@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:kangsayur/login/login.dart';
 import 'package:kangsayur/on_boarding/on_boarding_content.dart';
 import 'package:kangsayur/on_boarding/size_config.dart';
+import 'package:kangsayur/register/register.dart';
 import '../common/color_value.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -122,7 +124,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Login() ));
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorValue.primaryColor,
                             elevation: 0,
@@ -137,7 +141,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Register() ));
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             side: const BorderSide(
