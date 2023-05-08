@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
+import 'package:kangsayur/UI/bottom_nav/items/katalog/katalog.dart';
 
 class Bottom_Nav extends StatefulWidget {
   const Bottom_Nav({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _Bottom_NavState extends State<Bottom_Nav> {
       case 0:
         return const Home();
       case 1:
-        return const Home();
+        return const Katalog();
       case 2:
         return const Home();
       default:

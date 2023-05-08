@@ -166,10 +166,7 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
-                    child: SizedBox(height: 248, child: Promo_List()),
-                  ),
+                  SizedBox(height: 248, child: Promo_List()),
                 ],
               ),
               SizedBox(
@@ -239,10 +236,7 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
-                    child: SizedBox(height: 248, child: Promo_List()),
-                  ),
+                  SizedBox(height: 248, child: Promo_List()),
                 ],
               ),
               SizedBox(
@@ -279,10 +273,7 @@ Column(
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
-                    child: SizedBox(height: 248, child: Promo_List()),
-                  ),
+                  SizedBox(height: 248, child: Promo_List()),
                 ],
               ),
             ],
