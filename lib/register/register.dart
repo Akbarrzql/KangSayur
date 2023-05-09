@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kangsayur/common/color_value.dart';
+import 'package:kangsayur/login/login.dart';
 import 'package:kangsayur/register/otp.dart';
 import 'package:kangsayur/register/otp_form.dart';
 
@@ -108,17 +109,22 @@ class _RegisterState extends State<Register> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children:  [
                       Text("Sudah punya akun? ",
                           style: TextStyle(
                               fontSize: 16,
                               color: ColorValue.secondaryColor,
                               fontWeight: FontWeight.normal)),
-                      Text("Masuk",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF3D5A80),
-                              fontWeight: FontWeight.bold)),
+                      GestureDetector(
+                        onTap: ()  {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const Login() ));
+                        },
+                        child: Text("Masuk",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF3D5A80),
+                                fontWeight: FontWeight.bold)),
+                      ),
                     ],
                   ),
                   const SizedBox(

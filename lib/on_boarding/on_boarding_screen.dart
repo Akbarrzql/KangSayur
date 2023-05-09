@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:kangsayur/login/login.dart';
 import 'package:kangsayur/on_boarding/on_boarding_content.dart';
 import 'package:kangsayur/on_boarding/size_config.dart';
+import 'package:kangsayur/register/register.dart';
 import '../common/color_value.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -15,6 +19,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   List colors = [Colors.white, Colors.white, Colors.white];
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Timer.periodic(Duration(seconds: 3), (Timer timer) {
+      if (_currentPage < contents.length - 1) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+      _controller.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    });
+  }
 
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
@@ -102,10 +125,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            _controller.nextPage(
-                              duration: Duration(milliseconds: 200),
-                              curve: Curves.easeIn,
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Login() ));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorValue.primaryColor,
@@ -120,14 +140,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               fontWeight: FontWeight.w500,
                             ),),
                         ),
-                        TextButton(
+                        ElevatedButton(
                           onPressed: () {
-                            _controller.nextPage(
-                              duration: Duration(milliseconds: 200),
-                              curve: Curves.easeIn,
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Register() ));
                           },
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
                             side: const BorderSide(
                                 color: ColorValue.primaryColor, width: 1),
                             elevation: 0,
@@ -149,12 +167,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            _controller.nextPage(
-                              duration: Duration(milliseconds: 200),
-                              curve: Curves.easeIn,
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Login() ));
+                          },                          style: ElevatedButton.styleFrom(
                             backgroundColor: ColorValue.primaryColor,
                             elevation: 0,
                             padding: const EdgeInsets.symmetric(
@@ -167,19 +181,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               fontWeight: FontWeight.w500,
                             ),),
                           ),
-                        TextButton(
+                        ElevatedButton(
+
                           onPressed: () {
-                            _controller.nextPage(
-                              duration: Duration(milliseconds: 200),
-                              curve: Curves.easeIn,
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Register() ));
                           },
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
                             side: const BorderSide(
                                 color: ColorValue.primaryColor, width: 1),
                             elevation: 0,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 15),
+                            foregroundColor: Colors.white
                           ),
                           child: Text("Daftar", style: textTheme.headline4!.copyWith(
                             color: ColorValue.primaryColor,

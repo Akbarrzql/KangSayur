@@ -12,6 +12,7 @@ class _Promo_ListState extends State<Promo_List> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: EdgeInsets.only(right: 24),
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: 4,
@@ -19,7 +20,7 @@ class _Promo_ListState extends State<Promo_List> {
         return Stack(
           children: [
             Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 20, 10),
+                margin: EdgeInsets.fromLTRB(24, 0, 0, 10),
                 width: 145,
                 height: 248,
                 decoration: BoxDecoration(
@@ -114,7 +115,7 @@ class _Promo_ListState extends State<Promo_List> {
                 )),
             Positioned(
               top: 0,
-              right: 20,
+              right: 0,
               child: Container(
                 width: 70,
                 height: 23,

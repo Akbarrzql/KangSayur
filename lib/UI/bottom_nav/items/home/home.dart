@@ -166,10 +166,7 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
-                    child: SizedBox(height: 248, child: Promo_List()),
-                  ),
+                  SizedBox(height: 248, child: Promo_List()),
                 ],
               ),
               SizedBox(
@@ -218,7 +215,7 @@ class _HomeState extends State<Home> {
                         Row(
                           children: [
                             Text(
-                              "Produk Pilihan",
+                              "Paling banyak dikunjungi",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -239,10 +236,7 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
-                    child: SizedBox(height: 248, child: Promo_List()),
-                  ),
+                  SizedBox(height: 248, child: Promo_List()),
                 ],
               ),
               SizedBox(
@@ -258,7 +252,7 @@ Column(
                         Row(
                           children: [
                             Text(
-                              "Paling Sering Dicari",
+                              "Paling sering kamu kunjungi",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -279,10 +273,7 @@ Column(
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
-                    child: SizedBox(height: 248, child: Promo_List()),
-                  ),
+                  SizedBox(height: 248, child: Promo_List()),
                 ],
               ),
             ],

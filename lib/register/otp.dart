@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kangsayur/common/color_value.dart';
 import 'package:kangsayur/register/otp_form.dart';
+import 'package:kangsayur/register/set_password.dart';
 
 class OTP extends StatefulWidget {
   const OTP({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _OTPState extends State<OTP> {
                 padding: EdgeInsets.only(bottom: 37),
                 child: GestureDetector(
                   onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const OTP())),
+                      MaterialPageRoute(builder: (context) => const Set_Password())),
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(

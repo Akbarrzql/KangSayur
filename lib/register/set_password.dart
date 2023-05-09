@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
 
 import '../common/color_value.dart';
 
@@ -102,7 +104,7 @@ class _Set_PasswordState extends State<Set_Password> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 37),
                   child: GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Set_Password())),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Bottom_Nav())),
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
