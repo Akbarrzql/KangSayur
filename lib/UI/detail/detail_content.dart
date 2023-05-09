@@ -164,8 +164,7 @@ class _Detail_contentState extends State<Detail_content> {
                 trimCollapsedText: 'Selengkapnya',
                 trimExpandedText: 'Tutup',
                 style: TextStyle(
-                    color: Color(0xff3D5A80),
-                    fontSize: 14,
+                     fontSize: 14,
                     fontWeight: FontWeight.normal),
               ),
             ],

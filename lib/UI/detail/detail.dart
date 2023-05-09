@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/detail/detail_content.dart';
 import 'package:kangsayur/UI/detail/detail_storebox.dart';
 import 'package:kangsayur/UI/detail/detail_tokoini.dart';
+import 'package:kangsayur/UI/detail/detail_ulasan.dart';
 
 class Detail extends StatefulWidget {
   const Detail({Key? key}) : super(key: key);
@@ -40,21 +41,30 @@ class _DetailState extends State<Detail> {
       ),
       body: Stack(
         children: [
-          Column(
-            children: [
-              SizedBox(
-                height: 25,
-              ),
-              Detail_content(),
-              SizedBox(
-                height: 15,
-              ),
-              Detail_storebox(),
-              SizedBox(
-                height: 15,
-              ),
-              // Detail_tokoini(),
-            ],
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 25,
+                ),
+                Detail_content(),
+                SizedBox(
+                  height: 15,
+                ),
+                Detail_storebox(),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(height: 15,),
+                Detail_tokoini(),
+                SizedBox(
+                  height: 15,
+                ),
+                // Detail_ulasan(),
+                SizedBox(
+                  height: 80,)
+              ],
+            ),
           ),
           Positioned(
             bottom: 0,

@@ -12,12 +12,17 @@ class _Detail_tokoiniState extends State<Detail_tokoini> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Di toko ini"),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Text("Di toko ini", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),),
         SizedBox(
           height: 5,
         ),
         SizedBox(
+          height: 248,
             width: double.infinity,
             child: Promo_List())
       ],
