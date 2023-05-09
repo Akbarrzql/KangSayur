@@ -40,6 +40,8 @@ dependencies:
   flutter_svg: ^1.1.6
   animated_splash_screen: ^1.3.0
   carousel_slider:
+  readmore:
+  flutter_rating_bar:
 
 dev_dependencies:
   flutter_test:
