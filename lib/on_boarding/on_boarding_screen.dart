@@ -166,8 +166,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Login() ));
+                          },                          style: ElevatedButton.styleFrom(
                             backgroundColor: ColorValue.primaryColor,
                             elevation: 0,
                             padding: const EdgeInsets.symmetric(
@@ -181,7 +182,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),),
                           ),
                         ElevatedButton(
-                          onPressed: () {},
+
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Register() ));
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             side: const BorderSide(

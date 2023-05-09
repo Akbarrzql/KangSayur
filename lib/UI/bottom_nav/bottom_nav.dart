@@ -54,79 +54,48 @@ class _Bottom_NavState extends State<Bottom_Nav> {
               BottomNavigationBarItem(
                 icon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SvgPicture.asset(
-                    "assets/icon/navbar/home.svg",
-                    width: 24,
-                    color: Colors.black,
-                  ),
+                    child: Icon(Icons.home)
                 ),
                 label: 'Home',
                 activeIcon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SvgPicture.asset(
-                    "assets/icon/navbar/home.svg",
-                    width: 24,
-                    color: Colors.black,
-                  ),
+                    child: Icon(Icons.home)
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SvgPicture.asset(
-                    "assets/icon/navbar/home.svg",
-                    width: 24,
-                    color: Colors.black,
-                  ),
+                    child: Icon(Icons.list)
                 ),
                 label: 'Catalog',
                 activeIcon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SvgPicture.asset(
-                    "assets/icon/navbar/home.svg",
-                    width: 24,
-                    color: Colors.black,
-                  ),
+                    child: Icon(Icons.list)
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SvgPicture.asset(
-                    "assets/icon/navbar/home.svg",
-                    width: 24,
-                    color: Colors.black,
-                  ),
+                    child: Icon(Icons.monetization_on)
                 ),
                 label: 'Transaction',
                 activeIcon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SvgPicture.asset(
-                    "assets/icon/navbar/home.svg",
-                    width: 24,
-                    color: Colors.black,
-                  ),
+                    child: Icon(Icons.monetization_on)
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SvgPicture.asset(
-                    "assets/icon/navbar/home.svg",
-                    width: 24,
-                    color: Colors.black,
-                  ),
+                    child: Icon(Icons.person)
                 ),
                 label: 'Profile',
                 activeIcon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SvgPicture.asset(
-                    "assets/icon/navbar/home.svg",
-                    width: 24,
-                    color: Colors.black,
+                  child: Icon(Icons.person)
                   ),
                 ),
-              ),
+
             ],
           ),
         ));

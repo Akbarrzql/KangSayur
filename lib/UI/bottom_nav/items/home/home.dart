@@ -215,7 +215,7 @@ class _HomeState extends State<Home> {
                         Row(
                           children: [
                             Text(
-                              "Produk Pilihan",
+                              "Paling banyak dikunjungi",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -252,7 +252,7 @@ Column(
                         Row(
                           children: [
                             Text(
-                              "Paling Sering Dicari",
+                              "Paling sering kamu kunjungi",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
