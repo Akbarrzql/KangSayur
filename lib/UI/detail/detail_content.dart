@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kangsayur/common/color_value.dart';
 import 'package:readmore/readmore.dart';
 
@@ -80,16 +81,14 @@ class _Detail_contentState extends State<Detail_content> {
                               width: 10,),
                             RatingBar.builder(
                               itemBuilder: (context, index) {
-                                return Icon(
-                                  Icons.star,
-                                  color: Color(0xffFDA450),
-                                );
+                                return SvgPicture.asset("assets/icon/star.svg");
                               },
                               onRatingUpdate: (value) {},
                               initialRating: 5,
                               allowHalfRating: true,
                               itemCount: 5,
-                              itemSize: 16,
+                              itemSize: 14,
+                              itemPadding: EdgeInsets.symmetric(horizontal: 2),
                               minRating: 1,
                               glow: false,
                               unratedColor: ColorValue.neutralColor,

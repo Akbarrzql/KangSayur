@@ -60,7 +60,7 @@ class _DetailState extends State<Detail> {
                 SizedBox(
                   height: 15,
                 ),
-                // Detail_ulasan(),
+                Detail_ulasan(),
                 SizedBox(
                   height: 80,)
               ],
