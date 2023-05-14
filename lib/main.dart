@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_profile/keamanan_profile/keamanan_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_profile/pengaturan_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/ubah_profile/ubah_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        backgroundColor: Colors.white,
         textTheme: TextTheme(
             headline1: TextStyle(
                 fontSize: 24,

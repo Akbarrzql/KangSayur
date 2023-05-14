@@ -34,9 +34,14 @@ class _Ubah_profileState extends State<Ubah_profile> {
                       onPrimary: Colors.white,
                       onSurface: Colors.black,
                     ),
+                    textTheme: TextTheme(
+                      bodyText1: TextStyle(color: Colors.black),
+                      bodyText2: TextStyle(color: Colors.black),
+                      button: TextStyle(color: Colors.white),
+                    ),
                     textButtonTheme: TextButtonThemeData(
                       style: TextButton.styleFrom(
-                          primary: ColorValue.primaryColor),
+                          ),
                     ),
                   ),
                   child: child!);
@@ -44,7 +49,6 @@ class _Ubah_profileState extends State<Ubah_profile> {
             context: context,
             initialDate: DateTime.now().add(new Duration(days: 3)),
             firstDate: DateTime.now().add(new Duration(days: 3)),
-            fieldHintText: "dd/yy/mm",
             lastDate: DateTime.now().add(new Duration(days: 14)))
         .then((value) {
       setState(() {
@@ -62,7 +66,7 @@ class _Ubah_profileState extends State<Ubah_profile> {
         backgroundColor: Colors.white,
         title: Text(
           "Ubah Profil",
-          style: TextStyle(color: Colors.black, fontSize: 16),
+          style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
         ),
         leading: IconButton(
           onPressed: () {
@@ -206,7 +210,11 @@ class _Ubah_profileState extends State<Ubah_profile> {
                 items: <String>['Pria', 'Wanita'].map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value),
+                    child: Text(value, style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: Color(0xff35363B),
+                    ),),
                   );
                 }).toList(),
               ),
@@ -234,8 +242,11 @@ class _Ubah_profileState extends State<Ubah_profile> {
                 child: Row(
                   children: [
                     Text(_dateTime == null
-                        ? 'Nothing has been picked yet'
-                        : DateFormat('dd/MM/yyyy').format(_dateTime!)),
+                        ? '23-11-2023'
+                        : DateFormat('dd-MM-yyyy').format(_dateTime!), style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                    )),
                     Spacer(),
                     IconButton(
                       onPressed: () {
@@ -308,6 +319,10 @@ Widget _Form({
                 fontWeight: FontWeight.normal,
                 color: Color(0xffA0A0A0)),
           ),
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+          )
         ),
       ),
     ],
