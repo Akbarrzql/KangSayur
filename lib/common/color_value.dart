@@ -7,6 +7,7 @@ class ColorValue {
   static const Color tertiaryColor = Color(0xFFEDB46A);
   static const Color quaternaryColor = Color(0xFFEE6C4D);
   static const Color neutralColor = Color(0xFF35363B);
+  static const Color hinttext = Color(0xFFA0A0A0);
   static const Color deadColor = Color(0xFFF6F6F6);
   static const Color dyingColor = Color(0xFFB6B6B6);
   static const Color blackColor = Color(0xFF000000);
