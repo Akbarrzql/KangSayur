@@ -4,6 +4,7 @@ import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_profil
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/ubah_profile/ubah_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile.dart';
 import 'package:kangsayur/UI/detail/detail.dart';
+import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/register/set_password.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
@@ -90,7 +91,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home:  Profile(),
+      home:  Seller_Detail(),
     );
   }
 }
