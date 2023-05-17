@@ -43,6 +43,8 @@ dependencies:
   readmore:
   flutter_rating_bar:
   photo_view:
+  intl:
+  flutter_switch:
 
 dev_dependencies:
   flutter_test:
