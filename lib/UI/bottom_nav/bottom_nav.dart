@@ -96,7 +96,6 @@ class _Bottom_NavState extends State<Bottom_Nav> {
                   child: Icon(Icons.person)
                   ),
                 ),
-
             ],
           ),
         ));
