@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home:  Seller_Detail(),
+      home:  Seller_profile(),
     );
   }
 }

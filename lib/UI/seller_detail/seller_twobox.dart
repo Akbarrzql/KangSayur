@@ -22,7 +22,7 @@ class _Seller_twoboxState extends State<Seller_twobox> {
               border: Border.all(color: Colors.black)
             ),
             child: Center(
-              child: Text("Produk"),
+              child: Text("Chat", style: TextStyle(fontSize: 14),),
             ),
           ),
           Spacer(),
@@ -31,9 +31,13 @@ class _Seller_twoboxState extends State<Seller_twobox> {
             height: 32,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.black)
+                border: Border.all(color: Color(0xff009245))
+            ),
+            child: Center(
+              child: Text("Langganan", style: TextStyle(fontSize: 14,color: Color(0xff009245)),),
             ),
           ),
+
         ],
       ),
     );
