@@ -68,7 +68,7 @@ class _Bottom_NavState extends State<Bottom_Nav> {
                   padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.list)
                 ),
-                label: 'Catalog',
+                label: 'Explore',
                 activeIcon: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.list)
@@ -96,7 +96,6 @@ class _Bottom_NavState extends State<Bottom_Nav> {
                   child: Icon(Icons.person)
                   ),
                 ),
-
             ],
           ),
         ));

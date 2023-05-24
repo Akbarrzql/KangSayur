@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:kangsayur/common/color_value.dart';
 
+import 'keamanan_profile/keamanan_profile.dart';
+
 class Pengaturan_Profile extends StatefulWidget {
   const Pengaturan_Profile({Key? key}) : super(key: key);
 
@@ -21,7 +23,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
         backgroundColor: Colors.white,
         title: Text(
           "Pengaturan Akun",
-          style: TextStyle(color: Colors.black, fontSize: 16),
+          style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
         ),
         leading: IconButton(
           onPressed: () {
@@ -37,36 +39,43 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
             SizedBox(
               height: 20,
             ),
-            Container(
-              color: Colors.white,
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    "assets/icon/lock.svg",
-                    width: 18,
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Keamanan Akun",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                      Text("Atur kata sandi dan keamanan diri",
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Keamanan_profile();
+                }));
+              },
+              child: Container(
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icon/lock.svg",
+                      width: 18,
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Keamanan Akun",
                           style: TextStyle(
-                              fontSize: 12, color: ColorValue.hinttext)),
-                    ],
-                  ),
-                  Spacer(),
-                  SvgPicture.asset(
-                    "assets/icon/arrow_right.svg",
-                    height: 20,
-                  )
-                ],
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        Text("Atur kata sandi dan keamanan diri",
+                            style: TextStyle(
+                                fontSize: 12, color: ColorValue.hinttext)),
+                      ],
+                    ),
+                    Spacer(),
+                    SvgPicture.asset(
+                      "assets/icon/arrow_right.svg",
+                      height: 20,
+                    )
+                  ],
+                ),
               ),
             ),
             SizedBox(

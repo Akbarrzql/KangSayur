@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_profile/pengaturan_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/ubah_profile/ubah_profile.dart';
 
 class Profile_head extends StatefulWidget {

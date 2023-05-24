@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
-import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_profile/pengaturan_profile.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/alamat.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/isi_alamat.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/inbox.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/chat_list.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/detail_chat/detail_chat.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/mengulas/mengulas.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/menunggu_diulas.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/ulasan_anda.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/notifikasi/notifikasi.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_pembelian.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/toko_favorit/toko_favorit.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/ubah_profile/ubah_profile.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/whistlist/whistlist.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile.dart';
 import 'package:kangsayur/UI/detail/detail.dart';
 import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
@@ -27,6 +38,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        backgroundColor: Colors.white,
         textTheme: TextTheme(
             headline1: TextStyle(
                 fontSize: 24,
@@ -93,6 +105,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       home:  Seller_profile(),
+
     );
   }
 }
