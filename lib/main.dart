@@ -8,6 +8,7 @@ import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/register/set_password.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
+import 'package:kangsayur/test.dart';
 import 'UI/bottom_nav/items/home/home.dart';
 import 'common/color_value.dart';
 import 'on_boarding/on_boarding_screen.dart';

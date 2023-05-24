@@ -52,7 +52,7 @@ class _Seller_tabbarState extends State<Seller_tabbar> with SingleTickerProvider
                 child: Text("Produk", style: TextStyle(fontSize: 14),),
               ),
               Tab(
-                child: Text("Ulasan", style: TextStyle(fontSize: 14),),
+                child: Text("Katalog", style: TextStyle(fontSize: 14),),
               ),
               Tab(
                 child: Text("Tentang", style: TextStyle(fontSize: 14),),

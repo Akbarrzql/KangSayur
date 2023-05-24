@@ -12,7 +12,9 @@ class _Seller_produkState extends State<Seller_produk> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-
+        SizedBox(
+          height: 2000,
+        ),
       ],
     );
   }
