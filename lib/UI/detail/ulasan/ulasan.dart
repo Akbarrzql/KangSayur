@@ -81,67 +81,32 @@ class _UlasanState extends State<Ulasan> {
                   )
                 ],
               ),
-              Review(
-                  name: "asd",
-                  profile: "assets/images/profile.png",
-                  date: "23-12-2023",
-                  comment: "yang jual sayur ini baik banget pokoknya mantap deh" ,
-                  image: "assets/images/review.jpg",
-                  rating: 5,
-                  context: context),
-              SizedBox(
-                height: 15,
-              ),            Review(
-                  name: "asd",
-                  profile: "assets/images/profile.png",
-                  date: "23-12-2023",
-                  comment: "yang jual sayur ini baik banget pokoknya mantap deh" ,
-                  image: "assets/images/review.jpg",
-                  rating: 5,
-                  context: context),
-              SizedBox(
-                height: 15,
-              ),            Review(
-                  name: "asd",
-                  profile: "assets/images/profile.png",
-                  date: "23-12-2023",
-                  comment: "yang jual sayur ini baik banget pokoknya mantap deh" ,
-                  image: "assets/images/review.jpg",
-                  rating: 5,
-                  context: context),
-              SizedBox(
-                height: 15,
-              ),            Review(
-                  name: "asd",
-                  profile: "assets/images/profile.png",
-                  date: "23-12-2023",
-                  comment: "yang jual sayur ini baik banget pokoknya mantap deh" ,
-                  image: "assets/images/review.jpg",
-                  rating: 5,
-                  context: context),
-              SizedBox(
-                height: 15,
-              ),            Review(
-                  name: "asd",
-                  profile: "assets/images/profile.png",
-                  date: "23-12-2023",
-                  comment: "yang jual sayur ini baik banget pokoknya mantap deh" ,
-                  image: "assets/images/review.jpg",
-                  rating: 5,
-                  context: context),
-              SizedBox(
-                height: 15,
-              ),            Review(
-                  name: "asd",
-                  profile: "assets/images/profile.png",
-                  date: "23-12-2023",
-                  comment: "yang jual sayur ini baik banget pokoknya mantap deh" ,
-                  image: "assets/images/review.jpg",
-                  rating: 5,
-                  context: context),
               SizedBox(
                 height: 15,
               ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 3,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Review(
+                          profile: "assets/images/profile.png",
+                          name: "name",
+                          date: "23/08/2021",
+                          comment: "Dayumm",
+                          image: "assets/images/review.jpg",
+                          rating: 5,
+                          context: context),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  );
+                },
+              )
             ],
           ),
         ),
