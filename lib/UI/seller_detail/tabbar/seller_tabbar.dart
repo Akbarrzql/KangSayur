@@ -1,5 +1,6 @@
 import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
 import 'package:flutter/material.dart';
+import 'package:kangsayur/UI/seller_detail/tabbar/items/Seller_katalog.dart';
 import 'package:kangsayur/UI/seller_detail/tabbar/items/seller_beranda.dart';
 import 'package:kangsayur/UI/seller_detail/tabbar/items/seller_produk.dart';
 import 'package:kangsayur/UI/seller_detail/tabbar/items/seller_tentang.dart';
@@ -70,12 +71,7 @@ class _Seller_tabbarState extends State<Seller_tabbar> with SingleTickerProvider
               //make tabbar view for first tab
               Seller_beranda(),
               Seller_produk(),
-              //make tabbar view for third tab
-              Container(
-                child: Center(
-                  child: Text("Ulasan"),
-                ),
-              ),
+              Seller_katalog(),
               Seller_tentang()
             ],
           ),
