@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_profile/pengaturan_profile.dart';
+
+import 'navigate/pengaturan_akun/pengaturan_profile.dart';
 
 class Profile_two extends StatefulWidget {
   const Profile_two({Key? key}) : super(key: key);

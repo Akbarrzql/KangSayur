@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_profile/keamanan_profile/keamanan_profile.dart';
 import 'package:kangsayur/common/color_value.dart';
+
+import 'keamanan_profile/keamanan_profile.dart';
 
 class Pengaturan_Profile extends StatefulWidget {
   const Pengaturan_Profile({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
         backgroundColor: Colors.white,
         title: Text(
           "Pengaturan Akun",
-          style: TextStyle(color: Colors.black, fontSize: 16),
+          style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
         ),
         leading: IconButton(
           onPressed: () {
