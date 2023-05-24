@@ -45,6 +45,7 @@ dependencies:
   photo_view:
   intl:
   flutter_switch:
+  autoscale_tabbarview: ^1.0.2
 
 dev_dependencies:
   flutter_test:
