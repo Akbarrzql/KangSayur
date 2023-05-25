@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/common/color_value.dart';
 
 class Pk_search extends StatefulWidget {
   const Pk_search({Key? key}) : super(key: key);
@@ -22,6 +23,10 @@ class _Pk_searchState extends State<Pk_search> {
           child: TextField(
             textAlign: TextAlign.left,
             textAlignVertical: TextAlignVertical.center,
+            style: TextStyle(
+                fontSize: 14,
+                color: ColorValue.neutralColor,
+                fontWeight: FontWeight.w400),
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(
                   bottom: 8.0,

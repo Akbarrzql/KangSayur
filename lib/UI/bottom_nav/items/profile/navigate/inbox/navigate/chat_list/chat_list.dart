@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/detail_chat/detail_chat.dart';
 import 'package:kangsayur/widget/list_chat.dart';
 
 import '../../../../../../../../common/color_value.dart';
@@ -48,6 +49,7 @@ class _Chat_listState extends State<Chat_list> {
                   child: TextField(
                     style: TextStyle(
                       fontSize: 14,
+                      color: ColorValue.neutralColor,
                     ),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 10.0),
@@ -76,7 +78,7 @@ class _Chat_listState extends State<Chat_list> {
                 return Column(
                   children: [
                     ListChat(imagePelanggan: "assets/images/profile.png", namePelanggan: "Wabi Sabi", pesanPelanggan: "Masih ada ngga kak produk nya?", waktuPesan: "2 Maret 2023", onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Detail()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Detail_chat()));
                       },),
                     SizedBox(height: 15,)
                   ],

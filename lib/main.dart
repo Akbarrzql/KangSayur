@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/promo_kilat/promo_kilat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/alamat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/isi_alamat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/inbox.dart';
@@ -20,6 +21,7 @@ import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/register/set_password.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
 import 'package:kangsayur/test.dart';
+import 'package:kangsayur/test2.dart';
 import 'UI/bottom_nav/items/home/home.dart';
 import 'common/color_value.dart';
 import 'on_boarding/on_boarding_screen.dart';
@@ -104,7 +106,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home:  Seller_profile(),
+      home:  Promo_kilat(
+
+      ),
 
     );
   }

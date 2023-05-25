@@ -27,6 +27,18 @@ class _Seller_berandaState extends State<Seller_beranda> {
           height: 15,
         ),
         Container(height: 248, child: Promo_List()),
+        ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: 100,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+          return Container(
+            height: 100,
+            width: 100,
+            color: Colors.red,
+            child: Text(index.toString()),
+          );
+        },)
       ],
     );
   }

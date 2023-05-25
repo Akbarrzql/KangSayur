@@ -1,83 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kangsayur/UI/detail/detail_content.dart';
-import 'package:kangsayur/UI/detail/detail_popup.dart';
-import 'package:kangsayur/UI/detail/detail_storebox.dart';
-import 'package:kangsayur/UI/detail/detail_tokoini.dart';
-import 'package:kangsayur/UI/detail/detail_ulasan.dart';
 
 import '../../common/color_value.dart';
+import 'detail_content.dart';
 
-class Detail extends StatefulWidget {
-  const Detail({Key? key}) : super(key: key);
+class Detail_popup extends StatefulWidget {
+  const Detail_popup({Key? key}) : super(key: key);
 
   @override
-  State<Detail> createState() => _DetailState();
+  State<Detail_popup> createState() => _Detail_popupState();
 }
 
-class _DetailState extends State<Detail> {
+class _Detail_popupState extends State<Detail_popup> {
+  ProductVariant? _productVariiant;
+
+  Widget customRadio(String text, ProductVariant value) {
+    return OutlinedButton(
+        onPressed: () {
+          setState(() {
+            _productVariiant = value;
+          });
+        },
+        child: Text(text,
+            style: TextStyle(
+                fontSize: 12,
+                color: _productVariiant == value
+                    ? Colors.white
+                    : ColorValue.neutralColor)),
+        style: OutlinedButton.styleFrom(
+            backgroundColor:
+            _productVariiant == value ? ColorValue.primaryColor : null,
+            primary: _productVariiant == value
+                ? ColorValue.primaryColor
+                : ColorValue.primaryColor,
+            side: BorderSide(
+                color: _productVariiant == value
+                    ? ColorValue.primaryColor
+                    : ColorValue.primaryColor,
+                width: 1),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))));
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          "Detail",
-          style: TextStyle(color: Colors.black, fontSize: 16),
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/icon/arrow_left.svg"),
-          color: Colors.black,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset("assets/icon/share.svg"),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
+    ProductVariant? _productVariiant;
+
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.3,
+        color: Colors.white,
+        child: Column(
+          children: [
+            Row(
               children: [
-                SizedBox(
-                  height: 25,
-                ),
-                Detail_content(),
-                SizedBox(
-                  height: 15,
-                ),
-                Detail_storebox(),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(height: 15,),
-                Detail_tokoini(),
-                SizedBox(
-                  height: 15,
-                ),
-                Detail_ulasan(),
-                SizedBox(
-                  height: 80,)
+                customRadio("1kg", ProductVariant.variant1),
+                customRadio("2kg", ProductVariant.variant2),
+                customRadio("3kg", ProductVariant.variant3),
               ],
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Container(
+            Spacer(),
+            Container(
               height: 76,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(color: Color(0xff0E4F55)),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 child: Row(
                   children: [
                     Container(
@@ -111,7 +100,6 @@ class _DetailState extends State<Detail> {
                       width: 4,),
                     GestureDetector(
                       onTap: () {
-                        _showModalBottomSheet();
                       },
                       child: Container(
                         height: 46,
@@ -133,24 +121,14 @@ class _DetailState extends State<Detail> {
                   ],
                 ),
               ),
-            ),
-          )
-        ],
-      ),
+            )
+
+          ],
+        ),
+
     );
   }
-  // make void modal bottom sheet
-  void _showModalBottomSheet() {
-    showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-),
-        context: context,
-        builder: (builder) {
-          return Detail_popup();
-        });
 
-  }
 
 }
+

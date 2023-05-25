@@ -11,9 +11,11 @@ class Promo_kilat extends StatefulWidget {
 }
 
 class _Promo_kilatState extends State<Promo_kilat> {
+  // tabcontroller
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text("Promo Kilat", style: TextStyle(color: Colors.black, fontSize: 16),),
@@ -31,7 +33,7 @@ class _Promo_kilatState extends State<Promo_kilat> {
             SizedBox(height: 25,),
             Pk_search(),
             SizedBox(height: 20,),
-            // Pk_content(),
+             Pk_content()
           ],
         ),
       )

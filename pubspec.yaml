@@ -46,6 +46,9 @@ dependencies:
   intl:
   flutter_switch:
   autoscale_tabbarview: ^1.0.2
+  modal_bottom_sheet:
+  sliver_header_delegate:
+  bubble_tab_indicator:
 
 dev_dependencies:
   flutter_test:

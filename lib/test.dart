@@ -2,6 +2,7 @@ import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
 import 'package:flutter/material.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile_two.dart';
+import 'package:kangsayur/UI/seller_detail/seller_head.dart';
 import 'package:kangsayur/common/color_value.dart';
 
 import 'UI/seller_detail/tabbar/items/seller_beranda.dart';
@@ -37,7 +38,7 @@ class _TabbartestState extends State<Tabbartest> {
 
   void _handleScroll() {
     setState(() {
-      if (_scrollController.offset > 100) {
+      if (_scrollController.offset > 1) {
         _isAppBarExpanded = false;
         _appBarColor = Colors.transparent; // Set opacity value as per your preference
       } else {
@@ -73,11 +74,10 @@ class _TabbartestState extends State<Tabbartest> {
               child: Container(
                 child: Column(
                   children: [
-                    Profile_head(),
+                    Seller_head(),
                     SizedBox(
                       height: 21,
                     ),
-                    Profile_two()
                   ],
                 ),
               ),
