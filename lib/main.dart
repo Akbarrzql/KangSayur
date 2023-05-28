@@ -16,6 +16,9 @@ import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/ubah_profile/ubah
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/whistlist/whistlist.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile.dart';
 import 'package:kangsayur/UI/detail/detail.dart';
+import 'package:kangsayur/UI/payment/checkout/checkout.dart';
+import 'package:kangsayur/UI/payment/keranjang/keranjang.dart';
+import 'package:kangsayur/UI/payment/pembayaran/pembayaran.dart';
 import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/register/set_password.dart';
@@ -106,11 +109,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home:  Promo_kilat(
-
-      ),
+      home: Pembayaran()
 
     );
   }
 }
+
 
