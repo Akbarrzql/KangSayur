@@ -59,12 +59,12 @@ class _Detail_storeboxState extends State<Detail_storebox> {
               ],
             ),
             Spacer(),
-            Container(width: 110, height: 43, decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Color(0xff009245))
-            ),
-              child: Center(child: Text("Langganan", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff009245)),)),
-            ),
+            // Container(width: 110, height: 43, decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(10),
+            //   border: Border.all(color: Color(0xff009245))
+            // ),
+            //   child: Center(child: Text("Langganan", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff009245)),)),
+            // ),
           ],
         ),
       ),

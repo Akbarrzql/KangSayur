@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/home_most_popular.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/promo_list.dart';
-
 
 import 'home_carousel.dart';
 import 'home_head.dart';
@@ -236,14 +236,16 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 20,
                   ),
-                  SizedBox(height: 248, child: Promo_List()),
+                  SizedBox(
+                      height: 248,
+                      child: Home_most_visited())
                 ],
               ),
               SizedBox(
                 height: 35,
               ),
               // Paling Sering Dicari
-Column(
+              Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -273,7 +275,9 @@ Column(
                   SizedBox(
                     height: 20,
                   ),
-                  SizedBox(height: 248, child: Promo_List()),
+                  SizedBox(
+                      height: 248,
+                      child: Home_most_visited())
                 ],
               ),
             ],

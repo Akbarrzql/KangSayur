@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
+import 'package:http/http.dart' as http;
+import 'package:kangsayur/register/register_map.dart';
 
+import '../API/auth/Auth.dart';
 import '../common/color_value.dart';
 
 class Set_Password extends StatefulWidget {
-  const Set_Password({Key? key}) : super(key: key);
+  const Set_Password({Key? key, required this.email, required this.name})
+      : super(key: key);
+
+  final String email;
+  final String name;
 
   @override
   State<Set_Password> createState() => _Set_PasswordState();
 }
 
 class _Set_PasswordState extends State<Set_Password> {
+  TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,9 +66,14 @@ class _Set_PasswordState extends State<Set_Password> {
                   ],
                   color: const Color(0xFFF6F6F6),
                   borderRadius: BorderRadius.circular(5)),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal),
                   decoration: InputDecoration(
                     hintText: "Masukkan Password",
                     hintStyle: TextStyle(
@@ -86,9 +101,13 @@ class _Set_PasswordState extends State<Set_Password> {
                   ],
                   color: const Color(0xFFF6F6F6),
                   borderRadius: BorderRadius.circular(5)),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: TextField(
+                  obscureText: true,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal),
                   decoration: InputDecoration(
                     hintText: "Masukkan Password",
                     hintStyle: TextStyle(
@@ -100,29 +119,39 @@ class _Set_PasswordState extends State<Set_Password> {
                 ),
               ),
             ),
-                Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 37),
-                  child: GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Bottom_Nav())),
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: ColorValue.primaryColor,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: const Center(
-                        child: Text(
-                          "Selesai",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
+            Spacer(),
+            Padding(
+              padding: EdgeInsets.only(bottom: 37),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Register_map(
+                            email: widget.email,
+                                name: widget.name,
+                                password: _passwordController.text,
+
+                          )));
+                },
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: ColorValue.primaryColor,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: const Center(
+                    child: Text(
+                      "Lanjut",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                )
-              ]),
+                ),
+              ),
+            )
+          ]),
         ),
       ),
     );

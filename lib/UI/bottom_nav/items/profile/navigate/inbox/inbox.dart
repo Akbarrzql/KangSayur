@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/chat_list.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/riwayat.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/ulasan_anda.dart';
+import 'package:kangsayur/UI/detail/ulasan/ulasan.dart';
 
 import '../../../../../../common/color_value.dart';
 
@@ -39,8 +43,8 @@ class _InboxState extends State<Inbox> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _inbox_list(icon: "assets/icon/reverse_chat.svg", title: "Chat", subtitle: "Percakapan pribadi anda ke seller", context: context, onTap: Inbox()),
-                _inbox_list(icon: "assets/icon/star_outlined.svg", title: "Ulasan", subtitle: "Berikan penilaian dan ulasan", context: context, onTap: Inbox()),
+                _inbox_list(icon: "assets/icon/reverse_chat.svg", title: "Chat", subtitle: "Percakapan pribadi anda ke seller", context: context, onTap: Chat_list()),
+                _inbox_list(icon: "assets/icon/star_outlined.svg", title: "Ulasan", subtitle: "Berikan penilaian dan ulasan", context: context, onTap: Ulasan_anda()),
               ],
             ),
             SizedBox(height: 20,),

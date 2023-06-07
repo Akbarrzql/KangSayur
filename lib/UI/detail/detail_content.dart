@@ -1,13 +1,17 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:kangsayur/common/color_value.dart';
-import 'package:readmore/readmore.dart';
+
+import '../../model/detailproductmodel.dart';
 
 enum ProductVariant { variant1, variant2, variant3 }
 
 class Detail_content extends StatefulWidget {
-  const Detail_content({Key? key}) : super(key: key);
+  Detail_content({Key? key, required this.widget}) : super(key: key);
+  DetailProductModel widget;
 
   @override
   State<Detail_content> createState() => _Detail_contentState();
@@ -15,6 +19,7 @@ class Detail_content extends StatefulWidget {
 
 class _Detail_contentState extends State<Detail_content> {
   ProductVariant? _productVariiant;
+  bool isExpanded = false;
 
   Widget customRadio(String text, ProductVariant value) {
     return OutlinedButton(
@@ -68,7 +73,7 @@ class _Detail_contentState extends State<Detail_content> {
                       left: 2,
                       bottom: 7,
                       child: Container(
-                        width: 130,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
                         height: 40,
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -77,14 +82,12 @@ class _Detail_contentState extends State<Detail_content> {
                                 bottomLeft: Radius.circular(15))),
                         child: Row(
                           children: [
-                            SizedBox(
-                              width: 10,),
                             RatingBar.builder(
                               itemBuilder: (context, index) {
                                 return SvgPicture.asset("assets/icon/star.svg");
                               },
                               onRatingUpdate: (value) {},
-                              initialRating: 5,
+                              initialRating: widget.widget.data!.rating!,
                               allowHalfRating: true,
                               itemCount: 5,
                               itemSize: 14,
@@ -98,7 +101,7 @@ class _Detail_contentState extends State<Detail_content> {
                             ),
                             Center(
                                 child: Text(
-                              "5",
+                              widget.widget.data!.rating!.toString(),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
@@ -115,7 +118,10 @@ class _Detail_contentState extends State<Detail_content> {
                 height: 18,
               ),
               Text(
-                "Rp. 120.000,00",
+                "Rp. " +
+                    NumberFormat("#,###,##0", "id_ID")
+                        .format(widget.widget.data!.hargaProduk) +
+                    ",00",
                 style: TextStyle(
                     color: Color(0xff3D5A80),
                     fontSize: 20,
@@ -125,7 +131,8 @@ class _Detail_contentState extends State<Detail_content> {
                 height: 5,
               ),
               Text(
-                "Beras Pandan Wangi",
+                widget.widget.data!.namaProduk!,
+                // widget.widget.data.namaProduk,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -156,20 +163,71 @@ class _Detail_contentState extends State<Detail_content> {
               SizedBox(
                 height: 20,
               ),
-              ReadMoreText(
-                "Beras Pandan Wangi merupakan jenis beras putih yang mempunyai aroma lebih wangi dibandingkan beras putih lainnya. Aroma khas Daun Pandan akan segera mencuat ketika akan dimasak menjadi nasi.Selain harum, Beras Pandan Wangi juga mempunyai tekstur yang pulen dan terasa manis. Sehingga jenis ini sangat populer dan menjadi pilihan untuk dikonsumsi ",
-                trimMode: TrimMode.Line,
-                trimLines: 5,
-                trimCollapsedText: 'Selengkapnya',
-                trimExpandedText: 'Tutup',
-                style: TextStyle(
-                     fontSize: 14,
-                    fontWeight: FontWeight.normal),
+              Text(widget.widget.data!.deskripsi!,
+                  maxLines: isExpanded ? 100 : 5,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: ColorValue.neutralColor)),
+              SizedBox(
+                height: 5,
               ),
+              if (widget.widget.data!.deskripsi!.length > 100)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isExpanded = !isExpanded;
+                    });
+                  },
+                  child: Text(
+                    isExpanded ? 'Sembunyikan' : 'Selengkapnya',
+                    style: TextStyle(
+                      color: Color(0xff14B25E),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class ExpandedWidget extends StatefulWidget {
+  final String text;
+
+  const ExpandedWidget({Key? key, required this.text}) : super(key: key);
+
+  @override
+  State<ExpandedWidget> createState() => _ExpandedWidgetState();
+}
+
+class _ExpandedWidgetState extends State<ExpandedWidget> {
+  late bool isExpanded;
+
+  @override
+  void initState() {
+    isExpanded = false;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(widget.text),
+          Text(
+            "Selengkapnya",
+            style: TextStyle(),
+          )
+        ],
+      ),
     );
   }
 }

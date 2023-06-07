@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import '../UI/detail/detail.dart';
 import '../common/color_value.dart';
 
 class CardProduk extends StatelessWidget {
-  const CardProduk({Key? key, required this.imageProduk, required this.jarakProduk, required this.namaProduk, required this.penjualProduk, required this.hargaProduk}) : super(key: key);
+  const CardProduk(
+      {Key? key,
+      required this.imageProduk,
+      required this.jarakProduk,
+      required this.namaProduk,
+      required this.penjualProduk,
+      required this.hargaProduk,})
+      : super(key: key);
   final String imageProduk;
   final String jarakProduk;
   final String namaProduk;
@@ -42,7 +51,7 @@ class CardProduk extends StatelessWidget {
                         height: 112,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          image:  DecorationImage(
+                          image: DecorationImage(
                             image: AssetImage(imageProduk),
                             fit: BoxFit.cover,
                           ),
@@ -60,33 +69,40 @@ class CardProduk extends StatelessWidget {
                                 const SizedBox(
                                   height: 9,
                                 ),
-                                Text(
-                                    jarakProduk,
-                                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      fontSize: 10,
-                                      color: ColorValue.neutralColor,
-                                    )
-                                ),
+                                Text(jarakProduk.length <= 4 ? jarakProduk : jarakProduk.substring(0, 4) + " km",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1!
+                                        .copyWith(
+                                          fontSize: 10,
+                                          color: ColorValue.neutralColor,
+                                        )),
                                 const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   namaProduk,
-                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                                    fontSize: 14,
-                                    color: ColorValue.neutralColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .copyWith(
+                                        fontSize: 14,
+                                        color: ColorValue.neutralColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                 ),
                                 const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   penjualProduk,
-                                  style:Theme.of(context).textTheme.subtitle1!.copyWith(
-                                    fontSize: 10,
-                                    color: ColorValue.neutralColor,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .copyWith(
+                                        fontSize: 10,
+                                        color: ColorValue.neutralColor,
+                                      ),
                                 ),
                               ],
                             ),
@@ -101,7 +117,11 @@ class CardProduk extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          hargaProduk,
+                          //make money format here
+                          "Rp. " +
+                              NumberFormat('#,##0', 'id_ID')
+                                  .format(int.parse(hargaProduk)) +
+                              ",00",
                           style: TextStyle(
                               fontSize: 12,
                               color: Color(0xff3D5A80),

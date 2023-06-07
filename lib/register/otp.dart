@@ -33,7 +33,7 @@ class _OTPState extends State<OTP> {
                 padding: EdgeInsets.only(bottom: 37),
                 child: GestureDetector(
                   onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Set_Password())),
+                      MaterialPageRoute(builder: (context) => Container() )),
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(

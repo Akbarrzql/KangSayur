@@ -1,21 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/detail/detail_content.dart';
 import 'package:kangsayur/UI/detail/detail_popup.dart';
 import 'package:kangsayur/UI/detail/detail_storebox.dart';
 import 'package:kangsayur/UI/detail/detail_tokoini.dart';
 import 'package:kangsayur/UI/detail/detail_ulasan.dart';
+import 'package:kangsayur/bloc/json_bloc/json_event.dart';
+import 'package:kangsayur/model/detailproductmodel.dart';
 
+import '../../bloc/json_bloc/json_bloc.dart';
+import '../../bloc/json_bloc/json_state.dart';
 import '../../common/color_value.dart';
+import '../bottom_nav/items/profile/profile_head.dart';
 
 class Detail extends StatefulWidget {
-  const Detail({Key? key}) : super(key: key);
+  Detail({Key? key, required this.id}) : super(key: key);
+  final int id;
 
   @override
   State<Detail> createState() => _DetailState();
 }
 
 class _DetailState extends State<Detail> {
+  final JsonBloc _jsonBloc = JsonBloc();
+
+  @override
+  void initState() {
+    int id = widget.id;
+    _jsonBloc.add(GetDetailProductList(id));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,28 +60,64 @@ class _DetailState extends State<Detail> {
       ),
       body: Stack(
         children: [
+          Container(
+            color: Colors.white,
+            height: MediaQuery.of(context).size.height,
+          ),
           SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: 25,
+                BlocProvider(
+                  create: (_) => _jsonBloc,
+                  child: BlocListener<JsonBloc, JsonState>(
+                      listener: (context, state) {
+                    if (state is JsonError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                        ),
+                      );
+                    }
+                  }, child: BlocBuilder<JsonBloc, JsonState>(
+                          builder: (context, state) {
+                    if (state is JsonInitial) {
+                      return Loading();
+                    } else if (state is JsonLoading) {
+                      return Loading();
+                    } else if (state is JsonLoaded) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 25,
+                          ),
+                          Detail_content(
+                               widget: state.jsonDetailProduct),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Detail_storebox(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            height: 15,
+                          ),
+                          Detail_tokoini(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Detail_ulasan(widget: state.jsonDetailProduct,),
+                          SizedBox(
+                            height: 80,
+                          )
+                        ],
+                      );
+                    } else if (state is JsonError) {
+                      return Text(state.message);
+                    }
+                    return Container();
+                  })),
                 ),
-                Detail_content(),
-                SizedBox(
-                  height: 15,
-                ),
-                Detail_storebox(),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(height: 15,),
-                Detail_tokoini(),
-                SizedBox(
-                  height: 15,
-                ),
-                Detail_ulasan(),
-                SizedBox(
-                  height: 80,)
               ],
             ),
           ),
@@ -88,9 +140,10 @@ class _DetailState extends State<Detail> {
                           borderRadius: BorderRadius.circular(5)),
                       child: Center(
                           child: SvgPicture.asset("assets/icon/chat.svg")),
-                    ),                    SizedBox(
-                      width: 4,),
-
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
                     Container(
                       height: 46,
                       width: 128,
@@ -108,7 +161,8 @@ class _DetailState extends State<Detail> {
                       ),
                     ),
                     SizedBox(
-                      width: 4,),
+                      width: 4,
+                    ),
                     GestureDetector(
                       onTap: () {
                         _showModalBottomSheet();
@@ -139,18 +193,17 @@ class _DetailState extends State<Detail> {
       ),
     );
   }
+
   // make void modal bottom sheet
   void _showModalBottomSheet() {
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        ),
         context: context,
         builder: (builder) {
           return Detail_popup();
         });
-
   }
-
 }

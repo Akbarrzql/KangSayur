@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/alamat.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/inbox.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/notifikasi/notifikasi.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_pembelian.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/toko_favorit/toko_favorit.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/whistlist/whistlist.dart';
 import 'package:kangsayur/UI/detail/detail.dart';
+
+import '../home/home.dart';
 
 class Profile_content extends StatefulWidget {
   const Profile_content({Key? key}) : super(key: key);
@@ -26,53 +34,53 @@ class _Profile_contentState extends State<Profile_content> {
           Profile_list(
               icon: "assets/icon/bill.svg",
               name: "Riwayat Transaksi",
-              route: Detail(),
+              route: Riwayat_transaksi(),
               context: context),
           Profile_list(
               icon: "assets/icon/love.svg",
               name: "Wishlist",
-              route: Detail(),
+              route: Whistlist(),
               context: context),
           Profile_list(
               icon: "assets/icon/market.svg",
               name: "Toko Favorit",
-              route: Detail(),
+              route: Toko_favorit(),
               context: context),
-          Text("Kategori",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-          SizedBox(
-            height: 10,
-          ),
-          Profile_list(
-              icon: "assets/icon/wheat.svg",
-              name: "Bahan Pokok",
-              route: Detail(),
-              context: context),
-          Profile_list(
-              icon: "assets/icon/vegetable.svg",
-              name: "Sayuran",
-              route: Detail(),
-              context: context),
-          Profile_list(
-              icon: "assets/icon/fruit.svg",
-              name: "Buah-Buahan",
-              route: Detail(),
-              context: context),
-          Profile_list(
-              icon: "assets/icon/meat.svg",
-              name: "Daging",
-              route: Detail(),
-              context: context),
-          Profile_list(
-              icon: "assets/icon/bird.svg",
-              name: "Unggas",
-              route: Detail(),
-              context: context),
-          Profile_list(
-              icon: "assets/icon/egg.svg",
-              name: "Telur",
-              route: Detail(),
-              context: context),
+          // Text("Kategori",
+          //     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          // SizedBox(
+          //   height: 10,
+          // ),
+          // Profile_list(
+          //     icon: "assets/icon/wheat.svg",
+          //     name: "Bahan Pokok",
+          //     route: Home(),
+          //     context: context),
+          // Profile_list(
+          //     icon: "assets/icon/vegetable.svg",
+          //     name: "Sayuran",
+          //     route: Home(),
+          //     context: context),
+          // Profile_list(
+          //     icon: "assets/icon/fruit.svg",
+          //     name: "Buah-Buahan",
+          //     route: Home(),
+          //     context: context),
+          // Profile_list(
+          //     icon: "assets/icon/meat.svg",
+          //     name: "Daging",
+          //     route: Home(),
+          //     context: context),
+          // Profile_list(
+          //     icon: "assets/icon/bird.svg",
+          //     name: "Unggas",
+          //     route: Home(),
+          //     context: context),
+          // Profile_list(
+          //     icon: "assets/icon/egg.svg",
+          //     name: "Telur",
+          //     route: Home(),
+          //     context: context),
           Text("Pengaturan",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
           SizedBox(
@@ -81,22 +89,22 @@ class _Profile_contentState extends State<Profile_content> {
           Profile_list(
               icon: "assets/icon/inbox.svg",
               name: "Inbox",
-              route: Detail(),
+              route: Inbox(),
               context: context),
           Profile_list(
               icon: "assets/icon/notification.svg",
               name: "Notifikasi",
-              route: Detail(),
+              route: Notifikasi(),
               context: context),
           Profile_list(
               icon: "assets/icon/store.svg",
               name: "Alamat",
-              route: Detail(),
+              route: Alamat(),
               context: context),
           Profile_list(
               icon: "assets/icon/other.svg",
               name: "Lainnya",
-              route: Detail(),
+              route: Home(),
               context: context),
         ],
       ),

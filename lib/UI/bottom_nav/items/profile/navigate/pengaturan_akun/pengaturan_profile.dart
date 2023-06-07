@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:kangsayur/common/color_value.dart';
 
+import '../../../../../../API/auth/Auth.dart';
 import 'keamanan_profile/keamanan_profile.dart';
 
 class Pengaturan_Profile extends StatefulWidget {
@@ -233,22 +234,27 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
             SizedBox(
               height: 14,
             ),
-            Container(
-              color: Colors.white,
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    "assets/icon/logout.svg",
-                    width: 18,
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    "Keluar Akun",
-                    style: TextStyle(fontSize: 16, color: Color(0xffFF0000)),
-                  ),
-                ],
+            GestureDetector(
+              onTap: () {
+                Auth.logout(context);
+              },
+              child: Container(
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icon/logout.svg",
+                      width: 18,
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Text(
+                      "Keluar Akun",
+                      style: TextStyle(fontSize: 16, color: Color(0xffFF0000)),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

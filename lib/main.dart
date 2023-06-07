@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/promo_kilat/promo_kilat.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/toko_sekitar/toko_sekitar.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/alamat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/isi_alamat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/inbox.dart';
@@ -10,6 +11,7 @@ import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ul
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/menunggu_diulas.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/ulasan_anda.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/notifikasi/notifikasi.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_akun/pengaturan_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_pembelian.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/toko_favorit/toko_favorit.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/ubah_profile/ubah_profile.dart';
@@ -20,11 +22,13 @@ import 'package:kangsayur/UI/payment/checkout/checkout.dart';
 import 'package:kangsayur/UI/payment/keranjang/keranjang.dart';
 import 'package:kangsayur/UI/payment/pembayaran/pembayaran.dart';
 import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
+import 'package:kangsayur/login/login.dart';
 import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/register/set_password.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
 import 'package:kangsayur/test.dart';
 import 'package:kangsayur/test2.dart';
+import 'API/auth/Auth.dart';
 import 'UI/bottom_nav/items/home/home.dart';
 import 'common/color_value.dart';
 import 'on_boarding/on_boarding_screen.dart';
@@ -109,10 +113,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: Pembayaran()
-
-    );
+      home:
+      SplashScreen()
+    );}
   }
-}
+
 
 

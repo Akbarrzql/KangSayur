@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
 import 'package:kangsayur/common/color_value.dart';
+import 'package:kangsayur/login/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../on_boarding/on_boarding_screen.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 
@@ -18,11 +22,24 @@ class _SplashScreenState extends State<SplashScreen> {
   double _logoMargin = 0.0;
   double _opacity = 1.0;
   double _circleSize = 800.0;
+  bool hasToken  = false;
+
+  void checkToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+
+    setState(() {
+      hasToken = token != null && token.isNotEmpty;
+    });
+
+    // ...
+  }
 
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5), () {
+    checkToken();
+    Timer(const Duration(seconds: 3), () {
       setState(() {
         _backgroundColor = Colors.white;
         _logoSize = 150.0;
@@ -30,7 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
         _opacity = 0.0;
         _circleSize = 300.0;
       });
-      Timer(const Duration(seconds: 3), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OnboardingScreen())));
+      Timer(const Duration(seconds: 3), () => hasToken ? Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Bottom_Nav() ,)) : Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  OnboardingScreen(),))
+      );
     });
   }
 

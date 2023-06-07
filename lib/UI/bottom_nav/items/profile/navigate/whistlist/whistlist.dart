@@ -52,11 +52,12 @@ class _WhistlistState extends State<Whistlist> {
                       ),
                       itemBuilder: (context, index) {
                         return const CardProduk(
-                          hargaProduk: 'Rp 12.000',
+                          hargaProduk: '12000',
                           imageProduk: 'assets/images/wortel.png',
                           jarakProduk: '1.2 km',
                           namaProduk: 'Wortel Lokal 1/Kg',
                           penjualProduk: 'Toko Bu Endah',
+
                         );
                       },
                     ),

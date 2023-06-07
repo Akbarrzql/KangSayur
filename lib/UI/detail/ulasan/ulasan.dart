@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kangsayur/UI/detail/detail_ulasan.dart';
 
+import '../../../model/detailproductmodel.dart';
+
 class Ulasan extends StatefulWidget {
   const Ulasan({Key? key}) : super(key: key);
 
@@ -92,14 +94,6 @@ class _UlasanState extends State<Ulasan> {
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
-                      Review(
-                          profile: "assets/images/profile.png",
-                          name: "name",
-                          date: "23/08/2021",
-                          comment: "Dayumm",
-                          image: "assets/images/review.jpg",
-                          rating: 5,
-                          context: context),
                       SizedBox(
                         height: 15,
                       ),

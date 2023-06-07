@@ -4,15 +4,16 @@ import 'package:kangsayur/UI/detail/detail.dart';
 import 'package:kangsayur/widget/card_riwayat.dart';
 
 import '../../../../../../common/color_value.dart';
+import '../../../home/home.dart';
 
-class Riwayat_pembelian extends StatefulWidget {
-  const Riwayat_pembelian({Key? key}) : super(key: key);
+class Riwayat_transaksi extends StatefulWidget {
+  const Riwayat_transaksi({Key? key}) : super(key: key);
 
   @override
-  State<Riwayat_pembelian> createState() => _Riwayat_pembelianState();
+  State<Riwayat_transaksi> createState() => _Riwayat_transaksiState();
 }
 
-class _Riwayat_pembelianState extends State<Riwayat_pembelian> {
+class _Riwayat_transaksiState extends State<Riwayat_transaksi> {
   String dropdownValueStatus = 'Semua Status';
   String dropdownValueTanggal = 'Semua Tanggal';
 
@@ -23,7 +24,7 @@ class _Riwayat_pembelianState extends State<Riwayat_pembelian> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          "Riwayat Pembelian",
+          "Riwayat Transaksi",
           style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
         ),
         leading: IconButton(
@@ -110,7 +111,7 @@ Text("Menunggu Status Pembayaran", style: TextStyle(color: Colors.white, fontSiz
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Detail(),
+                          builder: (context) => const Home(),
                         ),
                       );
                     },

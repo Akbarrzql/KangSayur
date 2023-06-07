@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
 import 'package:kangsayur/common/color_value.dart';
+import 'package:kangsayur/model/loginmodel.dart';
 import 'package:kangsayur/register/register.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../API/auth/Auth.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -12,6 +17,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future<void> _loginProcess() async {
+    Auth.login(context, _emailController, _passwordController);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,14 +78,18 @@ class _LoginState extends State<Login> {
                     ],
                     color: const Color(0xFFF6F6F6),
                     borderRadius: BorderRadius.circular(5)),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: TextField(
+                    controller: _emailController,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal),
                     decoration: InputDecoration(
                       hintText: "Masukkan Email atau No. Handphone",
                       hintStyle: TextStyle(
                           fontSize: 16,
-                          color: Color(0xFFB6B6B6),
+                          color: ColorValue.hinttext,
                           fontWeight: FontWeight.normal),
                       border: InputBorder.none,
                     ),
@@ -97,14 +114,18 @@ class _LoginState extends State<Login> {
                     ],
                     color: const Color(0xFFF6F6F6),
                     borderRadius: BorderRadius.circular(5)),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: TextField(
+                    controller: _passwordController,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal),
                     decoration: InputDecoration(
                       hintText: "Masukkan Password",
                       hintStyle: TextStyle(
                           fontSize: 16,
-                          color: Color(0xFFB6B6B6),
+                          color: ColorValue.hinttext,
                           fontWeight: FontWeight.normal),
                       border: InputBorder.none,
                     ),
@@ -112,31 +133,6 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Spacer(),
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.black, width: 1)),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Image.asset(
-                    "assets/images/g.png",
-                    width: 24,
-                    height: 24,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Text(
-                    "Masuk dengan Google",
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-                  ),
-                ]),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -165,10 +161,7 @@ class _LoginState extends State<Login> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Bottom_Nav()));
+                  _loginProcess();
                 },
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 37),

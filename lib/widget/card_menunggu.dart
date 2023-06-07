@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/mengulas/mengulas.dart';
 
 import '../common/color_value.dart';
 
@@ -55,16 +56,22 @@ class CardMenunggu extends StatelessWidget {
                 Text(this.toko, style: TextStyle(color: ColorValue.blackColor, fontSize: 12, fontWeight: FontWeight.w400),),
                 SizedBox(height: 5,),
                 Spacer(),
-                Container(
-                  height: 30,
-                  width: 102,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: ColorValue.primaryColor,
-                  ),
-                  child: Center(
-                    child: Text("Beri Ulasan", style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),),
-
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return Mengulas();
+                    },));
+                  },
+                  child: Container(
+                    height: 30,
+                    width: 102,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: ColorValue.primaryColor,
+                    ),
+                    child: Center(
+                      child: Text("Beri Ulasan", style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),),
+                    ),
                   ),
                 )
 

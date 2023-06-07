@@ -40,7 +40,6 @@ dependencies:
   flutter_svg: ^1.1.6
   animated_splash_screen: ^1.3.0
   carousel_slider:
-  readmore:
   flutter_rating_bar:
   photo_view:
   intl:
@@ -49,6 +48,20 @@ dependencies:
   modal_bottom_sheet:
   sliver_header_delegate:
   bubble_tab_indicator:
+  flutter_bloc:
+  equatable:
+  dio:
+  http:
+  shared_preferences: ^2.1.1
+  flutter_map:
+  latlong:
+  geolocator:
+  location:
+  geocoding:
+  latlong2:
+  sliding_up_panel:
+  expandable_text:
+
 
 dev_dependencies:
   flutter_test:
