@@ -5,6 +5,7 @@ import 'package:kangsayur/model/productmostpopularmodel.dart';
 import 'package:kangsayur/model/productusermostvisitmodel.dart';
 
 import '../../model/profilemodel.dart';
+import '../../model/searchproductmodel.dart';
 import 'api_provider.dart';
 
 class ApiRepository {
@@ -25,6 +26,11 @@ class ApiRepository {
   Future<DetailProductModel> getDetailProductList(int id) async {
     return await _apiProvider.DetailProductModelList(
       id
+    );
+  }
+  Future<SearchProductModel> getSearchProductList(String keyword) async {
+    return await _apiProvider.SearchProductModelList(
+      keyword
     );
   }
 

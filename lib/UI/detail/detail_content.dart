@@ -88,6 +88,7 @@ class _Detail_contentState extends State<Detail_content> {
                               },
                               onRatingUpdate: (value) {},
                               initialRating: widget.widget.data!.rating!,
+                              ignoreGestures: true,
                               allowHalfRating: true,
                               itemCount: 5,
                               itemSize: 14,

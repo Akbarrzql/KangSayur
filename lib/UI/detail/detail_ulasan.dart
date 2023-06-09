@@ -31,11 +31,20 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Ulasan ${widget.widget.data!.rating} | 30 ulasan',
+                'Ulasan ${widget.widget.data!.rating} | 0 ulasan',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
-
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              'Belum ada ulasan',
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black.withOpacity(0.5)),
+            ),
           ],
         ),
       );
@@ -48,7 +57,7 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
             Row(
               children: [
                 Text(
-                  'Ulasan 5.0 | 30 ulasan',
+                  'Ulasan ${widget.widget!.data!.rating} | ${widget.widget!.data!.review!.length} ulasan',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 Spacer(),
@@ -134,7 +143,7 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                       itemBuilder: (context, index) {
                         return SvgPicture.asset("assets/icon/star.svg");
                       },
-                      onRatingUpdate: (value) {},
+                      ignoreGestures: true,
                       initialRating: rating,
                       allowHalfRating: true,
                       itemCount: 5,
@@ -143,6 +152,7 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                       minRating: 1,
                       glow: false,
                       unratedColor: ColorValue.neutralColor,
+                      onRatingUpdate: (double value) {},
                     ),
                   ],
                 ),

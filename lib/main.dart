@@ -24,6 +24,7 @@ import 'package:kangsayur/UI/payment/pembayaran/pembayaran.dart';
 import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'package:kangsayur/login/login.dart';
 import 'package:kangsayur/register/register.dart';
+import 'package:kangsayur/register/register_profile.dart';
 import 'package:kangsayur/register/set_password.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
 import 'package:kangsayur/test.dart';

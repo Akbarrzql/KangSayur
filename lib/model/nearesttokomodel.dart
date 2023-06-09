@@ -35,7 +35,7 @@ class NearestTokoModel {
 
 class Datum {
   int id;
-  String imgProfile;
+  String? imgProfile;
   String namaToko;
   String alamat;
   double longitude;

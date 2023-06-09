@@ -50,7 +50,6 @@ dependencies:
   bubble_tab_indicator:
   flutter_bloc:
   equatable:
-  dio:
   http:
   shared_preferences: ^2.1.1
   flutter_map:
@@ -61,7 +60,8 @@ dependencies:
   latlong2:
   sliding_up_panel:
   expandable_text:
-
+  image_picker: ^0.8.7+4
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

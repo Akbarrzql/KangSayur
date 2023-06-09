@@ -1,23 +1,21 @@
-import 'dart:convert';
 import 'dart:core';
-import 'package:intl/intl.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kangsayur/API/auth/Auth.dart';
 import 'package:location/location.dart' as loc;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Constants/app_constants.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:http/http.dart' as http;
 import '../../../common/color_value.dart';
 
 class Register_map extends StatefulWidget {
-  Register_map({Key? key, this.email, this.name, this.password,})
+  Register_map({Key? key, this.email, this.name, this.password, this.image,})
       : super(key: key);
   final String? email;
   final String? name;
   final String? password;
+  final File? image;
 
 
   @override
@@ -225,6 +223,7 @@ class _Register_mapState extends State<Register_map> {
                       Auth
                           .register(
                           widget.name.toString(),
+                          widget.image,
                           widget.email.toString(),
                           widget.password.toString(), context,
                           _currentPosition.latitude.toDouble().toString(),

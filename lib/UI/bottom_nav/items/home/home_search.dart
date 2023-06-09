@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/UI/search/search.dart';
 
 class Home_search extends StatefulWidget {
   const Home_search({Key? key}) : super(key: key);
@@ -18,6 +19,12 @@ class _Home_searchState extends State<Home_search> {
           borderRadius: BorderRadius.circular(5)),
       child: Center(
         child: TextField(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const Search();
+            }));
+          },
+          readOnly: true,
           textAlign: TextAlign.left,
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(

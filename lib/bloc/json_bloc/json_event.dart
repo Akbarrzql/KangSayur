@@ -10,9 +10,14 @@ abstract class JsonEvent extends Equatable {
 class GetProfileList extends JsonEvent {}
 class GetProductMostPopularList extends JsonEvent {}
 class GetProductUserMostVisitList extends JsonEvent {}
-class GetNearestTokoList extends JsonEvent{}
+class GetNearestTokoList extends JsonEvent{
+}
 class GetDetailProductList extends JsonEvent{
   final int id;
   const GetDetailProductList(this.id);
+}
+class GetSearchProductList extends JsonEvent{
+  final String keyword;
+  const GetSearchProductList(this.keyword);
 }
 

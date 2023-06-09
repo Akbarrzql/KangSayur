@@ -4,6 +4,7 @@ import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
 import 'package:http/http.dart' as http;
 import 'package:kangsayur/register/register_map.dart';
+import 'package:kangsayur/register/register_profile.dart';
 
 import '../API/auth/Auth.dart';
 import '../common/color_value.dart';
@@ -127,12 +128,11 @@ class _Set_PasswordState extends State<Set_Password> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Register_map(
-                            email: widget.email,
+                          builder: (context) => Register_profile(
+                                email: widget.email,
                                 name: widget.name,
                                 password: _passwordController.text,
-
-                          )));
+                              )));
                 },
                 child: Container(
                   height: 50,

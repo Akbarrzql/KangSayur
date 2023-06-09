@@ -1,8 +1,5 @@
 // Misalkan Anda memiliki class Auth untuk mengelola status login
-
-
-
-import 'dart:html';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -19,29 +16,48 @@ class Auth {
 
   Auth(this.context); // Status login pengguna
 
-  static Future<bool> register(String name ,String email, String password, BuildContext context, String latitude, String longitude) async {
+  static Future<bool> register(String name ,File? image,String email, String password, BuildContext context, String latitude, String longitude) async {
     // Logika autentikasi dan pengecekan username dan password
-    const String _baseUrl = "https://kangsayur.nitipaja.online/api/";
+    // const String _baseUrl = "https://kangsayur.nitipaja.online/api/";
+    List<int> imageBytes = await File(image!.path).readAsBytes();
+    var multipartFile = http.MultipartFile.fromBytes(
+      'photo',
+      imageBytes,
+      filename: image!.path.split('/').last,
+    );
+    // var url = Uri.parse(_baseUrl+"auth/user/register");
+    // var response = await http
+    //     .post(Uri.parse(url.toString()),
+    //     headers: {
+    //       'Accept': 'application/json',
+    //     },
+    //     body: {
+    //       "name": "$name",
+    //       "photo": "$multipartFile",
+    //       "email": "$email",
+    //       "password": "$password",
+    //       "latitude": "$latitude",
+    //       "longitude": "$longitude",
+    //     });
+    //
 
-    var url = Uri.parse(_baseUrl+"auth/user/register");
-    // });
-    var response = await http
-        .post(Uri.parse(url.toString()),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          "name": "$name",
-          "photo": "https://kangsayur.nitipaja.online/assets/images/user.png",
-          "email": "$email",
-          "password": "$password",
-          "latitude": "$latitude",
-          "longitude": "$longitude",
-        });
+    var url = Uri.parse('https://kangsayur.nitipaja.online/api/auth/user/register');
+    var request = http.MultipartRequest('POST', url);
+    request.headers['Accept'] = 'application/json';
 
-    print(response.body);
+     request.fields['name'] = name;
+    request.files.add(multipartFile);
+    request.fields['email'] = email;
+    request.fields['password'] = password;
+    request.fields['latitude'] = latitude;
+    request.fields['longitude'] = longitude;
+
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+
+    print(responseBody);
     if (response.statusCode == 200) {
-      RegisterModel user = registerModelFromJson(response.body);
+      RegisterModel user = registerModelFromJson(responseBody);
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString('token', user.accesToken);
       isLoggedIn = true;
@@ -52,7 +68,8 @@ class Auth {
 
     } else {
       print('object');
-      print(response.body);
+      print(response.statusCode);
+      print(responseBody);
     }
 
     // Jika login berhasil, atur isLoggedIn menjadi true

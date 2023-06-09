@@ -36,13 +36,13 @@ class ProfileModel {
 class Data {
   int id;
   String name;
-  String? photo;
+  String photo;
   String email;
   dynamic phoneNumber;
   dynamic emailVerifiedAt;
   int sandiId;
-  int jenisKelamin;
-  DateTime tanggalLahir;
+  dynamic jenisKelamin;
+  dynamic tanggalLahir;
   dynamic address;
   double longitude;
   double latitude;
@@ -77,7 +77,7 @@ class Data {
     emailVerifiedAt: json["email_verified_at"],
     sandiId: json["sandi_id"],
     jenisKelamin: json["jenis_kelamin"],
-    tanggalLahir: DateTime.parse(json["tanggal_lahir"]),
+    tanggalLahir: json["tanggal_lahir"],
     address: json["address"],
     longitude: json["longitude"]?.toDouble(),
     latitude: json["latitude"]?.toDouble(),
@@ -95,7 +95,7 @@ class Data {
     "email_verified_at": emailVerifiedAt,
     "sandi_id": sandiId,
     "jenis_kelamin": jenisKelamin,
-    "tanggal_lahir": tanggalLahir.toIso8601String(),
+    "tanggal_lahir": tanggalLahir,
     "address": address,
     "longitude": longitude,
     "latitude": latitude,
