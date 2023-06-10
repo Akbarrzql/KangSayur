@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/API/resource/api_provider.dart';
 import 'package:kangsayur/UI/detail/detail_content.dart';
 import 'package:kangsayur/UI/detail/detail_popup.dart';
 import 'package:kangsayur/UI/detail/detail_storebox.dart';
@@ -15,8 +16,9 @@ import '../../common/color_value.dart';
 import '../bottom_nav/items/profile/profile_head.dart';
 
 class Detail extends StatefulWidget {
-  Detail({Key? key, required this.id}) : super(key: key);
+  Detail({Key? key, required this.id, this.idToko}) : super(key: key);
   final int id;
+  int? idToko;
 
   @override
   State<Detail> createState() => _DetailState();
@@ -27,8 +29,7 @@ class _DetailState extends State<Detail> {
 
   @override
   void initState() {
-    int id = widget.id;
-    _jsonBloc.add(GetDetailProductList(id));
+    _jsonBloc.add(GetDetailProductList(widget.id));
     super.initState();
   }
 
@@ -90,8 +91,7 @@ class _DetailState extends State<Detail> {
                           SizedBox(
                             height: 25,
                           ),
-                          Detail_content(
-                               widget: state.jsonDetailProduct),
+                          Detail_content(widget: state.jsonDetailProduct),
                           SizedBox(
                             height: 15,
                           ),
@@ -106,7 +106,9 @@ class _DetailState extends State<Detail> {
                           SizedBox(
                             height: 15,
                           ),
-                          Detail_ulasan(widget: state.jsonDetailProduct,),
+                          Detail_ulasan(
+                            widget: state.jsonDetailProduct,
+                          ),
                           SizedBox(
                             height: 80,
                           )
@@ -121,74 +123,31 @@ class _DetailState extends State<Detail> {
               ],
             ),
           ),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              height: 76,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Color(0xff0E4F55)),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 48,
-                      width: 48,
-                      decoration: BoxDecoration(
-                          color: Color(0xff009245),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Center(
-                          child: SvgPicture.asset("assets/icon/chat.svg")),
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Container(
-                      height: 46,
-                      width: 128,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Color(0xff009245)),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Center(
-                        child: Text(
-                          "+Keranjang",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _showModalBottomSheet();
-                      },
-                      child: Container(
-                        height: 46,
-                        width: 128,
-                        decoration: BoxDecoration(
-                            color: Color(0xff009245),
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Center(
-                          child: Text(
-                            "Beli Sekarang",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          )
+          BlocProvider(
+            create: (_) => _jsonBloc,
+            child: BlocListener<JsonBloc, JsonState>(
+                listener: (context, state) {
+              if (state is JsonError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              }
+            }, child:
+                    BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+              if (state is JsonInitial) {
+                return Container();
+              } else if (state is JsonLoading) {
+                return Container();
+              } else if (state is JsonLoaded) {
+                return _bottomBar(state.jsonDetailProduct);
+              } else if (state is JsonError) {
+                return Text(state.message);
+              }
+              return Container();
+            })),
+          ),
         ],
       ),
     );
@@ -205,5 +164,103 @@ class _DetailState extends State<Detail> {
         builder: (builder) {
           return Detail_popup();
         });
+  }
+
+  Widget _bottomBar(DetailProductModel widget) {
+    return Positioned(
+      bottom: 0,
+      child: Container(
+        height: 76,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(color: Color(0xff0E4F55)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          child: Row(
+            children: [
+              Container(
+                height: 48,
+                width: 48,
+                decoration: BoxDecoration(
+                    color: Color(0xff009245),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Center(child: SvgPicture.asset("assets/icon/chat.svg")),
+              ),
+              SizedBox(
+                width: 4,
+              ),
+              GestureDetector(
+                onTap: () async {
+                //make condition
+                //   ApiProvider().AddProductCart(widget.data!.id.toString(),
+                //       widget.data!.tokoId!.toString());
+                //   if (ApiProvider().AddProductCart(widget.data!.id.toString(), widget.data!.tokoId!.toString())) {
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       SnackBar(
+                //         content: Text("Berhasil ditambahkan ke keranjang"),
+                //       ),
+                //     );
+                //   } else {
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       SnackBar(
+                //         content: Text("Gagal ditambahkan ke keranjang"),
+                //       ),
+                //     );
+                //   }
+                    await ApiProvider().AddProductCart(widget.data!.id.toString(), widget.data!.tokoId!.toString()) ? ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Berhasil ditambahkan ke keranjang"),
+                      ),
+                    ) : ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Gagal ditambahkan ke keranjang"),
+                      ),
+                    );
+                },
+                child: Container(
+                  height: 46,
+                  width: 128,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xff009245)),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                    child: Text(
+                      "+Keranjang",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 4,
+              ),
+              GestureDetector(
+                onTap: () {
+                  _showModalBottomSheet();
+                },
+                child: Container(
+                  height: 46,
+                  width: 128,
+                  decoration: BoxDecoration(
+                      color: Color(0xff009245),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                    child: Text(
+                      "Beli Sekarang",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

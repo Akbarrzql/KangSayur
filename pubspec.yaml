@@ -62,6 +62,8 @@ dependencies:
   expandable_text:
   image_picker: ^0.8.7+4
   shimmer: ^3.0.0
+  sqflite:
+  path:
 
 dev_dependencies:
   flutter_test:

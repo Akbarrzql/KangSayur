@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:kangsayur/UI/detail/detail.dart';
 import 'package:kangsayur/common/color_value.dart';
 
 import '../../model/detailproductmodel.dart';
@@ -18,6 +19,19 @@ class Detail_content extends StatefulWidget {
 }
 
 class _Detail_contentState extends State<Detail_content> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    //listener
+    //mengasih data to detail
+    Detail(
+      idToko: widget.widget!.data!.tokoId,
+      id: widget.widget!.data!.id!,
+    );
+
+    super.initState();
+  }
+
   ProductVariant? _productVariiant;
   bool isExpanded = false;
 

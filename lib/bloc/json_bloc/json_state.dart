@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:kangsayur/model/cartproductmodel.dart';
 
 abstract class JsonState extends Equatable {
   const JsonState();
@@ -16,7 +17,9 @@ class JsonLoaded extends JsonState {
   final jsonNearestToko;
   final jsonDetailProduct;
   final jsonSearchProduct;
-  const JsonLoaded(this.jsonProfile, this.jsonProductMostPopular, this.jsonProductUserMostVisit, this.jsonNearestToko, this.jsonDetailProduct, this.jsonSearchProduct);
+  final jsonTokoPopular;
+  final jsonCartProduct;
+  const JsonLoaded(this.jsonProfile, this.jsonProductMostPopular, this.jsonProductUserMostVisit, this.jsonNearestToko, this.jsonDetailProduct, this.jsonSearchProduct, this.jsonTokoPopular, this.jsonCartProduct);
   // @override
   // List<Object?> get props => [jsonProfile];
 }

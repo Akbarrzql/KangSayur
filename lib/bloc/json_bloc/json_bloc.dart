@@ -13,7 +13,7 @@ class JsonBloc extends Bloc<JsonEvent, JsonState> {
       try {
         emit(JsonLoading());
         final jsonProfile = await _apiRepository.getProfileList();
-        emit(JsonLoaded(jsonProfile, null, null, null, null, null));
+        emit(JsonLoaded(jsonProfile, null, null, null, null, null, null, null));
       } on NetworkError {
         emit(JsonError("Couldn't fetch data. Is the device online?"));
       }
@@ -22,7 +22,7 @@ class JsonBloc extends Bloc<JsonEvent, JsonState> {
       try {
         emit(JsonLoading());
         final mList = await _apiRepository.getProductMostPopularList();
-        emit(JsonLoaded(null, mList, null, null, null, null));
+        emit(JsonLoaded(null, mList, null, null, null, null, null, null));
       } on NetworkError {
         emit(JsonError("Couldn't fetch data. Is the device online?"));
       }
@@ -31,7 +31,7 @@ class JsonBloc extends Bloc<JsonEvent, JsonState> {
       try {
         emit(JsonLoading());
         final mList = await _apiRepository.getProductUserMostVisitList();
-        emit(JsonLoaded(null, null, mList, null, null, null));
+        emit(JsonLoaded(null, null, mList, null, null, null, null, null));
       } on NetworkError {
         emit(JsonError("Couldn't fetch data. Is the device online?"));
       }
@@ -40,7 +40,7 @@ class JsonBloc extends Bloc<JsonEvent, JsonState> {
       try {
         emit(JsonLoading());
         final mList = await _apiRepository.getNearestTokoList();
-        emit(JsonLoaded(null, null, null, mList,null, null));
+        emit(JsonLoaded(null, null, null, mList,null, null, null, null));
       } on NetworkError {
         emit(JsonError("Couldn't fetch data. Is the device online?"));
       }
@@ -49,7 +49,7 @@ class JsonBloc extends Bloc<JsonEvent, JsonState> {
       try {
         emit(JsonLoading());
         final mList = await _apiRepository.getDetailProductList(event.id);
-        emit(JsonLoaded(null, null, null, null,mList, null));
+        emit(JsonLoaded(null, null, null, null,mList, null, null, null));
       } on NetworkError {
         emit(JsonError("Couldn't fetch data. Is the device online?"));
       }
@@ -58,7 +58,26 @@ class JsonBloc extends Bloc<JsonEvent, JsonState> {
       try {
         emit(JsonLoading());
         final mList = await _apiRepository.getSearchProductList(event.keyword);
-        emit(JsonLoaded(null, null, null, null,null,mList));
+        emit(JsonLoaded(null, null, null, null,null,mList, null ,null));
+      } on NetworkError {
+        emit(JsonError("Couldn't fetch data. Is the device online?"));
+      }
+    });
+    on<GetTokoPopularList>((event, emit) async {
+      try {
+        emit(JsonLoading());
+        final mList = await _apiRepository.getTokoPopularList();
+        emit(JsonLoaded(null, null, null, null,null,null,mList, null));
+      } on NetworkError {
+        emit(JsonError("Couldn't fetch data. Is the device online?"));
+      }
+    });
+
+    on<GetCartProductList>((event, emit) async {
+      try {
+        emit(JsonLoading());
+        final mList = await _apiRepository.getCartProductList();
+        emit(JsonLoaded(null, null, null, null,null,null,null,mList));
       } on NetworkError {
         emit(JsonError("Couldn't fetch data. Is the device online?"));
       }

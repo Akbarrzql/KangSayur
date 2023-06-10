@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:kangsayur/UI/payment/checkout/checkout.dart';
+import 'package:kangsayur/bloc/json_bloc/json_event.dart';
+import 'package:kangsayur/model/cartproductmodel.dart';
 import 'package:kangsayur/widget/card_keranjang.dart';
 
+import '../../../bloc/json_bloc/json_bloc.dart';
+import '../../../bloc/json_bloc/json_state.dart';
 import '../../../common/color_value.dart';
+import '../../bottom_nav/items/profile/profile_head.dart';
 
 class Keranjang extends StatefulWidget {
   const Keranjang({Key? key}) : super(key: key);
@@ -25,6 +31,15 @@ class _KeranjangState extends State<Keranjang> {
       }
     });
   }
+
+  final JsonBloc _jsonBloc = JsonBloc();
+
+  @override
+  void initState() {
+    _jsonBloc.add(GetCartProductList());
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,26 +163,30 @@ class _KeranjangState extends State<Keranjang> {
                 ),
                 _cardinfo(),
                 //make listview call card_keranjang
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Container(
-                        margin: EdgeInsets.only(bottom: 20),
-                        child: Card_keranjang(
-                          gambar_produk: "assets/images/wortel.png",
-                          nama_produk: "Wortel",
-                          harga_produk: 120000,
-                          nama_toko: "Petani Medan",
-                          profil_toko: "assets/images/store.png",
-                          alamat_toko: "Kota Medan",
-                          isVariant: true,
-                          variant: "4 kg",
-                          isDiscount: false,
-                          discount: 20,
-                        ));
-                  },
+                BlocProvider(
+                  create: (_) => _jsonBloc,
+                  child: BlocListener<JsonBloc, JsonState>(
+                      listener: (context, state) {
+                        if (state is JsonError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.message),
+                            ),
+                          );
+                        }
+                      }, child: BlocBuilder<JsonBloc, JsonState>(
+                      builder: (context, state) {
+                        if (state is JsonInitial) {
+                          return Loading();
+                        } else if (state is JsonLoading) {
+                          return Loading();
+                        } else if (state is JsonLoaded) {
+                          return _cartProductList(state.jsonCartProduct);
+                        } else if (state is JsonError) {
+                          return Text(state.message);
+                        }
+                        return Container();
+                      })),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.10,
@@ -219,6 +238,30 @@ class _KeranjangState extends State<Keranjang> {
         ],
       ),
     );
+  }
+  Widget _cartProductList (CartProductModel widget) {
+    return                 ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: widget.data.length,
+      itemBuilder: (context, index) {
+        return Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: Card_keranjang(
+              gambar_produk: "assets/images/wortel.png",
+              nama_produk: widget.data[index].namaProduk,
+              harga_produk: 120000,
+              nama_toko: widget.data[index].namaToko,
+              profil_toko: "https://kangsayur.nitipaja.online${widget.data[index].imgProfile}",
+              alamat_toko: "Kota Medan",
+              isVariant: true,
+              variant: "4 kg",
+              isDiscount: false,
+              discount: 20,
+            ));
+      },
+    );
+
   }
 }
 
@@ -305,5 +348,7 @@ class _Keranjang_barState extends State<Keranjang_bar> {
           ),
         ));
   }
+
+
 }
 

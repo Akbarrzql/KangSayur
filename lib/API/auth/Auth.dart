@@ -1,4 +1,5 @@
 // Misalkan Anda memiliki class Auth untuk mengelola status login
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -90,7 +91,7 @@ class Auth {
 
      var data = response.body;
      print(data);
-     print(response.statusCode);
+     print("token ${response.statusCode}");
      if(response.statusCode == 200){
        LoginModel user = loginModelFromJson(response.body);
        isLoggedIn = true;
