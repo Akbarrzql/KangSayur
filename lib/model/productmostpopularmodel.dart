@@ -35,40 +35,40 @@ class ProductMostPopularModel {
 
 class Datum {
   int id;
-  dynamic imgId;
+  dynamic variantImg;
   double distance;
   String namaProduk;
   String namaToko;
-  int hargaProduk;
+  int hargaVariant;
   int visited;
 
   Datum({
     required this.id,
-    required this.imgId,
+    required this.variantImg,
     required this.distance,
     required this.namaProduk,
     required this.namaToko,
-    required this.hargaProduk,
+    required this.hargaVariant,
     required this.visited,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
-    imgId: json["img_id"],
+    variantImg: json["variant_img"],
     distance: json["distance"]?.toDouble(),
     namaProduk: json["nama_produk"],
     namaToko: json["nama_toko"],
-    hargaProduk: json["harga_produk"],
+    hargaVariant: json["harga_variant"],
     visited: json["visited"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "img_id": imgId,
+    "variant_img": variantImg,
     "distance": distance,
     "nama_produk": namaProduk,
     "nama_toko": namaToko,
-    "harga_produk": hargaProduk,
+    "harga_variant": hargaVariant,
     "visited": visited,
   };
 }

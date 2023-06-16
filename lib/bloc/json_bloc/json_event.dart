@@ -21,4 +21,5 @@ class GetSearchProductList extends JsonEvent{
 }
 class GetTokoPopularList extends JsonEvent{}
 class GetCartProductList extends JsonEvent{}
+class GetCheckoutList extends JsonEvent{}
 

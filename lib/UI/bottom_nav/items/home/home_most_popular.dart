@@ -76,7 +76,7 @@ Widget _Home_most_popular(
               jarakProduk: widget.data[index].distance.toString(),
               namaProduk: widget.data[index].namaProduk,
               penjualProduk: widget.data[index].namaToko,
-              hargaProduk: widget.data[index].hargaProduk.toString(),
+              hargaProduk: widget.data[index].hargaVariant.toString(),
           ),
         ),
       );

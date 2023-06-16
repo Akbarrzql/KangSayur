@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
+import 'package:kangsayur/UI/payment/keranjang/keranjang.dart';
 import 'package:kangsayur/bloc/json_bloc/json_bloc.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/model/profilemodel.dart';
@@ -79,7 +80,9 @@ Widget _HeadHome(BuildContext context, ProfileModel widget) {
             fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
       ),
       Spacer(),
-      SvgPicture.asset("assets/icon/cart.svg"),
+      GestureDetector(
+        onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Keranjang())); },
+          child: SvgPicture.asset("assets/icon/cart.svg")),
       SizedBox(
         width: 17,
       ),

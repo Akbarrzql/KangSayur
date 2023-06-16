@@ -1,18 +1,46 @@
+import 'dart:convert';
+
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:kangsayur/API/cart/cart.dart';
 import 'package:kangsayur/UI/detail/detail.dart';
 import 'package:kangsayur/common/color_value.dart';
+import 'package:http/http.dart' as http;
 
 import '../../model/detailproductmodel.dart';
 
-enum ProductVariant { variant1, variant2, variant3 }
 
 class Detail_content extends StatefulWidget {
-  Detail_content({Key? key, required this.widget}) : super(key: key);
-  DetailProductModel widget;
+  Detail_content({Key? key, this.widget}) : super(key: key);
+  DetailProductModel? widget;
+
+  String GroupValue = "";
+  late int valueId;
+
+  late int produkId = widget!.data.produkId.toInt();
+  late int tokoId = widget!.data.tokoId.toInt();
+  late int jumlahVariant = widget!.data.variant.length.toInt();
+
+  //make looping index
+  late List<String> namaVariant = [
+    for (int i = 0; i < widget!.data.variant.length; i++)
+      widget!.data.variant[i].variant
+  ];
+
+  late List<int> variantId = [
+    for (int i = 0; i < widget!.data.variant.length; i++)
+      widget!.data.variant[i].id
+  ];
+
+  late List<int> hargaVariant = [
+    for (int i = 0; i < widget!.data.variant.length; i++)
+      widget!.data.variant[i].hargaVariant
+  ];
+
+
 
   @override
   State<Detail_content> createState() => _Detail_contentState();
@@ -21,47 +49,20 @@ class Detail_content extends StatefulWidget {
 class _Detail_contentState extends State<Detail_content> {
   @override
   void initState() {
+    widget.produkId = widget.widget!.data.produkId;
+    widget.tokoId = widget.widget!.data.tokoId;
+    widget.jumlahVariant = widget.widget!.data.variant.length;
+    widget.namaVariant = [
+      for (int i = 0; i < widget.widget!.data.variant.length; i++)
+        widget.widget!.data.variant[i].variant
+    ];
     // TODO: implement initState
-    //listener
-    //mengasih data to detail
-    Detail(
-      idToko: widget.widget!.data!.tokoId,
-      id: widget.widget!.data!.id!,
-    );
-
     super.initState();
   }
 
-  ProductVariant? _productVariiant;
   bool isExpanded = false;
+  bool isCheck = false;
 
-  Widget customRadio(String text, ProductVariant value) {
-    return OutlinedButton(
-        onPressed: () {
-          setState(() {
-            _productVariiant = value;
-          });
-        },
-        child: Text(text,
-            style: TextStyle(
-                fontSize: 12,
-                color: _productVariiant == value
-                    ? Colors.white
-                    : ColorValue.neutralColor)),
-        style: OutlinedButton.styleFrom(
-            backgroundColor:
-                _productVariiant == value ? ColorValue.primaryColor : null,
-            primary: _productVariiant == value
-                ? ColorValue.primaryColor
-                : ColorValue.primaryColor,
-            side: BorderSide(
-                color: _productVariiant == value
-                    ? ColorValue.primaryColor
-                    : ColorValue.primaryColor,
-                width: 1),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10))));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,7 @@ class _Detail_contentState extends State<Detail_content> {
                                 return SvgPicture.asset("assets/icon/star.svg");
                               },
                               onRatingUpdate: (value) {},
-                              initialRating: widget.widget.data!.rating!,
+                              initialRating: widget!.widget!.data.rating,
                               ignoreGestures: true,
                               allowHalfRating: true,
                               itemCount: 5,
@@ -116,12 +117,12 @@ class _Detail_contentState extends State<Detail_content> {
                             ),
                             Center(
                                 child: Text(
-                              widget.widget.data!.rating!.toString(),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            )),
+                                  widget!.widget!.data.rating.toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                )),
                           ],
                         ),
                       ),
@@ -135,7 +136,7 @@ class _Detail_contentState extends State<Detail_content> {
               Text(
                 "Rp. " +
                     NumberFormat("#,###,##0", "id_ID")
-                        .format(widget.widget.data!.hargaProduk) +
+                        .format(widget!.widget!.data.harga) +
                     ",00",
                 style: TextStyle(
                     color: Color(0xff3D5A80),
@@ -146,8 +147,8 @@ class _Detail_contentState extends State<Detail_content> {
                 height: 5,
               ),
               Text(
-                widget.widget.data!.namaProduk!,
-                // widget.widget.data.namaProduk,
+                widget!.widget!.data.namaProduk,
+                // widget!.widget!.data.namaProduk,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -158,27 +159,54 @@ class _Detail_contentState extends State<Detail_content> {
               ),
               Text("Pilih Varian",
                   style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
               SizedBox(
                 height: 4,
               ),
-              Row(
-                children: [
-                  customRadio("1 Kg", ProductVariant.variant1),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  customRadio("2 Kg", ProductVariant.variant2),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  customRadio("3 Kg", ProductVariant.variant3),
-                ],
+              // Row(
+              //   children: [
+              //     customRadio("1 Kg", ProductVariant.variant1),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     customRadio("2 Kg", ProductVariant.variant2),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     customRadio("3 Kg", ProductVariant.variant3),
+              //   ],
+              // ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,height: 40,
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget!.widget!.data.variant.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                  return Container(
+                    height: 100,
+                    width: 200,
+                    child: RadioListTile(
+                      title: Text(widget!.widget!.data.variant[index].variant),
+                        value: widget!.widget!.data.variant[index].variant,
+                        groupValue: widget!.GroupValue,
+                        onChanged: (value) {
+                          setState(() {
+                            widget!.GroupValue = value.toString();
+                            print(widget!.GroupValue);
+                            widget!.valueId = index;
+                          });
+                        },
+                        ),
+                  );
+                },),
               ),
+
               SizedBox(
                 height: 20,
               ),
-              Text(widget.widget.data!.deskripsi!,
+              Text(widget!.widget!.data.variant[0].variantDesc,
                   maxLines: isExpanded ? 100 : 5,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -188,7 +216,7 @@ class _Detail_contentState extends State<Detail_content> {
               SizedBox(
                 height: 5,
               ),
-              if (widget.widget.data!.deskripsi!.length > 100)
+              if (widget!.widget!.data.variant[0].variantDesc.length > 100)
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -236,7 +264,7 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.text),
+          Text(widget!.text),
           Text(
             "Selengkapnya",
             style: TextStyle(),
@@ -246,3 +274,4 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
     );
   }
 }
+

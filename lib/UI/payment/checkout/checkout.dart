@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
+import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/common/color_value.dart';
+import 'package:kangsayur/model/checkoutmodel.dart';
+
+import '../../../bloc/json_bloc/json_bloc.dart';
+import '../../../bloc/json_bloc/json_state.dart';
+import '../keranjang/keranjang.dart';
+import 'checkout_items.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({Key? key}) : super(key: key);
@@ -13,6 +22,13 @@ class Checkout extends StatefulWidget {
 class _CheckoutState extends State<Checkout> {
   //make text editing controller
   TextEditingController _controller = TextEditingController();
+  final JsonBloc _jsonBloc = JsonBloc();
+
+  @override
+  void initState() {
+    _jsonBloc.add(GetCheckoutList());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +69,46 @@ class _CheckoutState extends State<Checkout> {
                 SizedBox(
                   height: 10,
                 ),
-                Checkout_items(
-                  profil_seller: "assets/images/store.png",
-                  nama_seller: "Toko Sayur Segar",
-                  nama_produk: "Kangkung",
-                  gambar_produk: "assets/images/wortel.png",
-                  variant: "1 Kg",
-                  harga: 10000,
-                  jumlah: "1",
-                  subtotal: 10000,
-                  itemCount: 1,
-                  isVariant: true,
+                // Checkout_items(
+                //   profil_seller: "assets/images/store.png",
+                //   nama_seller: "Toko Sayur Segar",
+                //   nama_produk: "Kangkung",
+                //   gambar_produk: "assets/images/wortel.png",
+                //   variant: "1 Kg",
+                //   harga: 10000,
+                //   jumlah: "1",
+                //   subtotal: 10000,
+                //   isVariant: true,
+                //   itemCount_toko: 2,
+                //   itemCount_produk: 2,
+                // ),
+
+                BlocProvider(
+                  create: (_) => _jsonBloc,
+                  child: BlocListener<JsonBloc, JsonState>(
+                      listener: (context, state) {
+                        if (state is JsonError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.message),
+                            ),
+                          );
+                        }
+                      }, child: BlocBuilder<JsonBloc, JsonState>(
+                      builder: (context, state) {
+                        if (state is JsonInitial) {
+                          return Loading();
+                        } else if (state is JsonLoading) {
+                          return Loading();
+                        } else if (state is JsonLoaded) {
+                          return _chekoutItems(state.jsonCheckout);
+                        } else if (state is JsonError) {
+                          return Text(state.message);
+                        }
+                        return Container();
+                      })),
                 ),
+
                 SizedBox(
                   height: 20,
                 ),
@@ -79,15 +123,104 @@ class _CheckoutState extends State<Checkout> {
                 Checkout_ringkasan(
                     total_harga: 120000,
                     ongkos_kirim: 4000,
-                    biaya_layanan: 2000)
+                    biaya_layanan: 2000),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.10,
+                ),
               ],
             ),
           ),
-          Positioned(bottom: 0,
-              child: Bar(total: 200000))
+          Positioned(bottom: 0, child: Bar(total: 200000))
         ],
       ),
     );
+  }
+
+  Widget _chekoutItems(CheckoutModel widget) {
+    return Column(children: [
+      ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: widget.data.length,
+        itemBuilder: (context, index) {
+          return Checkout_items(
+            profil_seller: widget.data[index].imgProfile.toString(),
+            nama_seller: widget.data[index].namaToko.toString(),
+            nama_produk: [
+              for (var i = 0;
+                  i < widget.data[index].getProdukCheckout.length;
+                  i++)
+                widget.data[index].getProdukCheckout[i].variant
+            ],
+            gambar_produk: [
+              for (var i = 0;
+                  i < widget.data[index].getProdukCheckout.length;
+                  i++)
+                "assets/images/wortel.png"
+            ],
+            variant: [
+              for (var i = 0;
+                  i < widget.data[index].getProdukCheckout.length;
+                  i++)
+                widget.data[index].getProdukCheckout[i].variant
+            ],
+            harga: [
+              for (var i = 0;
+                  i < widget.data[index].getProdukCheckout.length;
+                  i++)
+                widget.data[index].getProdukCheckout[i].hargaVariant
+            ],
+            jumlah: [
+              for (var i = 0;
+                  i < widget.data[index].getProdukCheckout.length;
+                  i++)
+                "1"
+            ],
+            isVariant: true,
+            itemCount_produk: widget.data[index].getProdukCheckout.length,
+          );
+        },
+      ),
+      Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Divider(
+              height: 0.5,
+              color: ColorValue.hinttext,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Subtotal",
+                  style: TextStyle(color: ColorValue.neutralColor, fontSize: 14),
+                ),
+                Text(
+                  "Rp" + ProdukformatNumber(widget.rincian.subtotalProduk) + ",00",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: ColorValue.neutralColor,
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+    ]);
   }
 
   Widget Promo() {
@@ -146,9 +279,7 @@ class _CheckoutState extends State<Checkout> {
         ));
   }
 
-  Widget Bar({
-    required double total,
-  }) {
+  Widget Bar({required double total}) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.10,
       width: MediaQuery.of(context).size.width,
@@ -156,7 +287,6 @@ class _CheckoutState extends State<Checkout> {
       color: Colors.white,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +304,7 @@ class _CheckoutState extends State<Checkout> {
               ),
             ],
           ),
-Spacer(),
+          Spacer(),
           GestureDetector(
             onTap: () {},
             child: Container(
@@ -187,7 +317,10 @@ Spacer(),
               child: Center(
                   child: Text(
                 "Bayar",
-                style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600),
               )),
             ),
           )
@@ -215,34 +348,38 @@ class Checkout_alamat extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          Row(
+          Column(
             children: [
-              Text(
-                "Alamat Pengiriman",
-                style: TextStyle(
-                    color: Color(0xff222222),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
+              Row(
+                children: [
+                  Text(
+                    "Alamat Pengiriman",
+                    style: TextStyle(
+                        color: Color(0xff222222),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Spacer(),
+                  Text(
+                    "Pilih Alamat Lain",
+                    style: TextStyle(
+                        color: ColorValue.primaryColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
               ),
-              Spacer(),
-              Text(
-                "Pilih Alamat Lain",
-                style: TextStyle(
-                    color: ColorValue.primaryColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400),
+              SizedBox(
+                height: 5,
+              ),
+              Divider(
+                color: ColorValue.hinttext,
+                thickness: 0.5,
+              ),
+              SizedBox(
+                height: 4,
               ),
             ],
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Divider(
-            color: ColorValue.hinttext,
-            thickness: 0.5,
-          ),
-          SizedBox(
-            height: 4,
           ),
           Container(
             child: Column(
@@ -278,228 +415,6 @@ class Checkout_alamat extends StatelessWidget {
               ],
             ),
           )
-        ],
-      ),
-    );
-  }
-}
-
-class Checkout_items extends StatelessWidget {
-  Checkout_items({
-    Key? key,
-    required this.profil_seller,
-    required this.nama_seller,
-    required this.nama_produk,
-    required this.gambar_produk,
-    required this.harga,
-    required this.jumlah,
-    required this.subtotal,
-    required this.itemCount,
-    this.isVariant = false,
-    this.variant = "",
-  }) : super(key: key);
-  final String profil_seller,
-      nama_seller,
-      nama_produk,
-      gambar_produk,
-      variant,
-      jumlah;
-  final int itemCount;
-  final double harga, subtotal;
-  late bool isVariant;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-      color: Colors.white,
-      child: Column(
-        children: [
-          ListView.builder(
-            itemCount: itemCount,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Column(children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 35,
-                      width: 35,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          image: DecorationImage(
-                              image: AssetImage(profil_seller),
-                              fit: BoxFit.cover)),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    //text name seller
-                    Text(
-                      nama_seller,
-                      style: TextStyle(
-                          color: ColorValue.neutralColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Row(children: [
-                  Container(
-                    clipBehavior: Clip.antiAlias,
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            spreadRadius: 0,
-                            blurRadius: 4,
-                            offset: Offset(0, 4), // changes position of shadow
-                          ),
-                        ],
-                        image: DecorationImage(
-                            image: AssetImage(gambar_produk),
-                            fit: BoxFit.cover)),
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Container(
-                    height: 80,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          nama_produk,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        //make this widget isVariant
-                        isVariant
-                            ? Text(
-                                "Varian : " + variant,
-                                style: TextStyle(
-                                    color: ColorValue.hinttext,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              )
-                            : SizedBox(),
-                        Spacer(),
-                        Text(
-                          "Rp. " + ProdukformatNumber(harga) + ",00",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff0E4F55)),
-                        ),
-                        SizedBox(
-                          height: 18,
-                        ),
-                      ],
-                    ),
-                  ),
-                ]),
-                SizedBox(
-                  height: 15,
-                )
-              ]);
-            },
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Divider(
-            height: 0.5,
-            color: ColorValue.hinttext,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Subtotal",
-                style: TextStyle(color: ColorValue.neutralColor, fontSize: 14),
-              ),
-              Text(
-                "Rp" + ProdukformatNumber(subtotal) + ",00",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: ColorValue.neutralColor,
-                    fontWeight: FontWeight.w600),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-        ],
-      ),
-    );
-  }
-
-  String ProdukformatNumber(harga_produk) {
-    final numberFormat = NumberFormat('#,##0', 'id_ID');
-    return numberFormat.format(harga_produk);
-  }
-}
-
-class Checkout_catatan extends StatelessWidget {
-  const Checkout_catatan({Key? key, required this.catatanController})
-      : super(key: key);
-  final TextEditingController catatanController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Catatan (opsional)",
-            style: TextStyle(
-                color: Color(0xff222222),
-                fontSize: 14,
-                fontWeight: FontWeight.w500),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Divider(
-            color: ColorValue.hinttext,
-            thickness: 0.5,
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          Container(
-            color: Color(0xffF6F6F6),
-            height: 135,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: TextFormField(
-              controller: catatanController,
-              maxLines: 6,
-              maxLength: 150,
-              style: TextStyle(
-                  color: ColorValue.neutralColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400),
-              decoration: InputDecoration(
-                  hintText: "Tambahkan Catatan Disini...",
-                  hintStyle: TextStyle(
-                      color: ColorValue.hinttext,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
-                  border: InputBorder.none),
-            ),
-          ),
         ],
       ),
     );

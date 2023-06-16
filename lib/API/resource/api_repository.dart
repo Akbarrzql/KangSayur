@@ -1,3 +1,4 @@
+import 'package:kangsayur/model/checkoutmodel.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
 import 'package:kangsayur/model/nearesttokomodel.dart';
 import 'package:kangsayur/model/productmostpopularmodel.dart';
@@ -41,6 +42,9 @@ class ApiRepository {
   }
   Future<CartProductModel> getCartProductList() async {
     return await _apiProvider.CartProductModelList();
+  }
+  Future<CheckoutModel> getCheckoutList() async {
+    return await _apiProvider.CheckoutModelList();
   }
 }
 

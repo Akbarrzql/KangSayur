@@ -10,21 +10,24 @@ import 'package:kangsayur/UI/detail/detail_ulasan.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
 
+import '../../API/cart/cart.dart';
 import '../../bloc/json_bloc/json_bloc.dart';
 import '../../bloc/json_bloc/json_state.dart';
 import '../../common/color_value.dart';
 import '../bottom_nav/items/profile/profile_head.dart';
 
 class Detail extends StatefulWidget {
-  Detail({Key? key, required this.id, this.idToko}) : super(key: key);
+  Detail({Key? key, required this.id}) : super(key: key);
   final int id;
-  int? idToko;
+
 
   @override
   State<Detail> createState() => _DetailState();
 }
 
 class _DetailState extends State<Detail> {
+  DetailProductModel? _data;
+
   final JsonBloc _jsonBloc = JsonBloc();
 
   @override
@@ -63,7 +66,10 @@ class _DetailState extends State<Detail> {
         children: [
           Container(
             color: Colors.white,
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
           ),
           SingleChildScrollView(
             child: Column(
@@ -72,53 +78,53 @@ class _DetailState extends State<Detail> {
                   create: (_) => _jsonBloc,
                   child: BlocListener<JsonBloc, JsonState>(
                       listener: (context, state) {
-                    if (state is JsonError) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.message),
-                        ),
-                      );
-                    }
-                  }, child: BlocBuilder<JsonBloc, JsonState>(
-                          builder: (context, state) {
-                    if (state is JsonInitial) {
-                      return Loading();
-                    } else if (state is JsonLoading) {
-                      return Loading();
-                    } else if (state is JsonLoaded) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 25,
-                          ),
-                          Detail_content(widget: state.jsonDetailProduct),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Detail_storebox(),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            height: 15,
-                          ),
-                          Detail_tokoini(),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Detail_ulasan(
-                            widget: state.jsonDetailProduct,
-                          ),
-                          SizedBox(
-                            height: 80,
-                          )
-                        ],
-                      );
-                    } else if (state is JsonError) {
-                      return Text(state.message);
-                    }
-                    return Container();
-                  })),
+                        if (state is JsonError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.message),
+                            ),
+                          );
+                        }
+                      }, child: BlocBuilder<JsonBloc, JsonState>(
+                      builder: (context, state) {
+                        if (state is JsonInitial) {
+                          return Loading();
+                        } else if (state is JsonLoading) {
+                          return Loading();
+                        } else if (state is JsonLoaded) {
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Detail_content(widget: state.jsonDetailProduct),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Detail_storebox(),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                height: 15,
+                              ),
+                              Detail_tokoini(),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Detail_ulasan(
+                                widget: state.jsonDetailProduct,
+                              ),
+                              SizedBox(
+                                height: 80,
+                              )
+                            ],
+                          );
+                        } else if (state is JsonError) {
+                          return Text(state.message);
+                        }
+                        return Container();
+                      })),
                 ),
               ],
             ),
@@ -127,21 +133,21 @@ class _DetailState extends State<Detail> {
             create: (_) => _jsonBloc,
             child: BlocListener<JsonBloc, JsonState>(
                 listener: (context, state) {
-              if (state is JsonError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                  ),
-                );
-              }
-            }, child:
-                    BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+                  if (state is JsonError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                      ),
+                    );
+                  }
+                }, child:
+            BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
               if (state is JsonInitial) {
                 return Container();
               } else if (state is JsonLoading) {
                 return Container();
               } else if (state is JsonLoaded) {
-                return _bottomBar(state.jsonDetailProduct);
+                return _bottomBar(widget: state.jsonDetailProduct);
               } else if (state is JsonError) {
                 return Text(state.message);
               }
@@ -154,24 +160,32 @@ class _DetailState extends State<Detail> {
   }
 
   // make void modal bottom sheet
-  void _showModalBottomSheet() {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-        ),
-        context: context,
-        builder: (builder) {
-          return Detail_popup();
-        });
-  }
 
-  Widget _bottomBar(DetailProductModel widget) {
+
+  Widget _bottomBar({required DetailProductModel widget}) {
+
+    List<String> namaVariant = [
+      for(int i = 0; i < widget.data.variant.length; i++)
+        widget.data.variant[i].variant
+    ];
+    List<int> hargaVariant = [
+      for(int i = 0; i < widget.data.variant.length; i++)
+        widget.data.variant[i].hargaVariant
+    ];
+
+    List<int> variantId= [
+      for(int i = 0; i < widget.data.variant.length; i++)
+        widget.data.variant[i].id
+    ];
+
     return Positioned(
       bottom: 0,
       child: Container(
         height: 76,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         decoration: BoxDecoration(color: Color(0xff0E4F55)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -189,32 +203,22 @@ class _DetailState extends State<Detail> {
                 width: 4,
               ),
               GestureDetector(
-                onTap: () async {
-                //make condition
-                //   ApiProvider().AddProductCart(widget.data!.id.toString(),
-                //       widget.data!.tokoId!.toString());
-                //   if (ApiProvider().AddProductCart(widget.data!.id.toString(), widget.data!.tokoId!.toString())) {
-                //     ScaffoldMessenger.of(context).showSnackBar(
-                //       SnackBar(
-                //         content: Text("Berhasil ditambahkan ke keranjang"),
-                //       ),
-                //     );
-                //   } else {
-                //     ScaffoldMessenger.of(context).showSnackBar(
-                //       SnackBar(
-                //         content: Text("Gagal ditambahkan ke keranjang"),
-                //       ),
-                //     );
-                //   }
-                    await ApiProvider().AddProductCart(widget.data!.id.toString(), widget.data!.tokoId!.toString()) ? ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Berhasil ditambahkan ke keranjang"),
-                      ),
-                    ) : ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Gagal ditambahkan ke keranjang"),
-                      ),
-                    );
+                onTap: () {
+                  setState(() {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (builder) {
+                          return Detail_popup(produkId: widget.data.produkId,
+                              tokoId: widget.data.tokoId,
+                              jumlahVariant: widget.data.variant.length,
+                              namaVariant: namaVariant,
+                              variantId: variantId,
+                              hargaVariant: hargaVariant, stokVariant: [
+                            for(int i = 0; i < widget.data.variant.length; i++)
+                              widget.data.variant[i].stok
+                            ],);
+                        });
+                  });
                 },
                 child: Container(
                   height: 46,
@@ -238,8 +242,7 @@ class _DetailState extends State<Detail> {
               ),
               GestureDetector(
                 onTap: () {
-                  _showModalBottomSheet();
-                },
+                 },
                 child: Container(
                   height: 46,
                   width: 128,

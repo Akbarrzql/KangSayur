@@ -19,7 +19,8 @@ class JsonLoaded extends JsonState {
   final jsonSearchProduct;
   final jsonTokoPopular;
   final jsonCartProduct;
-  const JsonLoaded(this.jsonProfile, this.jsonProductMostPopular, this.jsonProductUserMostVisit, this.jsonNearestToko, this.jsonDetailProduct, this.jsonSearchProduct, this.jsonTokoPopular, this.jsonCartProduct);
+  final jsonCheckout;
+  const JsonLoaded(this.jsonProfile, this.jsonProductMostPopular, this.jsonProductUserMostVisit, this.jsonNearestToko, this.jsonDetailProduct, this.jsonSearchProduct, this.jsonTokoPopular, this.jsonCartProduct, this.jsonCheckout);
   // @override
   // List<Object?> get props => [jsonProfile];
 }

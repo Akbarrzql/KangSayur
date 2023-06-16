@@ -169,7 +169,7 @@ class _SearchState extends State<Search> {
                 jarakProduk: "1.2 km",
                 namaProduk: widget.data[index].namaProduk,
                 penjualProduk: widget.data[index].tokoId.toString(),
-                hargaProduk: widget.data[index].hargaProduk.toString());
+                hargaProduk: widget.data[index].harga.toString());
           });
     }
     ;

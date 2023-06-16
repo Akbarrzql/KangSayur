@@ -37,46 +37,82 @@ class Datum {
   int id;
   String imgProfile;
   String namaToko;
-  String alamat;
-  dynamic imgId;
-  String namaProduk;
-  int hargaProduk;
-  int varianId;
-  int inCart;
+  List<GetProductCart> getProductCart;
 
   Datum({
     required this.id,
     required this.imgProfile,
     required this.namaToko,
-    required this.alamat,
-    required this.imgId,
-    required this.namaProduk,
-    required this.hargaProduk,
-    required this.varianId,
-    required this.inCart,
+    required this.getProductCart,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
     imgProfile: json["img_profile"],
     namaToko: json["nama_toko"],
-    alamat: json["alamat"],
-    imgId: json["img_id"],
-    namaProduk: json["nama_produk"],
-    hargaProduk: json["harga_produk"],
-    varianId: json["varian_id"],
-    inCart: json["inCart"],
+    getProductCart: List<GetProductCart>.from(json["get_product_cart"].map((x) => GetProductCart.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "img_profile": imgProfile,
     "nama_toko": namaToko,
-    "alamat": alamat,
-    "img_id": imgId,
+    "get_product_cart": List<dynamic>.from(getProductCart.map((x) => x.toJson())),
+  };
+}
+
+class GetProductCart {
+  int produkId;
+  String namaProduk;
+  int userId;
+  int tokoId;
+  int variantId;
+  String? variantImg;
+  String variant;
+  int stok;
+  String status;
+  int hargaVariant;
+  int inCart;
+
+  GetProductCart({
+    required this.produkId,
+    required this.namaProduk,
+    required this.userId,
+    required this.tokoId,
+    required this.variantId,
+    required this.variantImg,
+    required this.variant,
+    required this.stok,
+    required this.status,
+    required this.hargaVariant,
+    required this.inCart,
+  });
+
+  factory GetProductCart.fromJson(Map<String, dynamic> json) => GetProductCart(
+    produkId: json["produk_id"],
+    namaProduk: json["nama_produk"],
+    userId: json["user_id"],
+    tokoId: json["toko_id"],
+    variantId: json["variant_id"],
+    variantImg: json["variant_img"],
+    variant: json["variant"],
+    stok: json["stok"],
+    status: json["status"],
+    hargaVariant: json["harga_variant"],
+    inCart: json["inCart"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "produk_id": produkId,
     "nama_produk": namaProduk,
-    "harga_produk": hargaProduk,
-    "varian_id": varianId,
+    "user_id": userId,
+    "toko_id": tokoId,
+    "variant_id": variantId,
+    "variant_img": variantImg,
+    "variant": variant,
+    "stok": stok,
+    "status": status,
+    "harga_variant": hargaVariant,
     "inCart": inCart,
   };
 }

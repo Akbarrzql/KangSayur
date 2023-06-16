@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:kangsayur/API/cart/cart.dart';
 import 'package:kangsayur/UI/payment/checkout/checkout.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/model/cartproductmodel.dart';
@@ -22,6 +23,7 @@ class Keranjang extends StatefulWidget {
 class _KeranjangState extends State<Keranjang> {
   bool isChecked = false;
   double total = 0.0;
+
   void updateTotal() {
     setState(() {
       if (isChecked) {
@@ -39,7 +41,6 @@ class _KeranjangState extends State<Keranjang> {
     _jsonBloc.add(GetCartProductList());
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +132,7 @@ class _KeranjangState extends State<Keranjang> {
                           activeColor: ColorValue.primaryColor,
 
                           onChanged: (bool? value) {
-                            setState(() {
-                              isChecked = value ?? false;
-                            });
+                            setState(() {});
                           },
                         ),
                       ),
@@ -167,26 +166,26 @@ class _KeranjangState extends State<Keranjang> {
                   create: (_) => _jsonBloc,
                   child: BlocListener<JsonBloc, JsonState>(
                       listener: (context, state) {
-                        if (state is JsonError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.message),
-                            ),
-                          );
-                        }
-                      }, child: BlocBuilder<JsonBloc, JsonState>(
-                      builder: (context, state) {
-                        if (state is JsonInitial) {
-                          return Loading();
-                        } else if (state is JsonLoading) {
-                          return Loading();
-                        } else if (state is JsonLoaded) {
-                          return _cartProductList(state.jsonCartProduct);
-                        } else if (state is JsonError) {
-                          return Text(state.message);
-                        }
-                        return Container();
-                      })),
+                    if (state is JsonError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                        ),
+                      );
+                    }
+                  }, child: BlocBuilder<JsonBloc, JsonState>(
+                          builder: (context, state) {
+                    if (state is JsonInitial) {
+                      return Loading();
+                    } else if (state is JsonLoading) {
+                      return Loading();
+                    } else if (state is JsonLoaded) {
+                      return _cartProductList(state.jsonCartProduct);
+                    } else if (state is JsonError) {
+                      return Text(state.message);
+                    }
+                    return Container();
+                  })),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.10,
@@ -197,9 +196,11 @@ class _KeranjangState extends State<Keranjang> {
           Keranjang_bar(
             total_harga: 10000,
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return Checkout();
-              },));
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return Checkout();
+                },
+              ));
             },
           ),
         ],
@@ -239,39 +240,97 @@ class _KeranjangState extends State<Keranjang> {
       ),
     );
   }
-  Widget _cartProductList (CartProductModel widget) {
-    return                 ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: widget.data.length,
-      itemBuilder: (context, index) {
-        return Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Card_keranjang(
-              gambar_produk: "assets/images/wortel.png",
-              nama_produk: widget.data[index].namaProduk,
-              harga_produk: 120000,
-              nama_toko: widget.data[index].namaToko,
-              profil_toko: "https://kangsayur.nitipaja.online${widget.data[index].imgProfile}",
-              alamat_toko: "Kota Medan",
-              isVariant: true,
-              variant: "4 kg",
-              isDiscount: false,
-              discount: 20,
-            ));
-      },
-    );
 
+  Widget _cartProductList(CartProductModel widget) {
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: widget.data.length,
+        itemBuilder: (context, index) {
+          return Card_keranjang(
+              gambar_produk: "assets/images/wortel.png",
+              nama_toko: "siu",
+              profil_toko: widget.data[index].imgProfile,
+              alamat_toko: "Jl. Raya Bogor KM 30",
+              hapus: () {
+                setState(() {
+                    Cart()
+                        .DeleteProductCart(
+                            widget.data[index].getProductCart[index].produkId
+                                .toString(),
+                            widget.data[index].getProductCart[index].variantId
+                                .toString())
+                        .then((value) => setState(() {
+                              _jsonBloc.add(GetCartProductList());
+                            }));
+                });
+              },
+              produkList: widget.data[index].getProductCart,
+              produk_namaList: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].namaProduk
+              ],
+              produk_hargaList: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].hargaVariant
+              ],
+              produk_gambarList: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].variantImg
+              ],
+              produk_idList: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].produkId
+              ],
+              produk_idTokoList: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].tokoId
+              ],
+              produk_variantIdList: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].variantId
+              ],
+              produk_variantList: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].variant
+              ],
+              inCart: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].inCart
+              ],
+              status: [
+                for (var i = 0;
+                    i < widget.data[index].getProductCart.length;
+                    i++)
+                  widget.data[index].getProductCart[i].status
+              ],
+              cartId: []);
+        });
   }
 }
 
-
 class Keranjang_bar extends StatefulWidget {
-   Keranjang_bar(
-      {Key? key, required this.total_harga, required this.onPressed})
+  Keranjang_bar({Key? key, required this.total_harga, required this.onPressed})
       : super(key: key);
-   final VoidCallback onPressed;
-   final double total_harga;
+  final VoidCallback onPressed;
+  final double total_harga;
+
 //
 //    double calculateTotal() {
 //      double total = 0.0;
@@ -284,14 +343,15 @@ class Keranjang_bar extends StatefulWidget {
 //    }
 // }
 
-
-@override
+  @override
   State<Keranjang_bar> createState() => _Keranjang_barState();
 }
+
 String ProdukformatNumber(harga_produk) {
   final numberFormat = NumberFormat('#,##0', 'id_ID');
   return numberFormat.format(harga_produk);
 }
+
 class _Keranjang_barState extends State<Keranjang_bar> {
   @override
   Widget build(BuildContext context) {
@@ -339,16 +399,16 @@ class _Keranjang_barState extends State<Keranjang_bar> {
                   ),
                   child: Center(
                       child: Text(
-                        "Pesan",
-                        style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
-                      )),
+                    "Pesan",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  )),
                 ),
               )
             ],
           ),
         ));
   }
-
-
 }
-

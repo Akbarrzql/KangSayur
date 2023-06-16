@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:kangsayur/model/cartproductmodel.dart';
+import 'package:kangsayur/model/checkoutmodel.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
 import 'package:kangsayur/model/nearesttokomodel.dart';
 import 'package:kangsayur/model/productusermostvisitmodel.dart';
@@ -166,24 +167,20 @@ class ApiProvider {
       rethrow;
     }
   }
-  Future<bool> AddProductCart(String produkId,String tokoId) async {
+  Future<CheckoutModel> CheckoutModelList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
-    print('dibawah ini token');
-    print(token);
     try {
       var response = await http
-          .get(Uri.parse(_url + '/user/produk/cart/add?produkId=$produkId&tokoId=$tokoId'), headers: {
+          .get(Uri.parse(_url + '/user/produk/cart/checkout'), headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       });
       print(response.body);
-      print(response.statusCode);
-      return true;
+      return checkoutModelFromJson(response.body);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
-      return false;
+      rethrow;
     }
-
   }
 }

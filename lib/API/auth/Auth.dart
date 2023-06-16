@@ -24,7 +24,7 @@ class Auth {
     var multipartFile = http.MultipartFile.fromBytes(
       'photo',
       imageBytes,
-      filename: image!.path.split('/').last,
+      filename: image.path.split('/').last,
     );
     // var url = Uri.parse(_baseUrl+"auth/user/register");
     // var response = await http
