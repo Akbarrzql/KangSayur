@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -68,6 +70,34 @@ class Cart {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       });
+      print(response.body);
+      print(response.statusCode);
+      return true;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return false;
+    }
+
+  }
+  Future<bool> Order(List<Map<String,dynamic>> dataArray) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var jsonData = jsonEncode({'checkout': dataArray});
+    String? token = pref.getString('token');
+    print(token);
+    try {
+      var response = await http.post(Uri.parse(_url + 'user/produk/cart/pesan'), headers: {
+      'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      }, body: jsonData);
+      if (response.statusCode == 200) {
+        print(response.body);
+        print("berhasil");
+        return true;
+      } else {
+        print(response.body);
+        return false;
+      }
       print(response.body);
       print(response.statusCode);
       return true;

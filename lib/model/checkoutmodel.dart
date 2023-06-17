@@ -118,7 +118,7 @@ class GetProdukCheckout {
 }
 
 class Rincian {
-  int subtotalProduk;
+  int? subtotalProduk;
   double subtotalOngkir;
   double totalKeseluruhan;
 

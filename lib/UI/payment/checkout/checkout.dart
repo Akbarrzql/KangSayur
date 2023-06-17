@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:kangsayur/API/cart/cart.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/common/color_value.dart';
@@ -87,26 +88,26 @@ class _CheckoutState extends State<Checkout> {
                   create: (_) => _jsonBloc,
                   child: BlocListener<JsonBloc, JsonState>(
                       listener: (context, state) {
-                        if (state is JsonError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.message),
-                            ),
-                          );
-                        }
-                      }, child: BlocBuilder<JsonBloc, JsonState>(
-                      builder: (context, state) {
-                        if (state is JsonInitial) {
-                          return Loading();
-                        } else if (state is JsonLoading) {
-                          return Loading();
-                        } else if (state is JsonLoaded) {
-                          return _chekoutItems(state.jsonCheckout);
-                        } else if (state is JsonError) {
-                          return Text(state.message);
-                        }
-                        return Container();
-                      })),
+                    if (state is JsonError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                        ),
+                      );
+                    }
+                  }, child: BlocBuilder<JsonBloc, JsonState>(
+                          builder: (context, state) {
+                    if (state is JsonInitial) {
+                      return Loading();
+                    } else if (state is JsonLoading) {
+                      return Loading();
+                    } else if (state is JsonLoaded) {
+                      return _chekoutItems(state.jsonCheckout);
+                    } else if (state is JsonError) {
+                      return Text(state.message);
+                    }
+                    return Container();
+                  })),
                 ),
 
                 SizedBox(
@@ -130,7 +131,33 @@ class _CheckoutState extends State<Checkout> {
               ],
             ),
           ),
-          Positioned(bottom: 0, child: Bar(total: 200000))
+          BlocProvider(
+            create: (_) => _jsonBloc,
+            child: BlocListener<JsonBloc, JsonState>(
+                listener: (context, state) {
+              if (state is JsonError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              }
+            }, child:
+                    BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+              if (state is JsonInitial) {
+                return Loading();
+              } else if (state is JsonLoading) {
+                return Loading();
+              } else if (state is JsonLoaded) {
+                return Positioned(
+                    bottom: 0,
+                    child: Bar(widget: state.jsonCheckout));
+              } else if (state is JsonError) {
+                return Text(state.message);
+              }
+              return Container();
+            })),
+          ),
         ],
       ),
     );
@@ -203,10 +230,13 @@ class _CheckoutState extends State<Checkout> {
               children: [
                 Text(
                   "Subtotal",
-                  style: TextStyle(color: ColorValue.neutralColor, fontSize: 14),
+                  style:
+                      TextStyle(color: ColorValue.neutralColor, fontSize: 14),
                 ),
                 Text(
-                  "Rp" + ProdukformatNumber(widget.rincian.subtotalProduk) + ",00",
+                  "Rp" +
+                      ProdukformatNumber(widget.rincian.subtotalProduk) +
+                      ",00",
                   style: TextStyle(
                       fontSize: 14,
                       color: ColorValue.neutralColor,
@@ -279,7 +309,16 @@ class _CheckoutState extends State<Checkout> {
         ));
   }
 
-  Widget Bar({required double total}) {
+  Widget Bar({required CheckoutModel widget}) {
+    List<Map<String, dynamic>> dataArray= [
+      for (var i = 0; i < widget.data.length; i++)
+      {
+        "product_id": widget.data[i].getProdukCheckout[i].produkId,
+        "variant_id": widget.data[i].getProdukCheckout[i].variantId,
+        "store_id": widget.data[i].getProdukCheckout[i].tokoId,
+      },
+    ];
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.10,
       width: MediaQuery.of(context).size.width,
@@ -299,14 +338,17 @@ class _CheckoutState extends State<Checkout> {
                 height: 2,
               ),
               Text(
-                "Rp. ${NumberFormat("#,###").format(total)},00",
+                "Rp. ${NumberFormat("#,###").format(widget.rincian.totalKeseluruhan)},00",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
             ],
           ),
           Spacer(),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+
+              Cart().Order(dataArray);
+            },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.3,
               height: 40,
