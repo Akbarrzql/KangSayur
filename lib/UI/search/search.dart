@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
+import 'package:kangsayur/UI/detail/detail.dart';
 import 'package:kangsayur/model/searchproductmodel.dart';
 import 'package:kangsayur/widget/card_product.dart';
 import 'package:shimmer/shimmer.dart';
@@ -106,33 +107,9 @@ class _SearchState extends State<Search> {
             }, child:
                     BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
               if (state is JsonInitial) {
-                return Shimmer.fromColors(
-                    // baseColor: Colors.grey[300]!,
-                    // highlightColor: Colors.grey[100]!,
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    // child of Shimmer gridview
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.7,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10),
-                          itemCount: 6,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CardProduk(
-                                imageProduk: "assets/images/produk.png",
-                                jarakProduk: "  ",
-                                namaProduk: "     ",
-                                penjualProduk: "      ",
-                                hargaProduk: "      ");
-                          }),
-                    ));
+                return Text("cari Pencarian mu");
               } else if (state is JsonLoading) {
-                return Text("Loading");
+                return Container();
               } else if (state is JsonLoaded) {
                 return Expanded(
                     child: _searchResult(
@@ -150,7 +127,7 @@ class _SearchState extends State<Search> {
   }
 
   Widget _searchResult({required SearchProductModel widget}) {
-    if (widget.data.isEmpty) {
+    if (widget.data!.isEmpty) {
       return Center(
         child: Text("Tidak ada hasil pencarian"),
       );
@@ -162,14 +139,25 @@ class _SearchState extends State<Search> {
               childAspectRatio: 0.7,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10),
-          itemCount: widget.data.length,
+          itemCount: widget.data!.length,
           itemBuilder: (BuildContext context, int index) {
-            return CardProduk(
-                imageProduk: "assets/images/produk.png",
-                jarakProduk: "1.2 km",
-                namaProduk: widget.data[index].namaProduk,
-                penjualProduk: widget.data[index].tokoId.toString(),
-                hargaProduk: widget.data[index].harga.toString());
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return Detail(
+                      id: widget.data![index].id!,
+                    );
+                  },
+                ));
+              },
+              child: CardProduk(
+                  imageProduk: "assets/images/wortel.png",
+                  jarakProduk: "1.2 km",
+                  namaProduk: widget.data![index].namaProduk!,
+                  penjualProduk: widget.data![index].namaToko.toString(),
+                  hargaProduk: widget.data![index].harga.toString()),
+            );
           });
     }
     ;

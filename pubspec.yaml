@@ -64,6 +64,9 @@ dependencies:
   shimmer: ^3.0.0
   sqflite:
   path:
+  midtrans_sdk:
+  webview_flutter: ^2.0.0
+  modal_progress_hud_nsn:
 
 dev_dependencies:
   flutter_test:

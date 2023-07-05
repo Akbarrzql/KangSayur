@@ -254,11 +254,14 @@ class _KeranjangState extends State<Keranjang> {
               alamat_toko: "Jl. Raya Bogor KM 30",
               hapus: () {
                 setState(() {
+                  for (var i = 0;
+                      i < widget.data[index].getProductCart.length;
+                      i++)
                     Cart()
                         .DeleteProductCart(
-                            widget.data[index].getProductCart[index].produkId
+                            widget.data[index].getProductCart[i].produkId
                                 .toString(),
-                            widget.data[index].getProductCart[index].variantId
+                            widget.data[index].getProductCart[i].variantId
                                 .toString())
                         .then((value) => setState(() {
                               _jsonBloc.add(GetCartProductList());

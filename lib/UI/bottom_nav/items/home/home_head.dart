@@ -6,6 +6,7 @@ import 'package:kangsayur/UI/payment/keranjang/keranjang.dart';
 import 'package:kangsayur/bloc/json_bloc/json_bloc.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/model/profilemodel.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../bloc/json_bloc/json_state.dart';
 
@@ -41,11 +42,11 @@ class _Home_headState extends State<Home_head> {
           child: BlocBuilder<JsonBloc,JsonState>(
               builder: (context, state){
                 if (state is JsonInitial) {
-                  return Loading();
+                  return _HeadHomeShimmer();
                 } else if (state is JsonLoading) {
-                  return Loading();
+                  return _HeadHomeShimmer();;
                 } else if (state is JsonLoaded) {
-                  return _HeadHome(context, state.jsonProfile);
+                  return _HeadHome(state.jsonProfile);
                 } else if (state is JsonError) {
                   return Text(state.message);
                 }
@@ -55,38 +56,78 @@ class _Home_headState extends State<Home_head> {
       ),
     );
   }
+  Widget _HeadHome(ProfileModel widget) {
+    return Row(
+      //make container rounded for profile
+      children: [
+        Container(
+          clipBehavior: Clip.antiAlias,
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+              color: Colors.grey, borderRadius: BorderRadius.circular(50)),
+          child:
+          Image.network(
+              "https://kangsayur.nitipaja.online/${widget.data.photo}" == null ? "https://avatars.githubusercontent.com/u/60261133?v=4" : "https://kangsayur.nitipaja.online/${widget.data.photo}"
+          ),      ),
+        SizedBox(
+          width: 15,
+        ),
+        Text(
+          "Hallo ${widget.data.name}",
+          style: TextStyle(
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
+        ),
+        Spacer(),
+        GestureDetector(
+            onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Keranjang())); },
+            child: SvgPicture.asset("assets/icon/cart.svg")),
+        SizedBox(
+          width: 17,
+        ),
+        SvgPicture.asset("assets/icon/mail.svg"),
+      ],
+    );
+  }
+  Widget _HeadHomeShimmer() {
+    return Row(
+      //make container rounded for profile
+      children: [
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+                color: Colors.grey, borderRadius: BorderRadius.circular(50)),),
+        ),
+        SizedBox(
+          width: 15,
+        ),
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            color: Colors.grey[300]!,
+            child: Text(
+              "Hallo asdaasd",
+              style: TextStyle(
+                  fontSize: 16, color: Colors.transparent, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+        Spacer(),
+        GestureDetector(
+            onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Keranjang())); },
+            child: SvgPicture.asset("assets/icon/cart.svg")),
+        SizedBox(
+          width: 17,
+        ),
+        SvgPicture.asset("assets/icon/mail.svg"),
+      ],
+    );
+  }
 }
 
-Widget _HeadHome(BuildContext context, ProfileModel widget) {
-  return Row(
-    //make container rounded for profile
-    children: [
-      Container(
-        clipBehavior: Clip.antiAlias,
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(50)),
-        child:
-        Image.network(
-            "https://kangsayur.nitipaja.online/${widget.data.photo}" == null ? "https://avatars.githubusercontent.com/u/60261133?v=4" : "https://kangsayur.nitipaja.online/${widget.data.photo}"
-        ),      ),
-      SizedBox(
-        width: 15,
-      ),
-      Text(
-        "Hallo ${widget.data.name}",
-        style: TextStyle(
-            fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
-      ),
-      Spacer(),
-      GestureDetector(
-        onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Keranjang())); },
-          child: SvgPicture.asset("assets/icon/cart.svg")),
-      SizedBox(
-        width: 17,
-      ),
-      SvgPicture.asset("assets/icon/mail.svg"),
-    ],
-  );
-}

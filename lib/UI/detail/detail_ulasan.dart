@@ -84,8 +84,8 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
               height: 15,
             ),
             Review(
-              profile: widget.widget.data!.review[0].photo ?? "aasd",
-              name: widget.widget.data!.review[0].name ?? "aasd",
+              profile: widget.widget.data!.review![0].photo ?? "aasd",
+              name: widget.widget.data!.review![0].name ?? "aasd",
               date: '12/12/2021',
               comment:
                   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, tincidunt turpis at, ultricies sapien. Sed eget risus porta, tincidunt turpis at, ultricies sapien.',

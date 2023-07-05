@@ -41,6 +41,16 @@ class Data {
   int isOnsale;
   int produkId;
   String status;
+  String imgProfile;
+  dynamic imgHeader;
+  String namaToko;
+  String deskripsi;
+  dynamic sellerId;
+  String alamat;
+  double longitude;
+  double latitude;
+  String open;
+  String close;
   dynamic image;
   int harga;
   List<Variant> variant;
@@ -54,6 +64,16 @@ class Data {
     required this.isOnsale,
     required this.produkId,
     required this.status,
+    required this.imgProfile,
+    required this.imgHeader,
+    required this.namaToko,
+    required this.deskripsi,
+    required this.sellerId,
+    required this.alamat,
+    required this.longitude,
+    required this.latitude,
+    required this.open,
+    required this.close,
     required this.image,
     required this.harga,
     required this.variant,
@@ -68,6 +88,16 @@ class Data {
     isOnsale: json["is_onsale"],
     produkId: json["produk_id"],
     status: json["status"],
+    imgProfile: json["img_profile"],
+    imgHeader: json["img_header"],
+    namaToko: json["nama_toko"],
+    deskripsi: json["deskripsi"],
+    sellerId: json["seller_id"],
+    alamat: json["alamat"],
+    longitude: json["longitude"]?.toDouble(),
+    latitude: json["latitude"]?.toDouble(),
+    open: json["open"],
+    close: json["close"],
     image: json["image"],
     harga: json["harga"],
     variant: List<Variant>.from(json["variant"].map((x) => Variant.fromJson(x))),
@@ -82,6 +112,16 @@ class Data {
     "is_onsale": isOnsale,
     "produk_id": produkId,
     "status": status,
+    "img_profile": imgProfile,
+    "img_header": imgHeader,
+    "nama_toko": namaToko,
+    "deskripsi": deskripsi,
+    "seller_id": sellerId,
+    "alamat": alamat,
+    "longitude": longitude,
+    "latitude": latitude,
+    "open": open,
+    "close": close,
     "image": image,
     "harga": harga,
     "variant": List<dynamic>.from(variant.map((x) => x.toJson())),

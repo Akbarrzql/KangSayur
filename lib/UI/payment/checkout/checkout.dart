@@ -4,9 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:kangsayur/API/cart/cart.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
+import 'package:kangsayur/UI/payment/midtrans_screen/snap_screen.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/common/color_value.dart';
 import 'package:kangsayur/model/checkoutmodel.dart';
+import 'package:kangsayur/model/ordermodel.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../bloc/json_bloc/json_bloc.dart';
 import '../../../bloc/json_bloc/json_state.dart';
@@ -24,6 +27,7 @@ class _CheckoutState extends State<Checkout> {
   //make text editing controller
   TextEditingController _controller = TextEditingController();
   final JsonBloc _jsonBloc = JsonBloc();
+  var data;
 
   @override
   void initState() {
@@ -145,13 +149,121 @@ class _CheckoutState extends State<Checkout> {
             }, child:
                     BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
               if (state is JsonInitial) {
-                return Loading();
+                return Positioned(bottom: 0,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.10,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                    color: Colors.white,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total",
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                height: 20,
+                                width: 100,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xff009245),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                                child: Text(
+                                  "Bayar",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
               } else if (state is JsonLoading) {
-                return Loading();
+                return Positioned(
+                  bottom: 0,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.10,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                    color: Colors.white,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total",
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                height: 20,
+                                width: 100,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xff009245),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                                child: Text(
+                                  "Bayar",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
               } else if (state is JsonLoaded) {
                 return Positioned(
-                    bottom: 0,
-                    child: Bar(widget: state.jsonCheckout));
+                    bottom: 0, child: Bar(widget: state.jsonCheckout));
               } else if (state is JsonError) {
                 return Text(state.message);
               }
@@ -310,13 +422,21 @@ class _CheckoutState extends State<Checkout> {
   }
 
   Widget Bar({required CheckoutModel widget}) {
-    List<Map<String, dynamic>> dataArray= [
+    List<Map<String, dynamic>> dataArray = [
       for (var i = 0; i < widget.data.length; i++)
-      {
-        "product_id": widget.data[i].getProdukCheckout[i].produkId,
-        "variant_id": widget.data[i].getProdukCheckout[i].variantId,
-        "store_id": widget.data[i].getProdukCheckout[i].tokoId,
-      },
+        for (var j = 0;
+            j < widget.data[i].getProdukCheckout.length;
+            j++)
+          {
+            "product_id": widget.data[i].getProdukCheckout[j].produkId,
+            "variant_id": widget.data[i].getProdukCheckout[j].variantId,
+            "store_id": widget.data[i].getProdukCheckout[j].tokoId,
+          },
+        // {
+        //   "product_id": widget.data[i].getProdukCheckout[i].produkId,
+        //   "variant_id": widget.data[i].getProdukCheckout[i].variantId,
+        //   "store_id": widget.data[i].getProdukCheckout[i].tokoId,
+        // },
     ];
 
     return Container(
@@ -345,9 +465,16 @@ class _CheckoutState extends State<Checkout> {
           ),
           Spacer(),
           GestureDetector(
-            onTap: () {
-
-              Cart().Order(dataArray);
+            onTap: () async {
+              var data = await Cart().Order(dataArray);
+              print('object');
+              print(data.data.snapToken);
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Snap_screen(
+                            snap_token: data.data.snapToken,
+                          )));
             },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.3,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/API/resource/api_provider.dart';
 import 'package:kangsayur/UI/detail/detail_content.dart';
@@ -9,6 +10,7 @@ import 'package:kangsayur/UI/detail/detail_tokoini.dart';
 import 'package:kangsayur/UI/detail/detail_ulasan.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../API/cart/cart.dart';
 import '../../bloc/json_bloc/json_bloc.dart';
@@ -101,10 +103,6 @@ class _DetailState extends State<Detail> {
                               SizedBox(
                                 height: 15,
                               ),
-                              Detail_storebox(),
-                              SizedBox(
-                                height: 15,
-                              ),
                               Container(
                                 height: 15,
                               ),
@@ -143,9 +141,9 @@ class _DetailState extends State<Detail> {
                 }, child:
             BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
               if (state is JsonInitial) {
-                return Container();
+                return _shimmerScreen();
               } else if (state is JsonLoading) {
-                return Container();
+                return _shimmerScreen();
               } else if (state is JsonLoaded) {
                 return _bottomBar(widget: state.jsonDetailProduct);
               } else if (state is JsonError) {
@@ -161,7 +159,166 @@ class _DetailState extends State<Detail> {
 
   // make void modal bottom sheet
 
+  Widget _shimmerScreen(){
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 25,
+          ),
+          _shimmerContent(),
 
+        ],
+      ),
+    );
+}
+  Widget _shimmerContent(){
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 260,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Stack(
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Image.asset(
+                        "assets/images/detail.png",
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    Positioned(
+                      left: 2,
+                      bottom: 7,
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(15),
+                                  bottomLeft: Radius.circular(15))),
+                          child: Row(
+                            children: [
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Container(
+                                  color: Colors.grey[300]!,
+                                  child: RatingBar.builder(
+                                    itemBuilder: (context, index) {
+                                      return SvgPicture.asset("assets/icon/star.svg");
+                                    },
+                                    onRatingUpdate: (value) {},
+                                    initialRating: 5,
+                                    ignoreGestures: true,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemSize: 14,
+                                    itemPadding: EdgeInsets.symmetric(horizontal: 2),
+                                    minRating: 1,
+                                    glow: false,
+                                    unratedColor: ColorValue.neutralColor,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Center(
+                                  child: Text(
+                                   "asdasdadsa",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 18,
+              ),
+              Text(
+                "Rp. 20.000,00",
+                style: TextStyle(
+                    color: Color(0xff3D5A80),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                "asdasdasd",
+                // widget!.widget!.data.namaProduk,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text("Pilih Varian",
+                  style:
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+              SizedBox(
+                height: 4,
+              ),
+              // Row(
+              //   children: [
+              //     customRadio("1 Kg", ProductVariant.variant1),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     customRadio("2 Kg", ProductVariant.variant2),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     customRadio("3 Kg", ProductVariant.variant3),
+              //   ],
+              // ),
+
+              SizedBox(
+                height: 20,
+              ),
+              Text("lorem ipsum dolor sit amet, consectetur adipiscing asdaf asfpija saojfoafjsoafj aosdja odjaojdsaj asojasod",
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: ColorValue.neutralColor)),
+
+              SizedBox(
+                height: 15,
+              ),
+              // _storeBox(widget.widget!.data.namaToko.toString(), "assets/images/store.png"),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
   Widget _bottomBar({required DetailProductModel widget}) {
 
     List<String> namaVariant = [

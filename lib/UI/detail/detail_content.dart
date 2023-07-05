@@ -11,7 +11,7 @@ import 'package:kangsayur/common/color_value.dart';
 import 'package:http/http.dart' as http;
 
 import '../../model/detailproductmodel.dart';
-
+import 'detail_storebox.dart';
 
 class Detail_content extends StatefulWidget {
   Detail_content({Key? key, this.widget}) : super(key: key);
@@ -40,8 +40,6 @@ class Detail_content extends StatefulWidget {
       widget!.data.variant[i].hargaVariant
   ];
 
-
-
   @override
   State<Detail_content> createState() => _Detail_contentState();
 }
@@ -62,7 +60,6 @@ class _Detail_contentState extends State<Detail_content> {
 
   bool isExpanded = false;
   bool isCheck = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +99,7 @@ class _Detail_contentState extends State<Detail_content> {
                                 return SvgPicture.asset("assets/icon/star.svg");
                               },
                               onRatingUpdate: (value) {},
-                              initialRating: widget!.widget!.data.rating,
+                              initialRating: widget.widget!.data.rating,
                               ignoreGestures: true,
                               allowHalfRating: true,
                               itemCount: 5,
@@ -117,12 +114,12 @@ class _Detail_contentState extends State<Detail_content> {
                             ),
                             Center(
                                 child: Text(
-                                  widget!.widget!.data.rating.toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                )),
+                              widget.widget!.data.rating.toString(),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            )),
                           ],
                         ),
                       ),
@@ -136,7 +133,7 @@ class _Detail_contentState extends State<Detail_content> {
               Text(
                 "Rp. " +
                     NumberFormat("#,###,##0", "id_ID")
-                        .format(widget!.widget!.data.harga) +
+                        .format(widget.widget!.data.harga) +
                     ",00",
                 style: TextStyle(
                     color: Color(0xff3D5A80),
@@ -147,7 +144,7 @@ class _Detail_contentState extends State<Detail_content> {
                 height: 5,
               ),
               Text(
-                widget!.widget!.data.namaProduk,
+                widget.widget!.data.namaProduk,
                 // widget!.widget!.data.namaProduk,
                 style: TextStyle(
                     color: Colors.black,
@@ -159,7 +156,7 @@ class _Detail_contentState extends State<Detail_content> {
               ),
               Text("Pilih Varian",
                   style:
-                  TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
               SizedBox(
                 height: 4,
               ),
@@ -177,36 +174,38 @@ class _Detail_contentState extends State<Detail_content> {
               //   ],
               // ),
               SizedBox(
-                width: MediaQuery.of(context).size.width,height: 40,
+                width: MediaQuery.of(context).size.width,
+                height: 40,
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  itemCount: widget!.widget!.data.variant.length,
+                  itemCount: widget.widget!.data.variant.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                  return Container(
-                    height: 100,
-                    width: 200,
-                    child: RadioListTile(
-                      title: Text(widget!.widget!.data.variant[index].variant),
-                        value: widget!.widget!.data.variant[index].variant,
-                        groupValue: widget!.GroupValue,
+                    return Container(
+                      height: 100,
+                      width: 200,
+                      child: RadioListTile(
+                        title: Text(widget.widget!.data.variant[index].variant),
+                        value: widget.widget!.data.variant[index].variant,
+                        groupValue: widget.GroupValue,
                         onChanged: (value) {
                           setState(() {
-                            widget!.GroupValue = value.toString();
-                            print(widget!.GroupValue);
-                            widget!.valueId = index;
+                            widget.GroupValue = value.toString();
+                            print(widget.GroupValue);
+                            widget.valueId = index;
                           });
                         },
-                        ),
-                  );
-                },),
+                      ),
+                    );
+                  },
+                ),
               ),
 
               SizedBox(
                 height: 20,
               ),
-              Text(widget!.widget!.data.variant[0].variantDesc,
+              Text(widget.widget!.data.variant[0].variantDesc,
                   maxLines: isExpanded ? 100 : 5,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -216,7 +215,7 @@ class _Detail_contentState extends State<Detail_content> {
               SizedBox(
                 height: 5,
               ),
-              if (widget!.widget!.data.variant[0].variantDesc.length > 100)
+              if (widget.widget!.data.variant[0].variantDesc.length > 100)
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -232,11 +231,74 @@ class _Detail_contentState extends State<Detail_content> {
                     ),
                   ),
                 ),
+              SizedBox(
+                height: 15,
+              ),
+              _storeBox(widget.widget!.data.namaToko.toString(), "assets/images/store.png"),
             ],
           ),
         ),
       ],
     );
+  }
+  Widget _storeBox (String namaToko, String gambarToko){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      height: 70,
+      decoration: BoxDecoration(
+        color: Color(0xfff1f1f1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Row(
+        children: [
+          Image.asset(
+            "assets/images/store.png",
+            height: 46,
+            width: 46,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                namaToko,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+              Row(
+                children: [
+                  Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                          color: Color(0xff25C570),
+                          borderRadius: BorderRadius.circular(50))
+                  ),
+                  SizedBox(width: 5,),
+                  Text(
+                    "Online",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black.withOpacity(0.5)),
+                  ),
+                ],
+              )
+            ],
+          ),
+          Spacer(),
+          // Container(width: 110, height: 43, decoration: BoxDecoration(
+          //   borderRadius: BorderRadius.circular(10),
+          //   border: Border.all(color: Color(0xff009245))
+          // ),
+          //   child: Center(child: Text("Langganan", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff009245)),)),
+          // ),
+        ],
+      ),
+    );
+
   }
 }
 
@@ -264,7 +326,7 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget!.text),
+          Text(widget.text),
           Text(
             "Selengkapnya",
             style: TextStyle(),
@@ -274,4 +336,3 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
     );
   }
 }
-
