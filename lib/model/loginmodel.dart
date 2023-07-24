@@ -5,9 +5,11 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-LoginModel loginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
+LoginModel loginModelFromJson(String str) =>
+    LoginModel.fromJson(json.decode(str));
 
 String loginModelToJson(LoginModel data) => json.encode(data.toJson());
+
 class LoginModel {
   int? status;
   String? message;
@@ -45,19 +47,19 @@ class Data {
   String? email;
   Null? phoneNumber;
   Null? emailVerifiedAt;
-  Null? jenisKelamin;
-  Null? tanggalLahir;
-  Null? address;
+  int? jenisKelamin;
+  String? tanggalLahir;
+  String? address;
 
   Data(
       {this.name,
-        this.photo,
-        this.email,
-        this.phoneNumber,
-        this.emailVerifiedAt,
-        this.jenisKelamin,
-        this.tanggalLahir,
-        this.address});
+      this.photo,
+      this.email,
+      this.phoneNumber,
+      this.emailVerifiedAt,
+      this.jenisKelamin,
+      this.tanggalLahir,
+      this.address});
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];

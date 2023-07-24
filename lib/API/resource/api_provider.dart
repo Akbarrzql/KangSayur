@@ -11,6 +11,8 @@ import 'package:kangsayur/model/tokopopularmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/productmostpopularmodel.dart';
+import '../../model/statuspesanandikemas.dart';
+import '../../model/statuspesananselesaiselesai.dart';
 
 class ApiProvider {
   final String _url = 'https://kangsayur.nitipaja.online/api';
@@ -151,6 +153,7 @@ class ApiProvider {
       rethrow;
     }
   }
+
   Future<CartProductModel> CartProductModelList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
@@ -167,6 +170,7 @@ class ApiProvider {
       rethrow;
     }
   }
+
   Future<CheckoutModel> CheckoutModelList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
@@ -182,5 +186,40 @@ class ApiProvider {
       print("Exception occured: $error stackTrace: $stacktrace");
       rethrow;
     }
+  }
+
+  Future<StatusPesananAllModel> StatusAllPesananList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/status/pesanan'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return statusPesananAllModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+
+  }
+  Future<StatusPesananSelesaiModel> StatusPesananSelesaiList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/status/selesai'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return statusPesananSelesaiModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+
   }
 }

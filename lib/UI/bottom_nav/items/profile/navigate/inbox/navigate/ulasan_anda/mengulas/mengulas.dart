@@ -1,24 +1,68 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:kangsayur/API/mengulas/mengulas_post.dart';
 import 'package:kangsayur/widget/card_mengulas.dart';
 
 import '../../../../../../../../../common/color_value.dart';
 
 class Mengulas extends StatefulWidget {
-  const Mengulas({Key? key}) : super(key: key);
+  Mengulas({
+    Key? key,
+    required this.namaToko,
+    required this.gambarToko,
+    required this.alamatToko,
+    required this.namaProduk,
+    required this.gambarProduk,
+    required this.productId,
+    required this.tokoId,
+    required this.variantId,
+    required this.transactionCode,
+  }) : super(key: key);
+  String namaToko,
+      gambarToko,
+      alamatToko,
+      namaProduk,
+      gambarProduk,
+      productId,
+      tokoId,
+      variantId,
+      transactionCode;
+
+  double rating = 0;
+  String comment = "";
+
 
   @override
   State<Mengulas> createState() => _MengulasState();
 }
 
 class _MengulasState extends State<Mengulas> {
+  final ImagePicker _picker = ImagePicker();
+  File? _imageFile;
+
+  Future<void> _getImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+
+  //textediting controller
+  TextEditingController commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Mengulas",
           style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
         ),
@@ -31,38 +75,56 @@ class _MengulasState extends State<Mengulas> {
       ),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Head_mengulas(
-            profil_seller: "assets/images/profile_seller.png",
-            nama_seller: "Petani Medan",
-            alamat_seller: "Via Emo Tarabochia, 1, 34125 Trieste TS, Italy",
+            nama_seller: widget.namaToko,
+            alamat_seller: widget.alamatToko,
+            profil_seller: widget.gambarToko,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Card_mengulas(
-              gambar_produk: "assets/images/wortel.png",
-              nama_produk: "Wortel lokal /1kg",
-              nama_seller: "Petani Medan"),
-          Spacer(),
+          // Card_mengulas(
+          //     gambar_produk: "assets/images/wortel.png",
+          //     nama_produk: widget.namaProduk,
+          //     nama_seller: widget.namaToko),
+          card_mengulas(
+              gambar_produk: widget.gambarProduk,
+              nama_seller: widget.namaToko,
+              alamat_seller: widget.alamatToko
+          ),
+          const Spacer(),
           //make button "Kirim Ulasan" height 50
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Container(
-              margin: EdgeInsets.only(bottom: 35),
-              decoration: BoxDecoration(
-                  color: ColorValue.primaryColor,
-                  borderRadius: BorderRadius.circular(5)),
-              height: 50,
-              child: Center(
-                child: Text(
-                  "Kirim Ulasan",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white),
+            child: GestureDetector(
+              onTap: () {
+                Mengulas_post.mengulas(
+                    widget.rating.toString(),
+                    _imageFile!,
+                    commentController.text,
+                    widget.productId,
+                    widget.tokoId,
+                    widget.variantId,
+                    widget.transactionCode,
+                    context);
+              },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 35),
+                decoration: BoxDecoration(
+                    color: ColorValue.primaryColor,
+                    borderRadius: BorderRadius.circular(5)),
+                height: 50,
+                child: const Center(
+                  child: Text(
+                    "Kirim Ulasan",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white),
+                  ),
                 ),
               ),
             ),
@@ -71,5 +133,281 @@ class _MengulasState extends State<Mengulas> {
       ),
     );
   }
-}
 
+  Widget card_mengulas({required String gambar_produk,
+    required String nama_seller,
+    required String alamat_seller}) {
+    return Container(
+      margin: const EdgeInsets.only(left: 24, right: 24),
+      //padding horizontal 22 vertical 15
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            spreadRadius: 0,
+            blurRadius: 4,
+            offset: const Offset(0, 1), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Image.asset(
+                  widget.gambarProduk,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(
+                width: 17,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //nama produk
+                  Text(
+                    widget.namaProduk,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: ColorValue.neutralColor),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  //nama seller
+                  Text(
+                    widget.namaToko,
+                    style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        color: ColorValue.hinttext),
+                  ),
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //text rating (number) and rating (text)
+                  Text(
+                    "${widget.rating.toStringAsFixed(1)}",
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: ColorValue.neutralColor),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  const Text(
+                    "Rating",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        color: ColorValue.hinttext),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              RatingBar.builder(
+                  initialRating: widget.rating,
+                  minRating: 0,
+                  direction: Axis.horizontal,
+                  itemSize: 30,
+                  glow: false,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 6),
+                  itemBuilder: (context, _) =>
+                      SvgPicture.asset("assets/icon/star.svg"),
+                  onRatingUpdate: (ratingNew) {
+                    setState(() {
+                      widget.rating = ratingNew;
+                      print(ratingNew);
+                    });
+                  }),
+            ],
+          ),
+          // text ceritakan pengalamanmu size 14 w600
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            "Ceritakan pengalamanmu",
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: ColorValue.neutralColor),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          //textfield inside container back color F6F6F6 height 122
+          Container(
+            height: 122,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: const Color(0xfff6f6f6),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child:  TextField(
+              maxLines: 5,
+           controller: commentController,
+              onChanged: (value) {
+                setState(() {
+                  commentController.text = value;
+                });
+              }
+              ,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: ColorValue.neutralColor),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: "Ceritakan pengalamanmu",
+                hintStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: ColorValue.hinttext),
+              ),
+            ),
+          ),
+          //make container for button height 54 color primary inside is row icon and text
+          const SizedBox(
+            height: 20,
+          ),
+          GestureDetector(
+            onTap: () {
+              _showBottomSheet(context);
+            },
+            child: Container(
+              height: 54,
+              decoration: BoxDecoration(
+                color: ColorValue.primaryColor,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset("assets/icon/camera.svg"),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Text(
+                    "Tambahkan Foto",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 150,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                Text(
+                  "Pilih Foto",
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: ColorValue.neutralColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _getImage(ImageSource.camera);
+                        Navigator.pop(context);
+                      },
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.camera_alt_outlined,
+                            color: ColorValue.primaryColor,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Kamera",
+                            style:
+                            Theme.of(context).textTheme.subtitle1!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: ColorValue.neutralColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _getImage(ImageSource.gallery);
+                        Navigator.pop(context);
+                      },
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.photo_outlined,
+                            color: ColorValue.primaryColor,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Galeri",
+                            style:
+                            Theme.of(context).textTheme.subtitle1!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: ColorValue.neutralColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
+}

@@ -3,11 +3,13 @@ import 'package:kangsayur/model/detailproductmodel.dart';
 import 'package:kangsayur/model/nearesttokomodel.dart';
 import 'package:kangsayur/model/productmostpopularmodel.dart';
 import 'package:kangsayur/model/productusermostvisitmodel.dart';
+import 'package:kangsayur/model/statuspesananselesaiselesai.dart';
 import 'package:kangsayur/model/tokopopularmodel.dart';
 
 import '../../model/cartproductmodel.dart';
 import '../../model/profilemodel.dart';
 import '../../model/searchproductmodel.dart';
+import '../../model/statuspesanandikemas.dart';
 import 'api_provider.dart';
 
 class ApiRepository {
@@ -46,6 +48,13 @@ class ApiRepository {
   Future<CheckoutModel> getCheckoutList() async {
     return await _apiProvider.CheckoutModelList();
   }
+  Future<StatusPesananAllModel> getStatusPesananAllList() async {
+    return await _apiProvider.StatusAllPesananList();
+  }
+  Future<StatusPesananSelesaiModel> getStatusPesananSelesaiList() async {
+    return await _apiProvider.StatusPesananSelesaiList();
+  }
+
 }
 
 class NetworkError extends Error {

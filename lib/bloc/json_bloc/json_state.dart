@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:kangsayur/model/cartproductmodel.dart';
 
 abstract class JsonState extends Equatable {
   const JsonState();

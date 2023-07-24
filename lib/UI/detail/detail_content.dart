@@ -154,12 +154,6 @@ class _Detail_contentState extends State<Detail_content> {
               SizedBox(
                 height: 15,
               ),
-              Text("Pilih Varian",
-                  style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-              SizedBox(
-                height: 4,
-              ),
               // Row(
               //   children: [
               //     customRadio("1 Kg", ProductVariant.variant1),
@@ -173,38 +167,6 @@ class _Detail_contentState extends State<Detail_content> {
               //     customRadio("3 Kg", ProductVariant.variant3),
               //   ],
               // ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.widget!.data.variant.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: 100,
-                      width: 200,
-                      child: RadioListTile(
-                        title: Text(widget.widget!.data.variant[index].variant),
-                        value: widget.widget!.data.variant[index].variant,
-                        groupValue: widget.GroupValue,
-                        onChanged: (value) {
-                          setState(() {
-                            widget.GroupValue = value.toString();
-                            print(widget.GroupValue);
-                            widget.valueId = index;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-
-              SizedBox(
-                height: 20,
-              ),
               Text(widget.widget!.data.variant[0].variantDesc,
                   maxLines: isExpanded ? 100 : 5,
                   overflow: TextOverflow.ellipsis,
@@ -239,7 +201,7 @@ class _Detail_contentState extends State<Detail_content> {
           ),
         ),
       ],
-    );
+    );  
   }
   Widget _storeBox (String namaToko, String gambarToko){
     return Container(

@@ -72,7 +72,6 @@ class JsonBloc extends Bloc<JsonEvent, JsonState> {
         emit(JsonError("Couldn't fetch data. Is the device online?"));
       }
     });
-
     on<GetCartProductList>((event, emit) async {
       try {
         emit(JsonLoading());

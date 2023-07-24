@@ -1,6 +1,15 @@
+import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/detaiL_riwayat_pembelian/detail_riwayat_pembelian.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
 import 'package:kangsayur/UI/detail/detail.dart';
+import 'package:kangsayur/bloc/statuspesanan_bloc/statuspesanan_bloc.dart';
+import 'package:kangsayur/bloc/statuspesanan_bloc/statuspesanan_event.dart';
+import 'package:kangsayur/bloc/statuspesanan_bloc/statuspesanan_state.dart';
+import 'package:kangsayur/model/statuspesanandikemas.dart';
+import 'package:kangsayur/model/statuspesananselesaiselesai.dart';
 import 'package:kangsayur/widget/card_riwayat.dart';
 
 import '../../../../../../common/color_value.dart';
@@ -13,9 +22,29 @@ class Riwayat_transaksi extends StatefulWidget {
   State<Riwayat_transaksi> createState() => _Riwayat_transaksiState();
 }
 
-class _Riwayat_transaksiState extends State<Riwayat_transaksi> {
+class _Riwayat_transaksiState extends State<Riwayat_transaksi>
+    with SingleTickerProviderStateMixin {
+  final StatusPesananBloc _statusPesananBloc = StatusPesananBloc();
+  final StatusPesananBloc _statusPesananBlocSelesai = StatusPesananBloc();
   String dropdownValueStatus = 'Semua Status';
   String dropdownValueTanggal = 'Semua Tanggal';
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _statusPesananBloc.add(GetStatusPesananAllList());
+    _statusPesananBlocSelesai.add(GetStatusPesananSelesaiList());
+    _tabController = TabController(
+        length: 4,
+        vsync: this); // Change the length to the number of tabs you want
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +52,7 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        elevation: 0,
         title: Text(
           "Riwayat Transaksi",
           style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
@@ -33,95 +63,174 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi> {
           },
           icon: SvgPicture.asset("assets/icon/arrow_left.svg"),
         ),
+        bottom: TabBar(
+          labelColor: ColorValue.primaryColor,
+          unselectedLabelColor:
+              ColorValue.neutralColor, // Warna teks tab yang tidak dipilih
+
+          controller: _tabController,
+          tabs: [
+            Tab(
+              text: 'Dikemas',
+            ),
+            Tab(text: 'Tab 2'),
+            Tab(text: 'Tab 3'),
+            Tab(text: 'Selesai'),
+          ],
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          // Add the content for each tab here
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width / 2 - 24 - 10,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: ColorValue.neutralColor,
-                        width: 1,
-                      ),
-                    ),
-                    child: dropDown_Status(),
+                  SizedBox(
+                    height: 12,
                   ),
                   Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width / 2 - 24 - 10,
-                    height: 35,
+                    height: 52,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: ColorValue.neutralColor,
-                        width: 1,
-                      ),
+                      color: ColorValue.primaryColor,
                     ),
-                    child: dropDown_Tanggal(),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icon/payment_card.svg",
+                          height: 24.0,
+                          width: 24.0,
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          "Menunggu Status Pembayaran",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
                   ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Container(
+                    child: BlocProvider(
+                      create: (_) => _statusPesananBloc,
+                      child: BlocListener<StatusPesananBloc,
+                          StatusPesananState>(listener: (context, state) {
+                        if (state is StatusPesananError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.message),
+                            ),
+                          );
+                        }
+                      }, child:
+                          BlocBuilder<StatusPesananBloc, StatusPesananState>(
+                              builder: (context, state) {
+                        if (state is StatusPesananInitial) {
+                          return Loading();
+                        } else if (state is StatusPesananLoading) {
+                          return Loading();
+                        } else if (state is StatusPesananLoaded) {
+                          return status_SemuaPesanan(
+                              state.menungguKonfirmasiList);
+                        } else if (state is StatusPesananError) {
+                          return Text(state.message);
+                        }
+                        return Container();
+                      })),
+                    ),
+                  )
                 ],
               ),
-              SizedBox(
-                height: 12,
-              ),
-              Container(
-                height: 52,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: ColorValue.primaryColor,
-                ),
-                child: Row(
-                  children: [
-                    SvgPicture.asset("assets/icon/payment_card.svg", height: 24, width: 24,),
-                    SizedBox(width: 16,),
-Text("Menunggu Status Pembayaran", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 3  ,
-                itemBuilder: (BuildContext context, int index) {
-                  return CardRiwayat(
-                    jenisVerifikasiProduk: 'Bahan Pokok',
-                    tanggalVerifikasiProduk: '12/12/2021',
-                    namaVerifikasiProduk: 'Wortel',
-                    descVerifikasiProduk: 'Wortel segar dari kebun sayur',
-                    gambarVerifikasiProduk: 'assets/images/wortel.png',
-                    statusVerifikasiProduk: 'Selesai',
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Home(),
-                        ),
-                      );
-                    },
-                  );
-                },
-              )
-
-            ],
+            ),
           ),
-        ),
+          Center(child: Text('Tab 2 content')),
+          Center(child: Text('Tab 3 content')),
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Container(
+                    height: 52,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: ColorValue.primaryColor,
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icon/payment_card.svg",
+                          height: 24.0,
+                          width: 24.0,
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          "Menunggu Status Pembayaran",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Container(
+                    child: BlocProvider(
+                      create: (_) => _statusPesananBlocSelesai,
+                      child: BlocListener<StatusPesananBloc,
+                          StatusPesananState>(listener: (context, state) {
+                        if (state is StatusPesananError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.message),
+                            ),
+                          );
+                        }
+                      }, child:
+                          BlocBuilder<StatusPesananBloc, StatusPesananState>(
+                              builder: (context, state) {
+                        if (state is StatusPesananInitial) {
+                          return Loading();
+                        } else if (state is StatusPesananLoading) {
+                          return Loading();
+                        } else if (state is StatusPesananLoaded) {
+                          return status_Selesai(state.seleseiList);
+                        } else if (state is StatusPesananError) {
+                          return Text(state.message);
+                        }
+                        return Container();
+                      })),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -146,7 +255,7 @@ Text("Menunggu Status Pembayaran", style: TextStyle(color: Colors.white, fontSiz
           dropdownValueStatus = newValue!;
         });
       },
-      items: <String>['Semua Status', 'Sedang Dikirim', 'Selesai']
+      items: <String>['Semua Status', 'Disiapkan', 'Dikirim', 'Selesai']
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
             value: value,
@@ -196,6 +305,141 @@ Text("Menunggu Status Pembayaran", style: TextStyle(color: Colors.white, fontSiz
               style: TextStyle(fontSize: 14, color: Color(0xff49454F)),
             ));
       }).toList(),
+    );
+  }
+
+  Widget status_SemuaPesanan(StatusPesananAllModel data) {
+    return ListView.builder(
+      itemCount: data.data!.length,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, i) {
+        return CardRiwayat(
+          jenisVerifikasiProduk: data.data[i].namaToko.toString(),
+          tanggalVerifikasiProduk: data.data[i].tanggal,
+          namaVerifikasiProduk: data.data[i].barangPesanan[0].namaProduk,
+          descVerifikasiProduk: data.data[i].barangPesanan[0].variant,
+          gambarVerifikasiProduk: 'assets/images/wortel.png',
+          statusVerifikasiProduk:
+              data.data[i].barangPesanan[0].status.toString(),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Detail_Riwayat_Pembelian(
+                  Status: data.data[i].barangPesanan[0].status,
+                  Nama: data.data[i].alamatPengiriman.namaPemesan,
+                  AlamatUser: "asdasdsdadsasadasd",
+                  NoHP: "123018308132",
+                  GambarProduk: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].variantImg
+                  ],
+                  GambarToko: data.data[i].profilToko,
+                  HargaProduk: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].hargaVariant
+                  ],
+                  NamaProduk: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].namaProduk
+                  ],
+                  AlamatToko: data.data[i].alamatToko,
+                  NamaToko: data.data[i].namaToko,
+                  TotalHarga: data.data[i].tagihan.totalHarga,
+                  VarianProduk: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].variant
+                  ],
+                  Ongkir: data.data[i].tagihan.ongkosKirim,
+                  produkId: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].id
+                  ],
+                  tokoId: data.data[i].tokoId.toString(),
+                  variantId: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].variantId
+                  ],
+                  transactionCode: data.data[i].kodeTransaksi.toString(),
+                ),
+              ),
+            );
+          },
+          banyakVerifikasiProduk: [
+            for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+              data.data[i].barangPesanan[j].variant
+          ],
+        );
+      },
+    );
+  }
+
+  Widget status_Selesai(StatusPesananSelesaiModel data) {
+    return ListView.builder(
+      itemCount: data.data!.length,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, i) {
+        return CardRiwayat(
+          jenisVerifikasiProduk: data.data[i].namaToko.toString(),
+          tanggalVerifikasiProduk: data.data[i].tanggal,
+          namaVerifikasiProduk: data.data[i].barangPesanan[0].namaProduk,
+          descVerifikasiProduk: data.data[i].barangPesanan[0].variant,
+          gambarVerifikasiProduk: 'assets/images/wortel.png',
+          statusVerifikasiProduk:
+              data.data[i].barangPesanan[0].status.toString(),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Detail_Riwayat_Pembelian(
+                  Status: data.data[i].barangPesanan[0].status,
+                  Nama: data.data[i].alamatPengiriman.namaPemesan,
+                  AlamatUser: "asdasdsdadsasadasd",
+                  NoHP: "123018308132",
+                  GambarProduk: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].variantImg
+                  ],
+                  GambarToko: data.data[i].profilToko,
+                  HargaProduk: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].hargaVariant
+                  ],
+                  NamaProduk: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].namaProduk
+                  ],
+                  AlamatToko: data.data[i].alamatToko,
+                  NamaToko: data.data[i].namaToko,
+                  TotalHarga: data.data[i].tagihan.totalHarga,
+                  VarianProduk: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].variant
+                  ],
+                  Ongkir: data.data[i].tagihan.ongkosKirim,
+                  produkId: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].id
+                  ],
+                  tokoId: data.data[i].tokoId.toString(),
+                  variantId: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].variantId
+                  ],
+                  transactionCode: data.data[i].kodeTransaksi.toString(),
+
+                ),
+              ),
+            );
+          },
+          banyakVerifikasiProduk: [
+            for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+              data.data[i].barangPesanan[j].variant
+          ],
+        );
+      },
     );
   }
 }

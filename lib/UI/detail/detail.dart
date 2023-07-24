@@ -22,7 +22,6 @@ class Detail extends StatefulWidget {
   Detail({Key? key, required this.id}) : super(key: key);
   final int id;
 
-
   @override
   State<Detail> createState() => _DetailState();
 }
@@ -68,10 +67,7 @@ class _DetailState extends State<Detail> {
         children: [
           Container(
             color: Colors.white,
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
+            height: MediaQuery.of(context).size.height,
           ),
           SingleChildScrollView(
             child: Column(
@@ -80,49 +76,49 @@ class _DetailState extends State<Detail> {
                   create: (_) => _jsonBloc,
                   child: BlocListener<JsonBloc, JsonState>(
                       listener: (context, state) {
-                        if (state is JsonError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.message),
-                            ),
-                          );
-                        }
-                      }, child: BlocBuilder<JsonBloc, JsonState>(
-                      builder: (context, state) {
-                        if (state is JsonInitial) {
-                          return Loading();
-                        } else if (state is JsonLoading) {
-                          return Loading();
-                        } else if (state is JsonLoaded) {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: 25,
-                              ),
-                              Detail_content(widget: state.jsonDetailProduct),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                height: 15,
-                              ),
-                              Detail_tokoini(),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Detail_ulasan(
-                                widget: state.jsonDetailProduct,
-                              ),
-                              SizedBox(
-                                height: 80,
-                              )
-                            ],
-                          );
-                        } else if (state is JsonError) {
-                          return Text(state.message);
-                        }
-                        return Container();
-                      })),
+                    if (state is JsonError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                        ),
+                      );
+                    }
+                  }, child: BlocBuilder<JsonBloc, JsonState>(
+                          builder: (context, state) {
+                    if (state is JsonInitial) {
+                      return Loading();
+                    } else if (state is JsonLoading) {
+                      return Loading();
+                    } else if (state is JsonLoaded) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 25,
+                          ),
+                          Detail_content(widget: state.jsonDetailProduct),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            height: 15,
+                          ),
+                          Detail_tokoini(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Detail_ulasan(
+                            widget: state.jsonDetailProduct,
+                          ),
+                          SizedBox(
+                            height: 80,
+                          )
+                        ],
+                      );
+                    } else if (state is JsonError) {
+                      return Text(state.message);
+                    }
+                    return Container();
+                  })),
                 ),
               ],
             ),
@@ -131,15 +127,15 @@ class _DetailState extends State<Detail> {
             create: (_) => _jsonBloc,
             child: BlocListener<JsonBloc, JsonState>(
                 listener: (context, state) {
-                  if (state is JsonError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.message),
-                      ),
-                    );
-                  }
-                }, child:
-            BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+              if (state is JsonError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              }
+            }, child:
+                    BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
               if (state is JsonInitial) {
                 return _shimmerScreen();
               } else if (state is JsonLoading) {
@@ -157,9 +153,7 @@ class _DetailState extends State<Detail> {
     );
   }
 
-  // make void modal bottom sheet
-
-  Widget _shimmerScreen(){
+  Widget _shimmerScreen() {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -170,12 +164,12 @@ class _DetailState extends State<Detail> {
             height: 25,
           ),
           _shimmerContent(),
-
         ],
       ),
     );
-}
-  Widget _shimmerContent(){
+  }
+
+  Widget _shimmerContent() {
     return Column(
       children: [
         Padding(
@@ -221,7 +215,8 @@ class _DetailState extends State<Detail> {
                                   color: Colors.grey[300]!,
                                   child: RatingBar.builder(
                                     itemBuilder: (context, index) {
-                                      return SvgPicture.asset("assets/icon/star.svg");
+                                      return SvgPicture.asset(
+                                          "assets/icon/star.svg");
                                     },
                                     onRatingUpdate: (value) {},
                                     initialRating: 5,
@@ -229,7 +224,8 @@ class _DetailState extends State<Detail> {
                                     allowHalfRating: true,
                                     itemCount: 5,
                                     itemSize: 14,
-                                    itemPadding: EdgeInsets.symmetric(horizontal: 2),
+                                    itemPadding:
+                                        EdgeInsets.symmetric(horizontal: 2),
                                     minRating: 1,
                                     glow: false,
                                     unratedColor: ColorValue.neutralColor,
@@ -241,12 +237,12 @@ class _DetailState extends State<Detail> {
                               ),
                               Center(
                                   child: Text(
-                                   "asdasdadsa",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
-                                  )),
+                                "asdasdadsa",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              )),
                             ],
                           ),
                         ),
@@ -258,80 +254,139 @@ class _DetailState extends State<Detail> {
               SizedBox(
                 height: 18,
               ),
-              Text(
-                "Rp. 20.000,00",
-                style: TextStyle(
-                    color: Color(0xff3D5A80),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  color: Colors.grey[300]!,
+                  child: Text(
+                    "Rp. 20.000,00",
+                    style: TextStyle(
+                        color: Colors.transparent,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 5,
               ),
-              Text(
-                "asdasdasd",
-                // widget!.widget!.data.namaProduk,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  color: Colors.grey[300]!,
+                  child: Text(
+                    "asdasdasd",
+                    // widget!.widget!.data.namaProduk,
+                    style: TextStyle(
+                        color: Colors.transparent,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 15,
               ),
-              Text("Pilih Varian",
-                  style:
-                  TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-              SizedBox(
-                height: 4,
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey[300]!,
+                  child: Text(
+                      "lorem ipsum dolor sit amet, consectetur adipiscing asdaf asfpija saojfoafjsoafj aosdja odjaojdsaj asojasod asdasda  asdasd sasdsad asda sda dapsjoasfp ssaj pa jpjdsjsa asdas",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.transparent)),
+                ),
               ),
-              // Row(
-              //   children: [
-              //     customRadio("1 Kg", ProductVariant.variant1),
-              //     SizedBox(
-              //       width: 10,
-              //     ),
-              //     customRadio("2 Kg", ProductVariant.variant2),
-              //     SizedBox(
-              //       width: 10,
-              //     ),
-              //     customRadio("3 Kg", ProductVariant.variant3),
-              //   ],
-              // ),
-
-              SizedBox(
-                height: 20,
-              ),
-              Text("lorem ipsum dolor sit amet, consectetur adipiscing asdaf asfpija saojfoafjsoafj aosdja odjaojdsaj asojasod",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: ColorValue.neutralColor)),
-
               SizedBox(
                 height: 15,
               ),
-              // _storeBox(widget.widget!.data.namaToko.toString(), "assets/images/store.png"),
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300]!,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        "assets/images/store.png",
+                        height: 46,
+                        width: 46,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "asdasasda",
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                      color: Color(0xff25C570),
+                                      borderRadius: BorderRadius.circular(50))),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Online",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black.withOpacity(0.5)),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Spacer(),
+                      // Container(width: 110, height: 43, decoration: BoxDecoration(
+                      //   borderRadius: BorderRadius.circular(10),
+                      //   border: Border.all(color: Color(0xff009245))
+                      // ),
+                      //   child: Center(child: Text("Langganan", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff009245)),)),
+                      // ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
       ],
     );
   }
-  Widget _bottomBar({required DetailProductModel widget}) {
 
+  Widget _bottomBar({required DetailProductModel widget}) {
     List<String> namaVariant = [
-      for(int i = 0; i < widget.data.variant.length; i++)
+      for (int i = 0; i < widget.data.variant.length; i++)
         widget.data.variant[i].variant
     ];
     List<int> hargaVariant = [
-      for(int i = 0; i < widget.data.variant.length; i++)
+      for (int i = 0; i < widget.data.variant.length; i++)
         widget.data.variant[i].hargaVariant
     ];
 
-    List<int> variantId= [
-      for(int i = 0; i < widget.data.variant.length; i++)
+    List<int> variantId = [
+      for (int i = 0; i < widget.data.variant.length; i++)
         widget.data.variant[i].id
     ];
 
@@ -339,10 +394,7 @@ class _DetailState extends State<Detail> {
       bottom: 0,
       child: Container(
         height: 76,
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(color: Color(0xff0E4F55)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -365,15 +417,20 @@ class _DetailState extends State<Detail> {
                     showModalBottomSheet(
                         context: context,
                         builder: (builder) {
-                          return Detail_popup(produkId: widget.data.produkId,
-                              tokoId: widget.data.tokoId,
-                              jumlahVariant: widget.data.variant.length,
-                              namaVariant: namaVariant,
-                              variantId: variantId,
-                              hargaVariant: hargaVariant, stokVariant: [
-                            for(int i = 0; i < widget.data.variant.length; i++)
-                              widget.data.variant[i].stok
-                            ],);
+                          return Detail_popup(
+                            produkId: widget.data.produkId,
+                            tokoId: widget.data.tokoId,
+                            jumlahVariant: widget.data.variant.length,
+                            namaVariant: namaVariant,
+                            variantId: variantId,
+                            hargaVariant: hargaVariant,
+                            stokVariant: [
+                              for (int i = 0;
+                                  i < widget.data.variant.length;
+                                  i++)
+                                widget.data.variant[i].stok
+                            ],
+                          );
                         });
                   });
                 },
@@ -398,8 +455,7 @@ class _DetailState extends State<Detail> {
                 width: 4,
               ),
               GestureDetector(
-                onTap: () {
-                 },
+                onTap: () {},
                 child: Container(
                   height: 46,
                   width: 128,

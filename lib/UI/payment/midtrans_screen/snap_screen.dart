@@ -70,10 +70,10 @@ class _Snap_screenState extends State<Snap_screen> {
                       print('==========>>>>>>>>>>>>>> END');
                     },
                   ),
-                  ].toSet()
+                ].toSet()
                 ),onWebViewCreated: (_controller){
-                  webViewController = _controller;
-                  _loadHtmlFromAssets();
+                webViewController = _controller;
+                _loadHtmlFromAssets();
               },
                 onPageFinished: (strURL){
                   setState(() {
@@ -346,6 +346,3 @@ class Midtrans {
     return [title, desc];
   }
 }
-
-
-

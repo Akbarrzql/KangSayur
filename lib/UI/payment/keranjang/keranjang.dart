@@ -193,16 +193,42 @@ class _KeranjangState extends State<Keranjang> {
               ],
             ),
           ),
-          Keranjang_bar(
-            total_harga: 10000,
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) {
-                  return Checkout();
-                },
-              ));
-            },
+          // Keranjang_bar(
+          //   total_harga: 10000,
+          //   onPressed: () {
+          //     Navigator.push(context, MaterialPageRoute(
+          //       builder: (context) {
+          //         return Checkout();
+          //       },
+          //     ));
+          //   },
+          // ),
+          BlocProvider(
+            create: (_) => _jsonBloc,
+            child: BlocListener<JsonBloc, JsonState>(
+                listener: (context, state) {
+                  if (state is JsonError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                      ),
+                    );
+                  }
+                }, child: BlocBuilder<JsonBloc, JsonState>(
+                builder: (context, state) {
+                  if (state is JsonInitial) {
+                    return Loading();
+                  } else if (state is JsonLoading) {
+                    return Loading();
+                  } else if (state is JsonLoaded) {
+                    return _keranjangBar(state.jsonCartProduct);
+                  } else if (state is JsonError) {
+                    return Text(state.message);
+                  }
+                  return Container();
+                })),
           ),
+
         ],
       ),
     );
@@ -249,23 +275,23 @@ class _KeranjangState extends State<Keranjang> {
         itemBuilder: (context, index) {
           return Card_keranjang(
               gambar_produk: "assets/images/wortel.png",
-              nama_toko: "siu",
+              nama_toko: widget.data[index].namaToko,
               profil_toko: widget.data[index].imgProfile,
               alamat_toko: "Jl. Raya Bogor KM 30",
               hapus: () {
                 setState(() {
-                  for (var i = 0;
-                      i < widget.data[index].getProductCart.length;
-                      i++)
-                    Cart()
-                        .DeleteProductCart(
-                            widget.data[index].getProductCart[i].produkId
-                                .toString(),
-                            widget.data[index].getProductCart[i].variantId
-                                .toString())
-                        .then((value) => setState(() {
-                              _jsonBloc.add(GetCartProductList());
-                            }));
+                  Cart()
+                      .DeleteProductCart(
+                        widget.data[index].getProductCart[index].produkId
+                            .toString(),
+                        widget.data[index].getProductCart[index].tokoId
+                            .toString(),
+                        widget.data[index].getProductCart[index].variantId
+                            .toString(),
+                      )
+                      .then((value) => setState(() {
+                            _jsonBloc.add(GetCartProductList());
+                          }));
                 });
               },
               produkList: widget.data[index].getProductCart,
@@ -326,6 +352,79 @@ class _KeranjangState extends State<Keranjang> {
               cartId: []);
         });
   }
+  Widget _keranjangBar(CartProductModel widget){
+    List status = [
+      for (var i = 0; i < widget.data.length; i++)
+        for (var j = 0; j < widget.data[i].getProductCart.length; j++)
+          widget.data[i].getProductCart[j].status
+    ];
+    bool isChecked = status.contains("true");
+
+    return Positioned(
+        bottom: 0,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.10,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.25),
+                spreadRadius: 0,
+                blurRadius: 4,
+                offset: Offset(1, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Total",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 14),
+                  ),
+                  Text(
+                    "Rp." + ProdukformatNumber(30000) + ",00",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 14),
+                  )
+                ],
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: isChecked
+                    ? () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Checkout()));
+                }
+                    : null,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: isChecked ? ColorValue.primaryColor : Color(0xff53B175),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                      child: Text(
+                        "Pesan",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      )),
+                ),
+              )
+            ],
+          ),
+        ));
+  }
 }
 
 class Keranjang_bar extends StatefulWidget {
@@ -356,6 +455,13 @@ String ProdukformatNumber(harga_produk) {
 }
 
 class _Keranjang_barState extends State<Keranjang_bar> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    bool isChecked = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(

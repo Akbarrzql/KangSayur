@@ -59,7 +59,8 @@ class CardMenunggu extends StatelessWidget {
                 GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return Mengulas();
+                      // return Mengulas();
+                      return Container();
                     },));
                   },
                   child: Container(

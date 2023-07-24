@@ -32,14 +32,16 @@ class Cart {
     }
   }
 
-  Future<bool> DeleteProductCart(String produkId, String variantId) async {
+
+  Future<bool> ValueProductCart(String produkId, String tokoId,
+      String inputValue, String variantId) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
     print(token);
     try {
       var response = await http.get(
           Uri.parse(_url +
-              'user/produk/cart/delete?produkId=$produkId&variantId=$variantId'),
+              'user/produk/cart/custom?produkId=$produkId&tokoId=$tokoId&customInpt=$inputValue&variantId=$variantId'),
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
@@ -52,16 +54,14 @@ class Cart {
       return false;
     }
   }
-
-  Future<bool> ValueProductCart(String produkId, String tokoId,
-      String inputValue, String variantId) async {
+  Future<bool> DeleteProductCart(String produkId, String tokoId, String variantId) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
     print(token);
     try {
       var response = await http.get(
           Uri.parse(_url +
-              'user/produk/cart/custom?produkId=$produkId&tokoId=$tokoId&customInpt=$inputValue&variantId=$variantId'),
+              'user/produk/cart/custom?produkId=$produkId&tokoId=$tokoId&customInpt=0&variantId=$variantId'),
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',

@@ -66,8 +66,13 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Ulasan(),
-                      ),
+                          builder: (context) => Ulasan(
+                              rating:   [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].rating],
+                              comment: [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].comment],
+                              name: [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].name],
+                              date: [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].rating],
+                             photo: [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].photo],
+                          )),
                     );
                   },
                   child: Text(
@@ -123,7 +128,7 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
               ),
               width: 42,
               child: Image.network(
-                "https://kangsayur.nitipaja.online/"+profile,
+                "https://kangsayur.nitipaja.online/" + profile,
                 fit: BoxFit.cover,
               ),
             ),
