@@ -10,68 +10,61 @@ SearchProductModel searchProductModelFromJson(String str) => SearchProductModel.
 String searchProductModelToJson(SearchProductModel data) => json.encode(data.toJson());
 
 class SearchProductModel {
-  String? status;
-  String? message;
-  List<Data>? data;
+  String status;
+  String message;
+  List<Datum> data;
 
-  SearchProductModel({this.status, this.message, this.data});
+  SearchProductModel({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
 
-  SearchProductModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
-  }
+  factory SearchProductModel.fromJson(Map<String, dynamic> json) => SearchProductModel(
+    status: json["status"],
+    message: json["message"],
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+  };
 }
 
-class Data {
-  int? id;
-  String? namaToko;
-  String? namaProduk;
-  String? variant;
-  Null? image;
-  int? harga;
+class Datum {
+  int id;
+  String namaToko;
+  String namaProduk;
+  String variant;
+  String image;
+  int harga;
 
-  Data(
-      {this.id,
-        this.namaToko,
-        this.namaProduk,
-        this.variant,
-        this.image,
-        this.harga});
+  Datum({
+    required this.id,
+    required this.namaToko,
+    required this.namaProduk,
+    required this.variant,
+    required this.image,
+    required this.harga,
+  });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    namaToko = json['nama_toko'];
-    namaProduk = json['nama_produk'];
-    variant = json['variant'];
-    image = json['image'];
-    harga = json['harga'];
-  }
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    id: json["id"],
+    namaToko: json["nama_toko"],
+    namaProduk: json["nama_produk"],
+    variant: json["variant"],
+    image: json["image"],
+    harga: json["harga"],
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['nama_toko'] = this.namaToko;
-    data['nama_produk'] = this.namaProduk;
-    data['variant'] = this.variant;
-    data['image'] = this.image;
-    data['harga'] = this.harga;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "nama_toko": namaToko,
+    "nama_produk": namaProduk,
+    "variant": variant,
+    "image": image,
+    "harga": harga,
+  };
 }
-

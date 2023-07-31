@@ -51,11 +51,10 @@ class CardProduk extends StatelessWidget {
                         height: 112,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          image: DecorationImage(
-                            image: AssetImage(imageProduk),
-                            fit: BoxFit.cover,
-                          ),
                         ),
+                        child:
+                            imageProduk == null ? Image.asset("assets/images/wortel.png") :
+                        Image.network("https://kangsayur.nitipaja.online"+imageProduk),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(9, 0, 9, 0),

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home_most_popular.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/home_most_visit.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/promo_list.dart';
 
 import 'home_carousel.dart';
@@ -281,7 +282,7 @@ class _HomeState extends State<Home> {
                     ),
                     SizedBox(
                         height: 248,
-                        child: Home_most_visited())
+                        child: Home_most_visit())
                   ],
                 ),
               ],

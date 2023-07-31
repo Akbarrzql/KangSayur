@@ -13,8 +13,9 @@ class Ulasan extends StatefulWidget {
   List name;
   List date;
   List photo;
+  List imgProduct;
 
-  Ulasan({Key? key, required this.rating, required this.comment , required this.name, required this.date, required this.photo}) : super(key: key);
+  Ulasan({Key? key, required this.rating, required this.comment , required this.name, required this.date, required this.photo, required this.imgProduct}) : super(key: key);
 
   @override
   State<Ulasan> createState() => _UlasanState();
@@ -111,7 +112,7 @@ class _UlasanState extends State<Ulasan> {
                         name: widget.name[index],
                         date: widget.date[index].toString(),
                         comment: widget.comment[index],
-                        image: "assets/image/produk.png",
+                        image: widget.photo[index].toString(),
                         rating: widget.rating[index].toDouble(),
                         context: context,
                       ),
@@ -221,8 +222,8 @@ class _UlasanState extends State<Ulasan> {
             ),
             child: Hero(
               tag: "someTag",
-              child: Image.asset(
-                image,
+              child: Image.network(
+                "https://kangsayur.nitipaja.online" +widget.photo[0].toString(),
                 fit: BoxFit.cover,
               ),
             ),

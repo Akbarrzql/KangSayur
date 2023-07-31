@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:kangsayur/API/cart/cart.dart';
 import 'package:kangsayur/UI/detail/detail.dart';
+import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'package:kangsayur/common/color_value.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,8 +15,9 @@ import '../../model/detailproductmodel.dart';
 import 'detail_storebox.dart';
 
 class Detail_content extends StatefulWidget {
-  Detail_content({Key? key, this.widget}) : super(key: key);
+  Detail_content({Key? key, this.widget, required this.photo}) : super(key: key);
   DetailProductModel? widget;
+  String photo;
 
   String GroupValue = "";
   late int valueId;
@@ -77,9 +79,12 @@ class _Detail_contentState extends State<Detail_content> {
                 ),
                 child: Stack(
                   children: [
-                    Image.asset(
-                      "assets/images/detail.png",
-                      fit: BoxFit.fill,
+                    Center(
+                      child: Image.network(
+                        "https://kangsayur.nitipaja.online" +
+                            widget.widget!.data.image,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                     Positioned(
                       left: 2,
@@ -196,71 +201,83 @@ class _Detail_contentState extends State<Detail_content> {
               SizedBox(
                 height: 15,
               ),
-              _storeBox(widget.widget!.data.namaToko.toString(), "assets/images/store.png"),
+              _storeBox(widget.widget!.data.namaToko.toString(),
+                  widget.widget!.data.imgProfile.toString()),
             ],
           ),
         ),
       ],
-    );  
+    );
   }
-  Widget _storeBox (String namaToko, String gambarToko){
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-      height: 70,
-      decoration: BoxDecoration(
-        color: Color(0xfff1f1f1),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            "assets/images/store.png",
-            height: 46,
-            width: 46,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                namaToko,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+
+  Widget _storeBox(String namaToko, String gambarToko) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Seller_Detail(
+                      tokoId: widget.tokoId.toString(),
+                    )));
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        height: 70,
+        decoration: BoxDecoration(
+          color: Color(0xfff1f1f1),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(
+                "https://kangsayur.nitipaja.online" + gambarToko,
               ),
-              Row(
-                children: [
-                  Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                          color: Color(0xff25C570),
-                          borderRadius: BorderRadius.circular(50))
-                  ),
-                  SizedBox(width: 5,),
-                  Text(
-                    "Online",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black.withOpacity(0.5)),
-                  ),
-                ],
-              )
-            ],
-          ),
-          Spacer(),
-          // Container(width: 110, height: 43, decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(10),
-          //   border: Border.all(color: Color(0xff009245))
-          // ),
-          //   child: Center(child: Text("Langganan", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff009245)),)),
-          // ),
-        ],
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  namaToko,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                Row(
+                  children: [
+                    Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                            color: Color(0xff25C570),
+                            borderRadius: BorderRadius.circular(50))),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Online",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black.withOpacity(0.5)),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Spacer(),
+            // Container(width: 110, height: 43, decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(10),
+            //   border: Border.all(color: Color(0xff009245))
+            // ),
+            //   child: Center(child: Text("Langganan", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff009245)),)),
+            // ),
+          ],
+        ),
       ),
     );
-
   }
 }
 

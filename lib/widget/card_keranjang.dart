@@ -25,7 +25,7 @@ class Card_keranjang extends StatefulWidget {
     required this.inCart,
     required this.produk_variantIdList,
     required this.status,
-    required this.cartId, required this.gambar_produk,
+    required this.cartId, required this.gambar_produk, required this.checklist,
   }) : super(key: key);
 
   //final = produk, nama produk, harga produk, nama toko, isDiscount, discount, harga diskon, isVariant, variant
@@ -47,7 +47,7 @@ class Card_keranjang extends StatefulWidget {
   late List<bool> addCard = [for (int i = 0; i < produkList.length; i++) false];
 
   //type data for function on tap
-  final VoidCallback hapus;
+  final VoidCallback hapus, checklist;
 
   @override
   State<Card_keranjang> createState() => _Card_keranjangState();
@@ -171,7 +171,9 @@ class _Card_keranjangState extends State<Card_keranjang> {
                               Cart().UpdateStatusProductCart(
                                   widget.produk_idList[index].toString(),
                                   widget.produk_variantIdList[index]
-                                      .toString());
+                                      .toString()).then((value) => setState((){
+                                        widget.checklist();
+                              }));
                               print(widget.produk_idList[index]);
                               print(widget.produk_variantIdList[index]);
                             },
@@ -284,7 +286,30 @@ class _Card_keranjangState extends State<Card_keranjang> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GestureDetector(
-                            onTap: widget.hapus,
+                            onTap: () {
+                              widget.hapus;
+                              setState(() {
+                                Cart().DeleteProductCart(
+                                  widget.produk_idList[index].toString(),
+                                  widget.produk_idTokoList[index].toString(),
+                                  widget.produk_variantIdList[index]
+                                      .toString(),
+                                );
+                                //remove at
+                                widget.produk_idList.removeAt(index);
+                                widget.produk_idTokoList.removeAt(index);
+                                widget.produk_namaList.removeAt(index);
+                                widget.produk_variantList.removeAt(index);
+                                widget.produk_variantIdList.removeAt(index);
+                                widget.produk_hargaList.removeAt(index);
+                                widget.produk_gambarList.removeAt(index);
+                                widget.status.removeAt(index);
+                                widget.produkList.removeAt(index);
+                                if (widget.produk_idList.length == 0) {
+                                  widget.hapus;
+                                }
+                              });
+                            },
                             child: Text(
                               "Hapus",
                               style: TextStyle(

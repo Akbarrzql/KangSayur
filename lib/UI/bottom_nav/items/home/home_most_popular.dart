@@ -72,7 +72,7 @@ Widget _Home_most_popular(
             );
           },
           child: CardProduk(
-              imageProduk: "assets/images/wortel.png",
+              imageProduk:  widget.data[index].variantImg,
               jarakProduk: widget.data[index].distance.toString(),
               namaProduk: widget.data[index].namaProduk,
               penjualProduk: widget.data[index].namaToko,

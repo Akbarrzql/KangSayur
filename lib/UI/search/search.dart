@@ -152,7 +152,7 @@ class _SearchState extends State<Search> {
                 ));
               },
               child: CardProduk(
-                  imageProduk: "assets/images/wortel.png",
+                  imageProduk: widget.data![index].image.toString(),
                   jarakProduk: "1.2 km",
                   namaProduk: widget.data![index].namaProduk!,
                   penjualProduk: widget.data![index].namaToko.toString(),

@@ -72,6 +72,7 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                               name: [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].name],
                               date: [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].rating],
                              photo: [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].photo],
+                            imgProduct: [for (var i = 0; i < widget.widget!.data!.review!.length; i++) widget.widget!.data!.review![i].imgProduct],
                           )),
                     );
                   },

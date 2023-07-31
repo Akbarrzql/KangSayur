@@ -1,26 +1,26 @@
 // To parse this JSON data, do
 //
-//     final statusPesananSelesaiModel = statusPesananSelesaiModelFromJson(jsonString);
+//     final statusPesananDiantarModel = statusPesananDiantarModelFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-StatusPesananSelesaiModel statusPesananSelesaiModelFromJson(String str) => StatusPesananSelesaiModel.fromJson(json.decode(str));
+StatusPesananDiantarModel statusPesananDiantarModelFromJson(String str) => StatusPesananDiantarModel.fromJson(json.decode(str));
 
-String statusPesananSelesaiModelToJson(StatusPesananSelesaiModel data) => json.encode(data.toJson());
+String statusPesananDiantarModelToJson(StatusPesananDiantarModel data) => json.encode(data.toJson());
 
-class StatusPesananSelesaiModel {
+class StatusPesananDiantarModel {
   String status;
   String message;
   List<Datum> data;
 
-  StatusPesananSelesaiModel({
+  StatusPesananDiantarModel({
     required this.status,
     required this.message,
     required this.data,
   });
 
-  factory StatusPesananSelesaiModel.fromJson(Map<String, dynamic> json) => StatusPesananSelesaiModel(
+  factory StatusPesananDiantarModel.fromJson(Map<String, dynamic> json) => StatusPesananDiantarModel(
     status: json["status"],
     message: json["message"],
     data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
@@ -61,14 +61,14 @@ class Datum {
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-icon: json["icon"],
+    icon: json["icon"],
     namaToko: json["nama_toko"],
     profilToko: json["profil_toko"],
     alamatToko: json["alamat_toko"],
     tanggal: json["tanggal"],
     kodeTransaksi: json["kode_transaksi"],
     tokoId: json["toko_id"],
-    alamatPengiriman: AlamatPengiriman.fromJson(json["alamat_pengiriman"]),
+    alamatPengiriman: AlamatPengiriman.fromJson(json["alamat pengiriman"]),
     barangPesanan: List<BarangPesanan>.from(json["barang_pesanan"].map((x) => BarangPesanan.fromJson(x))),
     tagihan: Tagihan.fromJson(json["tagihan"]),
     total: json["total"]?.toDouble(),
@@ -79,10 +79,10 @@ icon: json["icon"],
     "nama_toko": namaToko,
     "profil_toko": profilToko,
     "alamat_toko": alamatToko,
-    "tanggal": tanggalValues.reverse[tanggal],
+    "tanggal": tanggal,
     "kode_transaksi": kodeTransaksi,
     "toko_id": tokoId,
-    "alamat_pengiriman": alamatPengiriman.toJson(),
+    "alamat pengiriman": alamatPengiriman.toJson(),
     "barang_pesanan": List<dynamic>.from(barangPesanan.map((x) => x.toJson())),
     "tagihan": tagihan.toJson(),
     "total": total,
@@ -90,7 +90,7 @@ icon: json["icon"],
 }
 
 class AlamatPengiriman {
-  dynamic namaPemesan;
+  String namaPemesan;
   dynamic nomorTelfon;
   dynamic alamat;
 
@@ -112,7 +112,6 @@ class AlamatPengiriman {
     "alamat": alamat,
   };
 }
-
 
 class BarangPesanan {
   int id;
@@ -210,8 +209,6 @@ class BarangPesanan {
   };
 }
 
-
-
 class Tagihan {
   int totalHarga;
   double ongkosKirim;
@@ -230,22 +227,4 @@ class Tagihan {
     "total_harga": totalHarga,
     "ongkos_kirim": ongkosKirim,
   };
-}
-
-enum Tanggal { THE_25_JUL_2023 }
-
-final tanggalValues = EnumValues({
-  "25, Jul 2023": Tanggal.THE_25_JUL_2023
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

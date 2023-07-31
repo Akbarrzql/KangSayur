@@ -7,12 +7,16 @@ import 'package:kangsayur/model/nearesttokomodel.dart';
 import 'package:kangsayur/model/productusermostvisitmodel.dart';
 import 'package:kangsayur/model/profilemodel.dart';
 import 'package:kangsayur/model/searchproductmodel.dart';
+import 'package:kangsayur/model/statuspesanandiantarmodel.dart';
+import 'package:kangsayur/model/statuspesanandisiapkanmodel.dart';
+import 'package:kangsayur/model/tokodetailmodel.dart';
 import 'package:kangsayur/model/tokopopularmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/productmostpopularmodel.dart';
 import '../../model/statuspesanandikemas.dart';
 import '../../model/statuspesananselesaiselesai.dart';
+import '../../model/subtotalcartmodel.dart';
 
 class ApiProvider {
   final String _url = 'https://kangsayur.nitipaja.online/api';
@@ -188,7 +192,7 @@ class ApiProvider {
     }
   }
 
-  Future<StatusPesananAllModel> StatusAllPesananList() async {
+  Future<StatusPesananDikemasModel> StatusPesananKonfirmasiList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
     try {
@@ -198,7 +202,41 @@ class ApiProvider {
         'Authorization': 'Bearer $token',
       });
       print(response.body);
-      return statusPesananAllModelFromJson(response.body);
+      return statusPesananDikemasModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+
+  }
+  Future<StatusPesananDisiapkan> StatusPesananDisiapkanList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/status/disiapkan'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return statusPesananDisiapkanFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+
+  }
+  Future<StatusPesananDiantarModel> StatusPesananDiantarList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/status/diantar'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return statusPesananDiantarModelFromJson(response.body);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       rethrow;
@@ -220,6 +258,38 @@ class ApiProvider {
       print("Exception occured: $error stackTrace: $stacktrace");
       rethrow;
     }
-
+    }
+  Future<TokoDetailModel> TokoDetailList(String id) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    print(id);
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/toko/detail?tokoId=$id'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return tokoDetailModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+  }
+  Future<SubTotalCartModel> SubTotalCartList() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/produk/cart/total/selected'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return subTotalCartModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
   }
 }

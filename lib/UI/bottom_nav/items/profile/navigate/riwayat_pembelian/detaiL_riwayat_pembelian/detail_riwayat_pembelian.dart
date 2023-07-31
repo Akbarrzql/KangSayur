@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/mengulas/mengulas.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/lacak_pesanan/lacakpesanan.dart';
 
 import '../../../../../../../common/color_value.dart';
 import '../../../../../../payment/keranjang/keranjang.dart';
@@ -39,8 +40,8 @@ class Detail_Riwayat_Pembelian extends StatefulWidget {
   List VarianProduk;
   int TotalHarga;
   int Ongkir;
-  String  tokoId, transactionCode;
-  List produkId,variantId;
+  String tokoId, transactionCode;
+  List produkId, variantId;
 
   @override
   State<Detail_Riwayat_Pembelian> createState() =>
@@ -65,24 +66,39 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
           icon: SvgPicture.asset("assets/icon/arrow_left.svg"),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 25,
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            color: Colors.transparent,
+          ),
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 25,
+                ),
+                Alamat(widget.Nama, widget.NoHP, widget.AlamatToko),
+                SizedBox(
+                  height: 10,
+                ),
+                Produk(),
+                SizedBox(
+                  height: 10,
+                ),
+                Ringkasan_Pembayaran(),
+              ],
             ),
-            Alamat(widget.Nama, widget.NoHP, widget.AlamatToko),
-            SizedBox(
-              height: 10,
-            ),
-            Produk(),
-            SizedBox(
-              height: 10,
-            ),
-            Ringkasan_Pembayaran(),
-          ],
-        ),
+          ),
+          if (widget.Status == 'Sedang diantar')
+            Positioned(
+              bottom: 30,
+              left: 0,
+              right: 0,
+              child: Lacak_Button(),
+            )
+        ],
       ),
     );
   }
@@ -169,11 +185,13 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
               Container(
                 height: 35,
                 width: 35,
-                child: CircleAvatar(
-                  child: Image.asset(
-                    "asdasd",
-                    fit: BoxFit.cover,
-                  ),
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: ColorValue.neutralColor),
+                child: Image.network(
+                  "https://kangsayur.nitipaja.online" + widget.GambarToko,
+                  fit: BoxFit.cover,
                 ),
               ),
               SizedBox(
@@ -205,19 +223,21 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.25),
-                              spreadRadius: 0,
-                              blurRadius: 4,
-                              offset:
-                                  Offset(0, 4), // changes position of shadow
-                            ),
-                          ],
-                          image: DecorationImage(
-                              image: AssetImage('assets/asdpkafs'),
-                              fit: BoxFit.cover)),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            spreadRadius: 0,
+                            blurRadius: 4,
+                            offset: Offset(0, 4), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Image.network(
+                        "https://kangsayur.nitipaja.online" +
+                            widget.GambarProduk[index],
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     SizedBox(
                       width: 12,
@@ -276,13 +296,20 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
                                         MaterialPageRoute(
                                             builder: (context) => Mengulas(
                                                 namaToko: widget.NamaToko,
-                                                gambarToko: widget.GambarToko[0],
+                                                gambarToko:
+                                                    widget.GambarToko[0],
                                                 alamatToko: widget.AlamatToko,
-                                                namaProduk: widget.NamaProduk[index],
+                                                namaProduk:
+                                                    widget.NamaProduk[index],
                                                 gambarProduk: 'asd',
-                                                productId: widget.produkId[index].toString(),
-                                                tokoId: widget.tokoId.toString(),
-                                                variantId: widget.variantId[index].toString(),
+                                                productId: widget
+                                                    .produkId[index]
+                                                    .toString(),
+                                                tokoId:
+                                                    widget.tokoId.toString(),
+                                                variantId: widget
+                                                    .variantId[index]
+                                                    .toString(),
                                                 transactionCode:
                                                     widget.transactionCode)));
                                   },
@@ -393,5 +420,33 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
             ],
           ),
         ]));
+  }
+
+  Widget Lacak_Button() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Lacak_Pesanan(
+                    )));
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 24),
+        width: MediaQuery.of(context).size.width,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: ColorValue.primaryColor,
+        ),
+        child: Center(
+          child: Text(
+            'Lacak Pesanan',
+            style: TextStyle(
+                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+        ),
+      ),
+    );
   }
 }

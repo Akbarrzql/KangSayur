@@ -175,8 +175,7 @@ class _Detail_popupState extends State<Detail_popup> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        print(widget.produkId);
-                        print(variantId);
+                        Cart().AddProductCart(widget.produkId.toString(), widget.tokoId.toString(), idvariant.toString());
                       });
                     },
                     child: Container(
@@ -202,7 +201,6 @@ class _Detail_popupState extends State<Detail_popup> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                          Cart().AddProductCart(widget.produkId.toString(), widget.tokoId.toString(), idvariant.toString());
                       });
                     },
                     child: Container(

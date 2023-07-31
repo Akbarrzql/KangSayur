@@ -19,7 +19,9 @@ class GetSearchProductList extends JsonEvent{
   final String keyword;
   const GetSearchProductList(this.keyword);
 }
+
 class GetTokoPopularList extends JsonEvent{}
 class GetCartProductList extends JsonEvent{}
 class GetCheckoutList extends JsonEvent{}
+class GetSubTotalCartList extends JsonEvent{}
 

@@ -9,11 +9,29 @@ import '../../API/resource/api_repository.dart';
 class StatusPesananBloc extends Bloc<StatusPesananEvent, StatusPesananState> {
   StatusPesananBloc() : super(StatusPesananInitial()) {
     final ApiRepository _apiRepository = ApiRepository();
-    on<GetStatusPesananAllList>((event, emit) async {
+    on<GetStatusPesananKonfirmasiList>((event, emit) async {
       try {
         emit(StatusPesananLoading());
-        final mList = await _apiRepository.getStatusPesananAllList();
-        emit(StatusPesananLoaded(mList, mList));
+        final mList = await _apiRepository.getStatusPesananKonfirmasiList();
+        emit(StatusPesananLoaded(mList, mList, mList, mList));
+      } on NetworkError {
+        emit(StatusPesananError("Couldn't fetch data. Is the device online?"));
+      }
+    });
+    on<GetStatusPesananDisiapkanList>((event, emit) async {
+      try {
+        emit(StatusPesananLoading());
+        final mList = await _apiRepository.getStatusPesananDisiapkanList();
+        emit(StatusPesananLoaded(mList, mList, mList, mList));
+      } on NetworkError {
+        emit(StatusPesananError("Couldn't fetch data. Is the device online?"));
+      }
+    });
+    on<GetStatusPesananDiantarList>((event, emit) async {
+      try {
+        emit(StatusPesananLoading());
+        final mList = await _apiRepository.getStatusPesananDiantarList();
+        emit(StatusPesananLoaded(mList, mList, mList, mList));
       } on NetworkError {
         emit(StatusPesananError("Couldn't fetch data. Is the device online?"));
       }
@@ -22,7 +40,7 @@ class StatusPesananBloc extends Bloc<StatusPesananEvent, StatusPesananState> {
       try {
         emit(StatusPesananLoading());
         final mList = await _apiRepository.getStatusPesananSelesaiList();
-        emit(StatusPesananLoaded(mList, mList));
+        emit(StatusPesananLoaded(mList, mList, mList, mList));
       } on NetworkError {
         emit(StatusPesananError("Couldn't fetch data. Is the device online?"));
       }

@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
+import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_pembelian.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -18,11 +21,14 @@ class Snap_screen extends StatefulWidget {
 
 class _Snap_screenState extends State<Snap_screen> {
   late WebViewController webViewController;
+
   bool _isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _isLoading = true;
+
     print(widget.snap_token);
   }
 
@@ -79,6 +85,10 @@ class _Snap_screenState extends State<Snap_screen> {
                   setState(() {
                     _isLoading = false;
                   });
+                },
+                onWebResourceError: (error){
+                  print(error);
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Riwayat_transaksi()));
                 },
               )
             ],

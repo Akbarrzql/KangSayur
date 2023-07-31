@@ -95,7 +95,7 @@ class _DetailState extends State<Detail> {
                           SizedBox(
                             height: 25,
                           ),
-                          Detail_content(widget: state.jsonDetailProduct),
+                          Detail_content(widget: state.jsonDetailProduct, photo: '',),
                           SizedBox(
                             height: 15,
                           ),
@@ -152,6 +152,7 @@ class _DetailState extends State<Detail> {
       ),
     );
   }
+
 
   Widget _shimmerScreen() {
     return Container(

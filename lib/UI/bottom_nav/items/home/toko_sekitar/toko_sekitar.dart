@@ -146,8 +146,10 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
                           circles: [
                             CircleMarker(
                               point: _currentPosition,
-                              color: Colors.green.withOpacity(0.2),
+                              color: Colors.transparent,
                               radius: 25000,
+                              borderColor: Colors.black,
+                              borderStrokeWidth: 1,
                               useRadiusInMeter: true,
                             ),
                           ],
@@ -218,13 +220,16 @@ Widget marker({required NearestTokoModel widget}) {
     markers: [
       for (int i = 0; i < widget.data.length; i++)
         Marker(
+          height: 15,
+          width: 15,
           point: latLang[i],
           builder: (_) {
             return GestureDetector(
-                onTap: () {},
-                child: Container(height: 1,width: 1, decoration: BoxDecoration(
+                onTap: () {
+                },
+                child: Container(height: 1.5,width: 1.5, decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: ColorValue.tertiaryColor,
+                  color: Colors.red,
                 ),));
           },
         )

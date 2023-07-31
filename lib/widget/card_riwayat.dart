@@ -118,11 +118,14 @@ class CardRiwayat extends StatelessWidget {
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      image: DecorationImage(
-                        image: AssetImage(gambarVerifikasiProduk),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.network(
+                        'https://kangsayur.nitipaja.online'+gambarVerifikasiProduk,
                         fit: BoxFit.cover,
                       ),
-                    ),
+                    )
                   ),
                   const SizedBox(
                     width: 10,

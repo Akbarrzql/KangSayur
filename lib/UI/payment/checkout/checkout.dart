@@ -24,7 +24,6 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
-  //make text editing controller
   TextEditingController _controller = TextEditingController();
   final JsonBloc _jsonBloc = JsonBloc();
   var data;

@@ -67,6 +67,10 @@ dependencies:
   midtrans_sdk:
   webview_flutter: ^2.0.0
   modal_progress_hud_nsn:
+  json_annotation:
+  json_serializable:
+  flutter_polyline_points:
+  pusher_client:
 
 dev_dependencies:
   flutter_test:

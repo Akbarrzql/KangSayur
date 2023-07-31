@@ -6,7 +6,10 @@ import 'package:kangsayur/API/cart/cart.dart';
 import 'package:kangsayur/UI/payment/checkout/checkout.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/model/cartproductmodel.dart';
+import 'package:kangsayur/model/checkoutmodel.dart';
+import 'package:kangsayur/model/subtotalcartmodel.dart';
 import 'package:kangsayur/widget/card_keranjang.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../bloc/json_bloc/json_bloc.dart';
 import '../../../bloc/json_bloc/json_state.dart';
@@ -35,10 +38,14 @@ class _KeranjangState extends State<Keranjang> {
   }
 
   final JsonBloc _jsonBloc = JsonBloc();
+  final JsonBloc _cart = JsonBloc();
+  final JsonBloc _subtotal = JsonBloc();
 
   @override
   void initState() {
     _jsonBloc.add(GetCartProductList());
+    _cart.add(GetCartProductList());
+    _subtotal.add(GetSubTotalCartList());
     super.initState();
   }
 
@@ -203,33 +210,177 @@ class _KeranjangState extends State<Keranjang> {
           //     ));
           //   },
           // ),
-          BlocProvider(
-            create: (_) => _jsonBloc,
-            child: BlocListener<JsonBloc, JsonState>(
-                listener: (context, state) {
-                  if (state is JsonError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.message),
-                      ),
-                    );
-                  }
-                }, child: BlocBuilder<JsonBloc, JsonState>(
-                builder: (context, state) {
-                  if (state is JsonInitial) {
-                    return Loading();
-                  } else if (state is JsonLoading) {
-                    return Loading();
-                  } else if (state is JsonLoaded) {
-                    return _keranjangBar(state.jsonCartProduct);
-                  } else if (state is JsonError) {
-                    return Text(state.message);
-                  }
-                  return Container();
-                })),
-          ),
-
+          // BlocProvider(
+          //   create: (_) => _cart,
+          //   child: BlocListener<JsonBloc, JsonState>(
+          //       listener: (context, state) {
+          //     if (state is JsonError) {
+          //       ScaffoldMessenger.of(context).showSnackBar(
+          //         SnackBar(
+          //           content: Text(state.message),
+          //         ),
+          //       );
+          //     }
+          //   }, child:
+          //           BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+          //     if (state is JsonInitial) {
+          //       return Loading();
+          //     } else if (state is JsonLoading) {
+          //       return Loading();
+          //     } else if (state is JsonLoaded) {
+          //       return _keranjangBar(state.jsonCartProduct);
+          //     } else if (state is JsonError) {
+          //       return Text(state.message);
+          //     }
+          //     return Container();
+          //   })),
+          // ),
+          Positioned(
+              bottom: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.10,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      spreadRadius: 0,
+                      blurRadius: 4,
+                      offset: Offset(1, 0), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Total",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 14),
+                        ),
+                        BlocProvider(
+                          create: (_) => _subtotal,
+                          child: BlocListener<JsonBloc, JsonState>(
+                              listener: (context, state) {
+                            if (state is JsonError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(state.message),
+                                ),
+                              );
+                            }
+                          }, child: BlocBuilder<JsonBloc, JsonState>(
+                                  builder: (context, state) {
+                            if (state is JsonInitial) {
+                              return Text('data');
+                            } else if (state is JsonLoading) {
+                              return _pesanButtonLoading();
+                            } else if (state is JsonLoaded) {
+                              return _Total(state.jsonSubTotalCart);
+                            } else if (state is JsonError) {
+                              return Text(state.message);
+                            }
+                            return Container();
+                          })),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    BlocProvider(
+                      create: (_) => _cart,
+                      child: BlocListener<JsonBloc, JsonState>(
+                          listener: (context, state) {
+                        if (state is JsonError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.message),
+                            ),
+                          );
+                        }
+                      }, child: BlocBuilder<JsonBloc, JsonState>(
+                              builder: (context, state) {
+                        if (state is JsonInitial) {
+                          return _pesanButtonLoading();
+                        } else if (state is JsonLoading) {
+                          return _pesanButtonLoading();
+                        } else if (state is JsonLoaded) {
+                          return _pesanButton(state.jsonCartProduct);
+                        } else if (state is JsonError) {
+                          return Text(state.message);
+                        }
+                        return Container();
+                      })),
+                    ),
+                  ],
+                ),
+              ))
         ],
+      ),
+    );
+  }
+
+  Widget _Total(SubTotalCartModel widget) {
+    return Text(
+      "Rp." + ProdukformatNumber(widget.subtotal) + ",00",
+      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+    );
+  }
+
+  Widget _pesanButton(CartProductModel widget) {
+    List status = [
+      for (var i = 0; i < widget.data.length; i++)
+        for (var j = 0; j < widget.data[i].getProductCart.length; j++)
+          widget.data[i].getProductCart[j].status
+    ];
+    bool isTrue = status.contains("true");
+
+    return GestureDetector(
+      onTap: isTrue
+          ? () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Checkout()));
+            }
+          : null,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: 40,
+        decoration: BoxDecoration(
+          color: isTrue
+              ? ColorValue.primaryColor
+              : ColorValue.primaryColor.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Center(
+            child: Text(
+          "Pesan",
+          style: TextStyle(
+              fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+        )),
+      ),
+    );
+  }
+
+  Widget _pesanButtonLoading() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Center(
+            child: Text(
+          "Pesan",
+          style: TextStyle(
+              fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+        )),
       ),
     );
   }
@@ -278,21 +429,18 @@ class _KeranjangState extends State<Keranjang> {
               nama_toko: widget.data[index].namaToko,
               profil_toko: widget.data[index].imgProfile,
               alamat_toko: "Jl. Raya Bogor KM 30",
-              hapus: () {
+              hapus: (){
+                //remove index
                 setState(() {
-                  Cart()
-                      .DeleteProductCart(
-                        widget.data[index].getProductCart[index].produkId
-                            .toString(),
-                        widget.data[index].getProductCart[index].tokoId
-                            .toString(),
-                        widget.data[index].getProductCart[index].variantId
-                            .toString(),
-                      )
-                      .then((value) => setState(() {
-                            _jsonBloc.add(GetCartProductList());
-                          }));
+                  widget.data.removeAt(index);
+                  if (widget.data[index].getProductCart.length == 0)
+                    widget.data.removeAt(index);
+                  print('asdasd');
                 });
+              },
+              checklist: () {
+                _cart.add(GetCartProductList());
+                _subtotal.add(GetSubTotalCartList());
               },
               produkList: widget.data[index].getProductCart,
               produk_namaList: [
@@ -352,14 +500,14 @@ class _KeranjangState extends State<Keranjang> {
               cartId: []);
         });
   }
-  Widget _keranjangBar(CartProductModel widget){
+
+  Widget _keranjangBar(CartProductModel widget) {
     List status = [
       for (var i = 0; i < widget.data.length; i++)
         for (var j = 0; j < widget.data[i].getProductCart.length; j++)
           widget.data[i].getProductCart[j].status
     ];
-    bool isChecked = status.contains("true");
-
+    bool isTrue = status.contains("true");
     return Positioned(
         bottom: 0,
         child: Container(
@@ -384,13 +532,76 @@ class _KeranjangState extends State<Keranjang> {
                 children: [
                   Text(
                     "Total",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 14),
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
                   ),
                   Text(
                     "Rp." + ProdukformatNumber(30000) + ",00",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  )
+                ],
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: isTrue
+                    ? () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Checkout()));
+                      }
+                    : null,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: isTrue ? ColorValue.primaryColor : Color(0xff53B175),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                      child: Text(
+                    "Pesan",
                     style: TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 14),
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  )),
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+
+  Widget _keranjangBarLoading() {
+    return Positioned(
+        bottom: 0,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.10,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.25),
+                spreadRadius: 0,
+                blurRadius: 4,
+                offset: Offset(1, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Total",
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+                  ),
+                  Text(
+                    "Rp." + ProdukformatNumber(30000) + ",00",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                   )
                 ],
               ),
@@ -398,27 +609,27 @@ class _KeranjangState extends State<Keranjang> {
               GestureDetector(
                 onTap: isChecked
                     ? () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Checkout()));
-                }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Checkout()));
+                      }
                     : null,
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.3,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: isChecked ? ColorValue.primaryColor : Color(0xff53B175),
+                    color: ColorValue.primaryColor,
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Center(
                       child: Text(
-                        "Pesan",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      )),
+                    "Pesan",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  )),
                 ),
               )
             ],

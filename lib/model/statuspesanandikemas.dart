@@ -1,26 +1,26 @@
 // To parse this JSON data, do
 //
-//     final statusPesananAllModel = statusPesananAllModelFromJson(jsonString);
+//     final statusPesananDikemasModel = statusPesananDikemasModelFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-StatusPesananAllModel statusPesananAllModelFromJson(String str) => StatusPesananAllModel.fromJson(json.decode(str));
+StatusPesananDikemasModel statusPesananDikemasModelFromJson(String str) => StatusPesananDikemasModel.fromJson(json.decode(str));
 
-String statusPesananAllModelToJson(StatusPesananAllModel data) => json.encode(data.toJson());
+String statusPesananDikemasModelToJson(StatusPesananDikemasModel data) => json.encode(data.toJson());
 
-class StatusPesananAllModel {
+class StatusPesananDikemasModel {
   String status;
   String message;
   List<Datum> data;
 
-  StatusPesananAllModel({
+  StatusPesananDikemasModel({
     required this.status,
     required this.message,
     required this.data,
   });
 
-  factory StatusPesananAllModel.fromJson(Map<String, dynamic> json) => StatusPesananAllModel(
+  factory StatusPesananDikemasModel.fromJson(Map<String, dynamic> json) => StatusPesananDikemasModel(
     status: json["status"],
     message: json["message"],
     data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
@@ -44,7 +44,7 @@ class Datum {
   AlamatPengiriman alamatPengiriman;
   List<BarangPesanan> barangPesanan;
   Tagihan tagihan;
-  int total;
+  double total;
 
   Datum({
     required this.icon,
@@ -71,7 +71,7 @@ class Datum {
     alamatPengiriman: AlamatPengiriman.fromJson(json["alamat pengiriman"]),
     barangPesanan: List<BarangPesanan>.from(json["barang_pesanan"].map((x) => BarangPesanan.fromJson(x))),
     tagihan: Tagihan.fromJson(json["tagihan"]),
-    total: json["total"],
+    total: json["total"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -91,8 +91,8 @@ class Datum {
 
 class AlamatPengiriman {
   String namaPemesan;
-  dynamic nomorTelfon;
-  dynamic alamat;
+  String? nomorTelfon;
+  String? alamat;
 
   AlamatPengiriman({
     required this.namaPemesan,
@@ -123,7 +123,7 @@ class BarangPesanan {
   String status;
   DateTime createdAt;
   DateTime updatedAt;
-  dynamic variantImg;
+  String variantImg;
   String variant;
   String variantDesc;
   int stok;
@@ -211,7 +211,7 @@ class BarangPesanan {
 
 class Tagihan {
   int totalHarga;
-  int ongkosKirim;
+  double ongkosKirim;
 
   Tagihan({
     required this.totalHarga,
@@ -220,7 +220,7 @@ class Tagihan {
 
   factory Tagihan.fromJson(Map<String, dynamic> json) => Tagihan(
     totalHarga: json["total_harga"],
-    ongkosKirim: json["ongkos_kirim"],
+    ongkosKirim: json["ongkos_kirim"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {

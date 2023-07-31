@@ -6,5 +6,7 @@ abstract class StatusPesananEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetStatusPesananAllList extends StatusPesananEvent {}
+class GetStatusPesananKonfirmasiList extends StatusPesananEvent {}
+class GetStatusPesananDisiapkanList extends StatusPesananEvent {}
+class GetStatusPesananDiantarList extends StatusPesananEvent {}
 class GetStatusPesananSelesaiList extends StatusPesananEvent {}

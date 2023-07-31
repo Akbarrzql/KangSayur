@@ -38,6 +38,7 @@ class _PanelWidgetState extends State<PanelWidget> {
       child: ScrollConfiguration(
         behavior: ScrollBehavior(),
         child: ListView(
+          scrollDirection: Axis.vertical,
           controller: widget.controller,
           shrinkWrap: true,
           children: <Widget>[
@@ -61,7 +62,8 @@ class _PanelWidgetState extends State<PanelWidget> {
                   children: [
                     Text(
                       "Toko disekitar",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Spacer(),
                     Text(
@@ -78,8 +80,8 @@ class _PanelWidgetState extends State<PanelWidget> {
                 ),
                 BlocProvider(
                   create: (_) => _jsonBloc,
-                  child: BlocListener<JsonBloc, JsonState>(listener:
-                      (context, state) {
+                  child: BlocListener<JsonBloc, JsonState>(
+                      listener: (context, state) {
                     if (state is JsonError) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -87,8 +89,8 @@ class _PanelWidgetState extends State<PanelWidget> {
                         ),
                       );
                     }
-                  }, child:
-                      BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+                  }, child: BlocBuilder<JsonBloc, JsonState>(
+                          builder: (context, state) {
                     if (state is JsonInitial) {
                       return Loading();
                     } else if (state is JsonLoading) {
