@@ -10,11 +10,14 @@ class CardMenunggu extends StatelessWidget {
     required this.gambar,
     required this.title,
     required this.toko,
+    required this.onTap,
   }) : super(key: key);
   //declare variable
   final String gambar;
   final String title;
   final String toko;
+  //void callback
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class CardMenunggu extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Image.asset(this.gambar, fit: BoxFit.cover,),
+            child: Image.network('https://kangsayur.nitipaja.online'+this.gambar, fit: BoxFit.cover,),
           ),
           Container(
             margin: EdgeInsets.only(left: 10),
@@ -58,10 +61,7 @@ class CardMenunggu extends StatelessWidget {
                 Spacer(),
                 GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      // return Mengulas();
-                      return Container();
-                    },));
+                    this.onTap();
                   },
                   child: Container(
                     height: 30,

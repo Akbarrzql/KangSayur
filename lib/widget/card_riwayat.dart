@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 import '../common/color_value.dart';
 
@@ -74,7 +75,8 @@ class CardRiwayat extends StatelessWidget {
                             height: 5,
                           ),
                           Text(
-                            tanggalVerifikasiProduk,
+                            DateFormat('dd-MM-yyyy').format(
+                                DateTime.parse(tanggalVerifikasiProduk)),
                             style:
                                 Theme.of(context).textTheme.subtitle1!.copyWith(
                                       fontWeight: FontWeight.w400,

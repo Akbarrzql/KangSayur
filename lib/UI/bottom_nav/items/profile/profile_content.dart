@@ -36,11 +36,11 @@ class _Profile_contentState extends State<Profile_content> {
               name: "Riwayat Transaksi",
               route: Riwayat_transaksi(),
               context: context),
-          Profile_list(
-              icon: "assets/icon/love.svg",
-              name: "Wishlist",
-              route: Whistlist(),
-              context: context),
+          // Profile_list(
+          //     icon: "assets/icon/love.svg",
+          //     name: "Wishlist",
+          //     route: Whistlist(),
+          //     context: context),
           Profile_list(
               icon: "assets/icon/market.svg",
               name: "Toko Favorit",
@@ -81,11 +81,11 @@ class _Profile_contentState extends State<Profile_content> {
           //     name: "Telur",
           //     route: Home(),
           //     context: context),
-          Text("Pengaturan",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-          SizedBox(
-            height: 10,
-          ),
+          // Text("Pengaturan",
+          //     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          // SizedBox(
+          //   height: 10,
+          // ),
           Profile_list(
               icon: "assets/icon/inbox.svg",
               name: "Inbox",

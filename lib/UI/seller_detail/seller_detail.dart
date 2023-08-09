@@ -2,13 +2,13 @@ import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kangsayur/UI/seller_detail/seller_head.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
 import 'package:kangsayur/UI/seller_detail/seller_twobox.dart';
 import 'package:kangsayur/UI/seller_detail/tabbar/items/seller_beranda.dart';
 import 'package:kangsayur/UI/seller_detail/tabbar/items/seller_tentang.dart';
 import 'package:kangsayur/model/tokodetailmodel.dart';
-import 'package:sliver_header_delegate/sliver_header_delegate.dart';
-
+import 'package:shimmer/shimmer.dart';
+import '../../widget/card_product.dart';
 import 'tabbar/items/Seller_katalog.dart';
 import 'tabbar/items/seller_produk.dart';
 import '../../bloc/tokodetail_bloc/tokodetail_bloc.dart';
@@ -56,7 +56,7 @@ class _Seller_DetailState extends State<Seller_Detail>
     super.initState();
     _tokoDetailBloc.add(GetTokoDetailList(widget.tokoId));
     _scrollController = ScrollController()..addListener(_scrollListener);
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -155,9 +155,6 @@ class _Seller_DetailState extends State<Seller_Detail>
                   indicatorSize: TabBarIndicatorSize.label,
                   tabs: [
                     Tab(
-                      text: "Beranda",
-                    ),
-                    Tab(
                       text: "Produk",
                     ),
                     Tab(
@@ -175,10 +172,47 @@ class _Seller_DetailState extends State<Seller_Detail>
         child: AutoScaleTabBarView(
           controller: _tabController,
           children: [
-            Seller_beranda(),
-            Seller_produk(),
+            BlocBuilder<TokoDetailBloc, TokoDetailState>(
+              bloc: _tokoDetailBloc,
+              builder: (context, state) {
+                if (state is TokoDetailInitial) {
+                  return _produkLoading();
+                } else if (state is TokoDetailLoading) {
+                  return _produkLoading();
+                } else if (state is TokoDetailLoaded) {
+                  return Seller_produk(tokoDetailModel: state.tokoDetailList);
+                } else if (state is TokoDetailError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                } else {
+                  return Center(
+                    child: Text(""),
+                  );
+                }
+              },
+            ),
             Seller_katalog(),
-            Seller_tentang()
+            BlocBuilder<TokoDetailBloc, TokoDetailState>(
+              bloc: _tokoDetailBloc,
+              builder: (context, state) {
+                if (state is TokoDetailInitial) {
+                  return Loading();
+                } else if (state is TokoDetailLoading) {
+                  return Loading();
+                } else if (state is TokoDetailLoaded) {
+                  return Seller_tentang(tokoDetailModel: state.tokoDetailList);
+                } else if (state is TokoDetailError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                } else {
+                  return Center(
+                    child: Text(""),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -186,8 +220,7 @@ class _Seller_DetailState extends State<Seller_Detail>
   }
 
   Widget _title(TokoDetailModel data) {
-    return
-    _isShrink
+    return _isShrink
         ? Text(
             data.data.namaToko,
             style: TextStyle(
@@ -416,6 +449,36 @@ class _Seller_DetailState extends State<Seller_Detail>
       ],
     );
   }
+
+  Widget _produkLoading() {
+    return GridView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: 6,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.6,
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 20,
+      ),
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: CardProduk(
+            hargaProduk: '123123',
+            imageProduk: 'assets/images/wortel.png',
+            jarakProduk: '1.2 km',
+            namaProduk: '123123',
+            penjualProduk: 'Toko Bu Endah',
+          ),
+        );
+      },
+    );
+  }
+
+
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {

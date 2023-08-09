@@ -37,12 +37,14 @@ class Datum {
   int id;
   String imgProfile;
   String namaToko;
+  String alamatToko;
   List<GetProductCart> getProductCart;
 
   Datum({
     required this.id,
     required this.imgProfile,
     required this.namaToko,
+    required this.alamatToko,
     required this.getProductCart,
   });
 
@@ -50,6 +52,7 @@ class Datum {
     id: json["id"],
     imgProfile: json["img_profile"],
     namaToko: json["nama_toko"],
+    alamatToko: json["alamat_toko"],
     getProductCart: List<GetProductCart>.from(json["get_product_cart"].map((x) => GetProductCart.fromJson(x))),
   );
 
@@ -57,6 +60,7 @@ class Datum {
     "id": id,
     "img_profile": imgProfile,
     "nama_toko": namaToko,
+    "alamat_toko": alamatToko,
     "get_product_cart": List<dynamic>.from(getProductCart.map((x) => x.toJson())),
   };
 }
@@ -67,7 +71,7 @@ class GetProductCart {
   int userId;
   int tokoId;
   int variantId;
-  String? variantImg;
+  String variantImg;
   String variant;
   int stok;
   String status;

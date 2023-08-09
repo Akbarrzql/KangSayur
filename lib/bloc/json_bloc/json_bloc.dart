@@ -84,7 +84,7 @@ class JsonBloc extends Bloc<JsonEvent, JsonState> {
     on<GetCheckoutList>((event, emit) async {
       try {
         emit(JsonLoading());
-        final mList = await _apiRepository.getCheckoutList();
+        final mList = await _apiRepository.getCheckoutList(event.alamatId);
         emit(JsonLoaded(mList, mList, mList, mList,mList,mList,mList,mList, mList, mList));
       } on NetworkError {
         emit(JsonError("Couldn't fetch data. Is the device online?"));

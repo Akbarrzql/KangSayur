@@ -5,14 +5,14 @@ import '../UI/detail/detail.dart';
 import '../common/color_value.dart';
 
 class CardProduk extends StatelessWidget {
-  const CardProduk(
-      {Key? key,
-      required this.imageProduk,
-      required this.jarakProduk,
-      required this.namaProduk,
-      required this.penjualProduk,
-      required this.hargaProduk,})
-      : super(key: key);
+  const CardProduk({
+    Key? key,
+    required this.imageProduk,
+    required this.jarakProduk,
+    required this.namaProduk,
+    required this.penjualProduk,
+    required this.hargaProduk,
+  }) : super(key: key);
   final String imageProduk;
   final String jarakProduk;
   final String namaProduk;
@@ -25,6 +25,7 @@ class CardProduk extends StatelessWidget {
       child: Stack(
         children: [
           Container(
+            clipBehavior: Clip.antiAlias,
               width: 145,
               height: 248,
               decoration: BoxDecoration(
@@ -46,15 +47,19 @@ class CardProduk extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 145,
-                        height: 112,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
+                      Center(
+                        child: Container(
+                          width: 145,
+                          height: 112,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: imageProduk == null
+                              ? Image.asset("assets/images/wortel.png")
+                              : Image.network(
+                                  "https://kangsayur.nitipaja.online" +
+                                      imageProduk, fit: BoxFit.cover,),
                         ),
-                        child:
-                            imageProduk == null ? Image.asset("assets/images/wortel.png") :
-                        Image.network("https://kangsayur.nitipaja.online"+imageProduk),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(9, 0, 9, 0),
@@ -68,7 +73,10 @@ class CardProduk extends StatelessWidget {
                                 const SizedBox(
                                   height: 9,
                                 ),
-                                Text(jarakProduk.length <= 4 ? jarakProduk : jarakProduk.substring(0, 4) + " km",
+                                Text(
+                                    jarakProduk.length <= 4
+                                        ? jarakProduk
+                                        : jarakProduk.substring(0, 4) + " km",
                                     style: Theme.of(context)
                                         .textTheme
                                         .subtitle1!

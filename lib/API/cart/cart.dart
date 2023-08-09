@@ -32,7 +32,6 @@ class Cart {
     }
   }
 
-
   Future<bool> ValueProductCart(String produkId, String tokoId,
       String inputValue, String variantId) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -54,7 +53,9 @@ class Cart {
       return false;
     }
   }
-  Future<bool> DeleteProductCart(String produkId, String tokoId, String variantId) async {
+
+  Future<bool> DeleteProductCart(
+      String produkId, String tokoId, String variantId) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
     print(token);
@@ -97,21 +98,28 @@ class Cart {
     }
   }
 
-  Future<OrderModel> Order(List<Map<String, dynamic>> dataArray) async {
+  Future<OrderModel> Order(
+      List<Map<String, dynamic>> dataArray, int total_keseluruhan) async {
+    print('masuk order');
+    print(dataArray);
     SharedPreferences pref = await SharedPreferences.getInstance();
     var jsonData = jsonEncode({'checkout': dataArray});
 
     String? token = pref.getString('token');
     print(token);
     try {
-      var response = await http.post(Uri.parse(_url + 'user/produk/cart/pesan'),
+      var response = await http.post(
+          Uri.parse(_url +
+              'user/produk/cart/pesan?total_keseluruhan=$total_keseluruhan'),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
           },
           body: jsonData);
+      print(jsonData);
       if (response.statusCode == 200) {
+        print('order');
         print(response.body);
         OrderModel data = orderModelFromJson(response.body);
         print(data.data.snapToken);

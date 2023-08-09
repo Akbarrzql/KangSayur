@@ -13,6 +13,7 @@ import 'package:kangsayur/model/statuspesanandikemas.dart';
 import 'package:kangsayur/model/statuspesanandisiapkanmodel.dart';
 import 'package:kangsayur/model/statuspesananselesaiselesai.dart';
 import 'package:kangsayur/widget/card_riwayat.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../common/color_value.dart';
 import '../../../home/home.dart';
@@ -143,9 +144,9 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                           BlocBuilder<StatusPesananBloc, StatusPesananState>(
                               builder: (context, state) {
                         if (state is StatusPesananInitial) {
-                          return Loading();
+                          return loading_status();
                         } else if (state is StatusPesananLoading) {
-                          return Loading();
+                          return loading_status();
                         } else if (state is StatusPesananLoaded) {
                           return status_SemuaPesanan(
                               state.menungguKonfirmasiList);
@@ -216,9 +217,9 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                       BlocBuilder<StatusPesananBloc, StatusPesananState>(
                           builder: (context, state) {
                             if (state is StatusPesananInitial) {
-                              return Loading();
+                              return loading_status();
                             } else if (state is StatusPesananLoading) {
-                              return Loading();
+                              return loading_status();
                             } else if (state is StatusPesananLoaded) {
                               return status_Disiapkan(state.seleseiList);
                             } else if (state is StatusPesananError) {
@@ -288,9 +289,9 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                       BlocBuilder<StatusPesananBloc, StatusPesananState>(
                           builder: (context, state) {
                             if (state is StatusPesananInitial) {
-                              return Loading();
+                              return loading_status();
                             } else if (state is StatusPesananLoading) {
-                              return Loading();
+                              return loading_status();
                             } else if (state is StatusPesananLoaded) {
                               return status_Diantar(state.diantarList);
                             } else if (state is StatusPesananError) {
@@ -360,9 +361,9 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                           BlocBuilder<StatusPesananBloc, StatusPesananState>(
                               builder: (context, state) {
                         if (state is StatusPesananInitial) {
-                          return Loading();
+                          return loading_status();
                         } else if (state is StatusPesananLoading) {
-                          return Loading();
+                          return loading_status();
                         } else if (state is StatusPesananLoaded) {
                           return status_Selesai(state.seleseiList);
                         } else if (state is StatusPesananError) {
@@ -462,7 +463,7 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
       itemBuilder: (context, i) {
         return CardRiwayat(
           jenisVerifikasiProduk: data.data[i].namaToko.toString(),
-          tanggalVerifikasiProduk: data.data[i].tanggal,
+          tanggalVerifikasiProduk: data.data[i].tanggal.toString(),
           namaVerifikasiProduk: data.data[i].barangPesanan[0].namaProduk,
           descVerifikasiProduk: data.data[i].barangPesanan[0].variant,
           gambarVerifikasiProduk: data.data[i].barangPesanan[0].variantImg,
@@ -473,6 +474,13 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               context,
               MaterialPageRoute(
                 builder: (context) => Detail_Riwayat_Pembelian(
+                  StatusDiulas: [],
+                  banyakBarang: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].jumlahPembelian
+                  ],
+                  latitude: 0,
+                  longitude: 0,
                   Status: data.data[i].barangPesanan[0].status,
                   Nama: data.data[i].alamatPengiriman.namaPemesan,
                   AlamatUser: "asdasdsdadsasadasd",
@@ -539,6 +547,13 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               context,
               MaterialPageRoute(
                 builder: (context) => Detail_Riwayat_Pembelian(
+                  StatusDiulas: [],
+                  banyakBarang: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].jumlahPembelian
+                  ],
+                  latitude: 0,
+                  longitude: 0,
                   Status: data.data[i].barangPesanan[0].status,
                   Nama: data.data[i].alamatPengiriman.namaPemesan,
                   AlamatUser: "asdasdsdadsasadasd",
@@ -605,9 +620,16 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               context,
               MaterialPageRoute(
                 builder: (context) => Detail_Riwayat_Pembelian(
+                  StatusDiulas: [],
+                  banyakBarang: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].jumlahPembelian
+                  ],
+                  latitude: data.data[i].alamatPengiriman.userLat,
+                  longitude: data.data[i].alamatPengiriman.userLong,
                   Status: data.data[i].barangPesanan[0].status,
                   Nama: data.data[i].alamatPengiriman.namaPemesan,
-                  AlamatUser: "asdasdsdadsasadasd",
+                  AlamatUser: data.data[i].alamatPengiriman.alamat,
                   NoHP: "123018308132",
                   GambarProduk: [
                     for (int j = 0; j < data.data[i].barangPesanan.length; j++)
@@ -672,6 +694,16 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               context,
               MaterialPageRoute(
                 builder: (context) => Detail_Riwayat_Pembelian(
+                  StatusDiulas: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].statusDiulas
+                  ],
+                  banyakBarang: [
+                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                      data.data[i].barangPesanan[j].jumlahPembelian
+                  ],
+                  latitude: 0,
+                  longitude: 0,
                   Status: data.data[i].barangPesanan[0].status.toString(),
                   Nama: data.data[i].alamatPengiriman.namaPemesan.toString(),
                   AlamatUser: "asdasdsdadsasadasd",
@@ -715,6 +747,36 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
             for (int j = 0; j < data.data[i].barangPesanan.length; j++)
               data.data[i].barangPesanan[j].variant
           ],
+        );
+      },
+    );
+  }
+  Widget loading_status() {
+    return ListView.builder(
+      itemCount: 3,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, i) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            margin: EdgeInsets.only(bottom: 5),
+            color: Colors.grey[300],
+            child: CardRiwayat(
+              onPressed: (){},
+              jenisVerifikasiProduk: 'asdasdasdasd',
+              tanggalVerifikasiProduk: '12123123',
+              namaVerifikasiProduk: 'asfasf',
+              descVerifikasiProduk: 'jajang ajsdasfk',
+              gambarVerifikasiProduk: '123123',
+              statusVerifikasiProduk:
+                  'afksfas',
+              banyakVerifikasiProduk: [
+                'asdasd'
+              ],
+            ),
+          ),
         );
       },
     );

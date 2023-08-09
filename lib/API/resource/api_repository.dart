@@ -1,5 +1,7 @@
 import 'package:kangsayur/model/checkoutmodel.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
+import 'package:kangsayur/model/iklanmodel.dart';
+import 'package:kangsayur/model/menunggudiulasmodel.dart';
 import 'package:kangsayur/model/nearesttokomodel.dart';
 import 'package:kangsayur/model/productmostpopularmodel.dart';
 import 'package:kangsayur/model/productusermostvisitmodel.dart';
@@ -9,6 +11,7 @@ import 'package:kangsayur/model/statuspesananselesaiselesai.dart';
 import 'package:kangsayur/model/subtotalcartmodel.dart';
 import 'package:kangsayur/model/tokopopularmodel.dart';
 
+import '../../model/alamatmodel.dart';
 import '../../model/cartproductmodel.dart';
 import '../../model/profilemodel.dart';
 import '../../model/searchproductmodel.dart';
@@ -49,8 +52,8 @@ class ApiRepository {
   Future<CartProductModel> getCartProductList() async {
     return await _apiProvider.CartProductModelList();
   }
-  Future<CheckoutModel> getCheckoutList() async {
-    return await _apiProvider.CheckoutModelList();
+  Future<CheckoutModel> getCheckoutList(int alamatId) async {
+    return await _apiProvider.CheckoutModelList(alamatId);
   }
   Future<StatusPesananDikemasModel> getStatusPesananKonfirmasiList() async {
     return await _apiProvider.StatusPesananKonfirmasiList();
@@ -70,6 +73,16 @@ class ApiRepository {
   Future<SubTotalCartModel> getSubTotalList() async {
     return await _apiProvider.SubTotalCartList();
   }
+  Future<IklanModel> getIklanList() async {
+    return await _apiProvider.IklanList();
+  }
+  Future<MenungguDiulasModel> getMenungguDiulasList() async {
+    return await _apiProvider.Menunggu_diulas();
+  }
+   Future<AlamatModel> getAlamatList() async {
+    return await _apiProvider.Alamat();
+  }
+
 
 }
 

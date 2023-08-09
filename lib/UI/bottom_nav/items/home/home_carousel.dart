@@ -11,20 +11,47 @@ class Home_carousel extends StatefulWidget {
 class _Home_carouselState extends State<Home_carousel> {
   @override
   Widget build(BuildContext context) {
-    return   CarouselSlider(
-        items: [
-          Image.asset("assets/images/carousel.png", fit: BoxFit.fill,),
-          Image.asset("assets/images/carousel.png", fit: BoxFit.fill,),
-          Image.asset("assets/images/carousel.png", fit: BoxFit.fill,),
-        ],
-        options: CarouselOptions(
-          viewportFraction: 0.82,
-          // aspectRatio: 12 / 5,
-          enlargeCenterPage: false,
-          padEnds: false,
-          enableInfiniteScroll: false,
-          height: 135,
+    List<String> carouselItems = [
+      for (var i = 0; i < 3; i++) "assets/images/carousel.png"
+    ];
+    int _currentIndex = 0;
 
-        ));
+    return CarouselSlider(
+      items: carouselItems.map((item) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.symmetric(horizontal: 5.0),
+              child: Image.asset(
+                item,
+                fit: BoxFit.fill,
+              ),
+            );
+          },
+        );
+      }).toList(),
+      options: CarouselOptions(
+        height: 150.0,
+        viewportFraction: 0.9,
+        initialPage: _currentIndex,
+        enableInfiniteScroll: true,
+        reverse: false,
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 3),
+        autoPlayAnimationDuration: Duration(milliseconds: 800),
+        autoPlayCurve: Curves.fastOutSlowIn,
+        onPageChanged: (index, reason) {
+          setState(() {
+            print(index);
+            _currentIndex = index;
+          });
+        },
+      ),
+    );
   }
 }

@@ -26,7 +26,8 @@ class Head_mengulas extends StatelessWidget {
             height: 63,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(2)),
-            child: Image.asset(
+            child: Image.network(
+              'https://kangsayur.nitipaja.online'+
               profil_seller,
               fit: BoxFit.cover,
             ),

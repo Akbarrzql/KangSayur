@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kangsayur/model/tokodetailmodel.dart';
 
 class Seller_tentang extends StatefulWidget {
-  const Seller_tentang({Key? key}) : super(key: key);
+  Seller_tentang({Key? key, required this.tokoDetailModel}) : super(key: key);
+  TokoDetailModel tokoDetailModel;
 
   @override
   State<Seller_tentang> createState() => _Seller_tentangState();
@@ -18,7 +20,7 @@ class _Seller_tentangState extends State<Seller_tentang> {
           SizedBox(
             height: 25,
           ),
-          Seller_deskripsi(),
+          _deskripsi(widget.tokoDetailModel.data.deskripsi),
           SizedBox(
             height: 20,
           ),
@@ -28,6 +30,95 @@ class _Seller_tentangState extends State<Seller_tentang> {
       ),
     );
   }
+  Widget _deskripsi (String deskripsi){
+    return Column(
+      children: [
+        Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Deskripsi",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+//text deskripsi
+              Text(
+                "$deskripsi",
+                style: TextStyle(fontSize: 12),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                thickness: 1,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _informasiToko(String alamat, String open, String close, String noTelp){
+    return Column(
+      children: [
+        Container(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Informasi Toko",
+                      style:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  InformasiToko(
+                      context: context,
+                        title: alamat,
+                      value: "Jl. Jalan 1 sakfpsafkskfdksfkas  dakksajf asf"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InformasiToko(
+                      context: context,
+                      title: "Jam Kerja",
+                      value: "$open - $close"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InformasiToko(
+                      context: context,
+                      title: "No Telepon",
+                      value: noTelp),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //make info ulasan
+                  InformasiToko(
+                      context: context, title: "Ulasan", value: "100 ulasan"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //make info transaksi
+                  InformasiToko(
+                      context: context,
+                      title: "Transaksi",
+                      value: "100 transaksi"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    thickness: 1,
+                  )
+                ]))
+
+      ],
+    );
+
+  }
+
 }
 
 //make custom widget of informasi toko

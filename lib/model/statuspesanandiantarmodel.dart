@@ -92,23 +92,31 @@ class Datum {
 class AlamatPengiriman {
   String namaPemesan;
   dynamic nomorTelfon;
-  dynamic alamat;
+  double userLat;
+  double userLong;
+  String alamat;
 
   AlamatPengiriman({
     required this.namaPemesan,
     required this.nomorTelfon,
+    required this.userLat,
+    required this.userLong,
     required this.alamat,
   });
 
   factory AlamatPengiriman.fromJson(Map<String, dynamic> json) => AlamatPengiriman(
     namaPemesan: json["nama_pemesan"],
     nomorTelfon: json["nomor_telfon"],
+    userLat: json["user_lat"].toDouble(),
+    userLong: json["user_long"].toDouble(),
     alamat: json["alamat"],
   );
 
   Map<String, dynamic> toJson() => {
     "nama_pemesan": namaPemesan,
     "nomor_telfon": nomorTelfon,
+    "user_lat": userLat,
+    "user_long": userLong,
     "alamat": alamat,
   };
 }
@@ -176,7 +184,7 @@ class BarangPesanan {
     stok: json["stok"],
     hargaVariant: json["harga_variant"],
     namaProduk: json["nama_produk"],
-    rating: json["rating"]?.toDouble(),
+    rating: json["rating"]?.toDouble() ?? 0.0 ,
     kategoriId: json["kategori_id"],
     tokoId: json["toko_id"],
     ulasanId: json["ulasan_id"],

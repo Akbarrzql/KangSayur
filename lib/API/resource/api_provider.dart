@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/menunggu_diulas.dart';
 import 'package:kangsayur/model/cartproductmodel.dart';
 import 'package:kangsayur/model/checkoutmodel.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
+import 'package:kangsayur/model/iklanmodel.dart';
+import 'package:kangsayur/model/menunggudiulasmodel.dart';
 import 'package:kangsayur/model/nearesttokomodel.dart';
 import 'package:kangsayur/model/productusermostvisitmodel.dart';
 import 'package:kangsayur/model/profilemodel.dart';
@@ -13,6 +16,7 @@ import 'package:kangsayur/model/tokodetailmodel.dart';
 import 'package:kangsayur/model/tokopopularmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../model/alamatmodel.dart';
 import '../../model/productmostpopularmodel.dart';
 import '../../model/statuspesanandikemas.dart';
 import '../../model/statuspesananselesaiselesai.dart';
@@ -175,20 +179,37 @@ class ApiProvider {
     }
   }
 
-  Future<CheckoutModel> CheckoutModelList() async {
+  Future<CheckoutModel> CheckoutModelList(int alamatId) async {
+
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
-    try {
-      var response = await http
-          .get(Uri.parse(_url + '/user/produk/cart/checkout'), headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      });
-      print(response.body);
-      return checkoutModelFromJson(response.body);
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      rethrow;
+    if (alamatId == 0) {
+      try {
+        var response = await http
+            .get(Uri.parse(_url + '/user/produk/cart/checkout'), headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        });
+        print(response.body);
+        return checkoutModelFromJson(response.body);
+      } catch (error, stacktrace) {
+        print("Exception occured: $error stackTrace: $stacktrace");
+        rethrow;
+      }
+    }
+    else {
+      try {
+        var response = await http
+            .get(Uri.parse(_url + '/user/produk/cart/checkout?alamatId=$alamatId'), headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        });
+        print(response.body);
+        return checkoutModelFromJson(response.body);
+      } catch (error, stacktrace) {
+        print("Exception occured: $error stackTrace: $stacktrace");
+        rethrow;
+      }
     }
   }
 
@@ -287,6 +308,54 @@ class ApiProvider {
       });
       print(response.body);
       return subTotalCartModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+  }
+  Future<IklanModel> IklanList() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/display-iklan'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return iklanModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+  }
+  Future<MenungguDiulasModel> Menunggu_diulas() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/menunggu-diulas'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return menungguDiulasModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+  }
+  Future<AlamatModel> Alamat() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http
+          .get(Uri.parse(_url + '/user/alamat/list'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      print(response.body);
+      return alamatModelFromJson(response.body);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       rethrow;

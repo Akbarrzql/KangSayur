@@ -183,9 +183,9 @@ class _KeranjangState extends State<Keranjang> {
                   }, child: BlocBuilder<JsonBloc, JsonState>(
                           builder: (context, state) {
                     if (state is JsonInitial) {
-                      return Loading();
+                      return _cartProductListLoading();
                     } else if (state is JsonLoading) {
-                      return Loading();
+                      return _cartProductListLoading();
                     } else if (state is JsonLoaded) {
                       return _cartProductList(state.jsonCartProduct);
                     } else if (state is JsonError) {
@@ -276,9 +276,9 @@ class _KeranjangState extends State<Keranjang> {
                           }, child: BlocBuilder<JsonBloc, JsonState>(
                                   builder: (context, state) {
                             if (state is JsonInitial) {
-                              return Text('data');
+                              return _subTotalLoading();
                             } else if (state is JsonLoading) {
-                              return _pesanButtonLoading();
+                              return _subTotalLoading();
                             } else if (state is JsonLoaded) {
                               return _Total(state.jsonSubTotalCart);
                             } else if (state is JsonError) {
@@ -342,7 +342,11 @@ class _KeranjangState extends State<Keranjang> {
       onTap: isTrue
           ? () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Checkout()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Checkout(
+                            id: 0,
+                          )));
             }
           : null,
       child: Container(
@@ -370,7 +374,28 @@ class _KeranjangState extends State<Keranjang> {
       highlightColor: Colors.grey[100]!,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.3,
-        height: 40,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Center(
+            child: Text(
+          "Pesan",
+          style: TextStyle(
+              fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+        )),
+      ),
+    );
+  }
+
+  Widget _subTotalLoading() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: 15,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
@@ -425,18 +450,23 @@ class _KeranjangState extends State<Keranjang> {
         itemCount: widget.data.length,
         itemBuilder: (context, index) {
           return Card_keranjang(
-              gambar_produk: "assets/images/wortel.png",
+            kurang: () {
+              _cart.add(GetCartProductList());
+              _subtotal.add(GetSubTotalCartList());
+            },
+              tambah: () {
+                _cart.add(GetCartProductList());
+                _subtotal.add(GetSubTotalCartList());
+              },
+
               nama_toko: widget.data[index].namaToko,
               profil_toko: widget.data[index].imgProfile,
-              alamat_toko: "Jl. Raya Bogor KM 30",
-              hapus: (){
-                //remove index
+              alamat_toko: widget.data[index].alamatToko,
+              hapus: () {
                 setState(() {
                   widget.data.removeAt(index);
-                  if (widget.data[index].getProductCart.length == 0)
-                    widget.data.removeAt(index);
-                  print('asdasd');
                 });
+                widget.data.removeAt(index);
               },
               checklist: () {
                 _cart.add(GetCartProductList());
@@ -501,140 +531,243 @@ class _KeranjangState extends State<Keranjang> {
         });
   }
 
-  Widget _keranjangBar(CartProductModel widget) {
-    List status = [
-      for (var i = 0; i < widget.data.length; i++)
-        for (var j = 0; j < widget.data[i].getProductCart.length; j++)
-          widget.data[i].getProductCart[j].status
-    ];
-    bool isTrue = status.contains("true");
-    return Positioned(
-        bottom: 0,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.10,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                spreadRadius: 0,
-                blurRadius: 4,
-                offset: Offset(1, 0), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Total",
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
-                  ),
-                  Text(
-                    "Rp." + ProdukformatNumber(30000) + ",00",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                  )
-                ],
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: isTrue
-                    ? () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Checkout()));
-                      }
-                    : null,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: isTrue ? ColorValue.primaryColor : Color(0xff53B175),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                      child: Text(
-                    "Pesan",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  )),
-                ),
-              )
-            ],
-          ),
-        ));
-  }
-
-  Widget _keranjangBarLoading() {
-    return Positioned(
-        bottom: 0,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.10,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                spreadRadius: 0,
-                blurRadius: 4,
-                offset: Offset(1, 0), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Total",
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
-                  ),
-                  Text(
-                    "Rp." + ProdukformatNumber(30000) + ",00",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                  )
-                ],
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: isChecked
-                    ? () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Checkout()));
-                      }
-                    : null,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: ColorValue.primaryColor,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                      child: Text(
-                    "Pesan",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  )),
-                ),
-              )
-            ],
-          ),
-        ));
+  Widget _cartProductListLoading() {
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: 1,
+        itemBuilder: (context, index) {
+          return Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        //make profile for toko
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                              clipBehavior: Clip.antiAlias,
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300]!,
+                                borderRadius: BorderRadius.circular(500),
+                              )),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //make nama toko dan alamat toko
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[300],
+                                ),
+                                height: 20,
+                                width: MediaQuery.of(context).size.width * 0.5,
+                              ),
+                            ),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.65,
+                                height: 14,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[300],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 2,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 25),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Transform.scale(
+                                    scale: 1.4,
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                        ),
+                                        width: 20,
+                                        height: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      clipBehavior: Clip.antiAlias,
+                                      width: 80,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 12,
+                                  ),
+                                  Container(
+                                    height: 80,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.3,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Colors.grey[300],
+                                            ),
+                                          ),
+                                        ),
+                                        //make this widget isVariant
+                                        Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.3,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Colors.grey[300],
+                                            ),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.3,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Colors.grey[300],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 18,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      height: 35,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: Colors.grey[300]),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 12),
+                                      height: 35,
+                                      width: MediaQuery.of(context).size.width *
+                                              0.4 -
+                                          24,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.grey[300]),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.remove,
+                                            color: Colors.white,
+                                          ),
+                                          Center(
+                                            child: Container(
+                                              width: 20,
+                                              height: 35,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    )
+                  ]));
+        });
   }
 }
 

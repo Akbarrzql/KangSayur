@@ -15,7 +15,15 @@ class Ulasan extends StatefulWidget {
   List photo;
   List imgProduct;
 
-  Ulasan({Key? key, required this.rating, required this.comment , required this.name, required this.date, required this.photo, required this.imgProduct}) : super(key: key);
+  Ulasan(
+      {Key? key,
+      required this.rating,
+      required this.comment,
+      required this.name,
+      required this.date,
+      required this.photo,
+      required this.imgProduct})
+      : super(key: key);
 
   @override
   State<Ulasan> createState() => _UlasanState();
@@ -112,7 +120,7 @@ class _UlasanState extends State<Ulasan> {
                         name: widget.name[index],
                         date: widget.date[index].toString(),
                         comment: widget.comment[index],
-                        image: widget.photo[index].toString(),
+                        image: widget.imgProduct[index].toString(),
                         rating: widget.rating[index].toDouble(),
                         context: context,
                       ),
@@ -126,6 +134,7 @@ class _UlasanState extends State<Ulasan> {
       ),
     );
   }
+
   Widget Review({
     required String profile,
     required String name,
@@ -163,7 +172,7 @@ class _UlasanState extends State<Ulasan> {
                     Text(
                       name,
                       style:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       width: 5,
@@ -180,7 +189,7 @@ class _UlasanState extends State<Ulasan> {
                       itemPadding: EdgeInsets.only(right: 1),
                       minRating: 1,
                       glow: false,
-                      unratedColor: ColorValue.neutralColor,
+                      unratedColor: Colors.transparent,
                       onRatingUpdate: (double value) {},
                     ),
                   ],
@@ -204,34 +213,38 @@ class _UlasanState extends State<Ulasan> {
           height: 15,
         ),
         //make image review
-        GestureDetector(
-          onTap: () {
-            //make navigate to detail_photo
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Detail_photo(),
+        if (image != "null")
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  //make navigate to detail_photo
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Detail_photo(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Image.network(
+                    "https://kangsayur.nitipaja.online" +
+                        image.toString(),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            );
-          },
-          child: Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Hero(
-              tag: "someTag",
-              child: Image.network(
-                "https://kangsayur.nitipaja.online" +widget.photo[0].toString(),
-                fit: BoxFit.cover,
+              SizedBox(
+                height: 15,
               ),
-            ),
+
+            ],
           ),
-        ),
-        SizedBox(
-          height: 15,
-        ),
         Container(
           width: MediaQuery.of(context).size.width,
           height: 1,

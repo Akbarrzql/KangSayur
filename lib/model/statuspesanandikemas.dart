@@ -38,7 +38,7 @@ class Datum {
   String namaToko;
   String profilToko;
   String alamatToko;
-  String tanggal;
+  DateTime tanggal;
   int kodeTransaksi;
   int tokoId;
   AlamatPengiriman alamatPengiriman;
@@ -65,7 +65,7 @@ class Datum {
     namaToko: json["nama_toko"],
     profilToko: json["profil_toko"],
     alamatToko: json["alamat_toko"],
-    tanggal: json["tanggal"],
+    tanggal: DateTime.parse(json["tanggal"]),
     kodeTransaksi: json["kode_transaksi"],
     tokoId: json["toko_id"],
     alamatPengiriman: AlamatPengiriman.fromJson(json["alamat pengiriman"]),
@@ -79,7 +79,7 @@ class Datum {
     "nama_toko": namaToko,
     "profil_toko": profilToko,
     "alamat_toko": alamatToko,
-    "tanggal": tanggal,
+    "tanggal": tanggal.toIso8601String(),
     "kode_transaksi": kodeTransaksi,
     "toko_id": tokoId,
     "alamat pengiriman": alamatPengiriman.toJson(),
@@ -91,8 +91,8 @@ class Datum {
 
 class AlamatPengiriman {
   String namaPemesan;
-  String? nomorTelfon;
-  String? alamat;
+  int nomorTelfon;
+  String alamat;
 
   AlamatPengiriman({
     required this.namaPemesan,
@@ -120,6 +120,9 @@ class BarangPesanan {
   int variantId;
   int storeId;
   int userId;
+  String notes;
+  int alamatId;
+  String statusDiulas;
   String status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -135,6 +138,7 @@ class BarangPesanan {
   int ulasanId;
   int isOnsale;
   int jumlahPembelian;
+  int pembelian;
 
   BarangPesanan({
     required this.id,
@@ -143,6 +147,9 @@ class BarangPesanan {
     required this.variantId,
     required this.storeId,
     required this.userId,
+    required this.notes,
+    required this.alamatId,
+    required this.statusDiulas,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
@@ -158,6 +165,7 @@ class BarangPesanan {
     required this.ulasanId,
     required this.isOnsale,
     required this.jumlahPembelian,
+    required this.pembelian,
   });
 
   factory BarangPesanan.fromJson(Map<String, dynamic> json) => BarangPesanan(
@@ -167,6 +175,9 @@ class BarangPesanan {
     variantId: json["variant_id"],
     storeId: json["store_id"],
     userId: json["user_id"],
+    notes: json["notes"],
+    alamatId: json["alamat_id"],
+    statusDiulas: json["status_diulas"],
     status: json["status"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
@@ -176,12 +187,13 @@ class BarangPesanan {
     stok: json["stok"],
     hargaVariant: json["harga_variant"],
     namaProduk: json["nama_produk"],
-    rating: json["rating"]?.toDouble(),
+    rating: json["rating"]?.toDouble() ?? 0.0,
     kategoriId: json["kategori_id"],
     tokoId: json["toko_id"],
     ulasanId: json["ulasan_id"],
     isOnsale: json["is_onsale"],
     jumlahPembelian: json["jumlah_pembelian"],
+    pembelian: json["pembelian"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -191,6 +203,9 @@ class BarangPesanan {
     "variant_id": variantId,
     "store_id": storeId,
     "user_id": userId,
+    "notes": notes,
+    "alamat_id": alamatId,
+    "status_diulas": statusDiulas,
     "status": status,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
@@ -206,6 +221,7 @@ class BarangPesanan {
     "ulasan_id": ulasanId,
     "is_onsale": isOnsale,
     "jumlah_pembelian": jumlahPembelian,
+    "pembelian": pembelian,
   };
 }
 

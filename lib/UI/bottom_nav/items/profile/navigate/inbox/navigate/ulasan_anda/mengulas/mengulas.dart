@@ -35,7 +35,6 @@ class Mengulas extends StatefulWidget {
   double rating = 0;
   String comment = "";
 
-
   @override
   State<Mengulas> createState() => _MengulasState();
 }
@@ -53,9 +52,9 @@ class _MengulasState extends State<Mengulas> {
     }
   }
 
-
   //textediting controller
   TextEditingController commentController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,70 +72,102 @@ class _MengulasState extends State<Mengulas> {
           icon: SvgPicture.asset("assets/icon/arrow_left.svg"),
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          const SizedBox(
-            height: 20,
+          Container(
+            height: MediaQuery.of(context).size.height,
           ),
-          Head_mengulas(
-            nama_seller: widget.namaToko,
-            alamat_seller: widget.alamatToko,
-            profil_seller: widget.gambarToko,
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Head_mengulas(
+                  nama_seller: widget.namaToko,
+                  alamat_seller: widget.alamatToko,
+                  profil_seller: widget.gambarToko,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                // Card_mengulas(
+                //     gambar_produk: "assets/images/wortel.png",
+                //     nama_produk: widget.namaProduk,
+                //     nama_seller: widget.namaToko),
+                card_mengulas(
+                    gambar_produk: widget.gambarProduk,
+                    nama_seller: widget.namaToko,
+                    alamat_seller: widget.alamatToko),
+                //make button "Kirim Ulasan" height 50
+              ],
+            ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          // Card_mengulas(
-          //     gambar_produk: "assets/images/wortel.png",
-          //     nama_produk: widget.namaProduk,
-          //     nama_seller: widget.namaToko),
-          card_mengulas(
-              gambar_produk: widget.gambarProduk,
-              nama_seller: widget.namaToko,
-              alamat_seller: widget.alamatToko
-          ),
-          const Spacer(),
-          //make button "Kirim Ulasan" height 50
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: GestureDetector(
-              onTap: () {
-                Mengulas_post.mengulas(
-                    widget.rating.toString(),
-                    _imageFile!,
-                    commentController.text,
-                    widget.productId,
-                    widget.tokoId,
-                    widget.variantId,
-                    widget.transactionCode,
-                    context);
-              },
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 35),
-                decoration: BoxDecoration(
-                    color: ColorValue.primaryColor,
-                    borderRadius: BorderRadius.circular(5)),
-                height: 50,
-                child: const Center(
-                  child: Text(
-                    "Kirim Ulasan",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: GestureDetector(
+                onTap: () {
+                  if (widget.rating == 0.0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Rating tidak boleh kosong"),
+                      ),
+                    );
+                    return;
+                  }
+                  if (commentController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Komentar tidak boleh kosong"),
+                      ),
+                    );
+                    return;
+                  } else {
+                    print(_imageFile);
+                    Mengulas_post.mengulas(
+                        widget.rating.toString(),
+                        _imageFile,
+                        commentController.text,
+                        widget.productId,
+                        widget.tokoId,
+                        widget.variantId,
+                        widget.transactionCode,
+                        context);
+                  }
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 35),
+                  decoration: BoxDecoration(
+                      color: ColorValue.primaryColor,
+                      borderRadius: BorderRadius.circular(5)),
+                  height: 50,
+                  child: const Center(
+                    child: Text(
+                      "Kirim Ulasan",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
+
         ],
       ),
     );
   }
 
-  Widget card_mengulas({required String gambar_produk,
-    required String nama_seller,
-    required String alamat_seller}) {
+  Widget card_mengulas(
+      {required String gambar_produk,
+      required String nama_seller,
+      required String alamat_seller}) {
     return Container(
       margin: const EdgeInsets.only(left: 24, right: 24),
       //padding horizontal 22 vertical 15
@@ -165,8 +196,8 @@ class _MengulasState extends State<Mengulas> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Image.asset(
-                  widget.gambarProduk,
+                child: Image.network(
+                  'https://kangsayur.nitipaja.online' + widget.gambarProduk,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -269,15 +300,14 @@ class _MengulasState extends State<Mengulas> {
               color: const Color(0xfff6f6f6),
               borderRadius: BorderRadius.circular(5),
             ),
-            child:  TextField(
+            child: TextField(
               maxLines: 5,
-           controller: commentController,
+              controller: commentController,
               onChanged: (value) {
                 setState(() {
-                  commentController.text = value;
+                  value = commentController.text;
                 });
-              }
-              ,
+              },
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
@@ -324,10 +354,24 @@ class _MengulasState extends State<Mengulas> {
               ),
             ),
           ),
+          if (_imageFile != null)
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                image: DecorationImage(
+                  image: FileImage(_imageFile!),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
+
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -340,10 +384,10 @@ class _MengulasState extends State<Mengulas> {
                 Text(
                   "Pilih Foto",
                   style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: ColorValue.neutralColor,
-                  ),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: ColorValue.neutralColor,
+                      ),
                 ),
                 const SizedBox(
                   height: 30,
@@ -368,11 +412,11 @@ class _MengulasState extends State<Mengulas> {
                           Text(
                             "Kamera",
                             style:
-                            Theme.of(context).textTheme.subtitle1!.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: ColorValue.neutralColor,
-                            ),
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                      color: ColorValue.neutralColor,
+                                    ),
                           ),
                         ],
                       ),
@@ -394,11 +438,11 @@ class _MengulasState extends State<Mengulas> {
                           Text(
                             "Galeri",
                             style:
-                            Theme.of(context).textTheme.subtitle1!.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: ColorValue.neutralColor,
-                            ),
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                      color: ColorValue.neutralColor,
+                                    ),
                           ),
                         ],
                       ),

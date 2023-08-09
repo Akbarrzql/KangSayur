@@ -15,7 +15,8 @@ import '../../model/detailproductmodel.dart';
 import 'detail_storebox.dart';
 
 class Detail_content extends StatefulWidget {
-  Detail_content({Key? key, this.widget, required this.photo}) : super(key: key);
+  Detail_content({Key? key, this.widget, required this.photo})
+      : super(key: key);
   DetailProductModel? widget;
   String photo;
 
@@ -73,6 +74,7 @@ class _Detail_contentState extends State<Detail_content> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                clipBehavior: Clip.antiAlias,
                 height: 260,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
@@ -80,15 +82,18 @@ class _Detail_contentState extends State<Detail_content> {
                 child: Stack(
                   children: [
                     Center(
-                      child: Image.network(
-                        "https://kangsayur.nitipaja.online" +
-                            widget.widget!.data.image,
-                        fit: BoxFit.fill,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Image.network(
+                          "https://kangsayur.nitipaja.online" +
+                              widget.widget!.data.image,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Positioned(
-                      left: 2,
-                      bottom: 7,
+                      left: 0,
+                      bottom: 0,
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         height: 40,
@@ -104,7 +109,7 @@ class _Detail_contentState extends State<Detail_content> {
                                 return SvgPicture.asset("assets/icon/star.svg");
                               },
                               onRatingUpdate: (value) {},
-                              initialRating: widget.widget!.data.rating,
+                              initialRating: widget.widget!.data!.rating!,
                               ignoreGestures: true,
                               allowHalfRating: true,
                               itemCount: 5,
@@ -175,6 +180,7 @@ class _Detail_contentState extends State<Detail_content> {
               Text(widget.widget!.data.variant[0].variantDesc,
                   maxLines: isExpanded ? 100 : 5,
                   overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.justify,
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,

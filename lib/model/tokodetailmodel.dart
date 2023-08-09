@@ -48,6 +48,7 @@ class Data {
   DateTime createdAt;
   DateTime updatedAt;
   List<Category> category;
+  List<Produk> produk;
 
   Data({
     required this.id,
@@ -64,6 +65,7 @@ class Data {
     required this.createdAt,
     required this.updatedAt,
     required this.category,
+    required this.produk,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -81,6 +83,7 @@ class Data {
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     category: List<Category>.from(json["category"].map((x) => Category.fromJson(x))),
+    produk: List<Produk>.from(json["produk"].map((x) => Produk.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -98,6 +101,7 @@ class Data {
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "category": List<dynamic>.from(category.map((x) => x.toJson())),
+    "produk": List<dynamic>.from(produk.map((x) => x.toJson())),
   };
 }
 
@@ -118,5 +122,41 @@ class Category {
   Map<String, dynamic> toJson() => {
     "id": id,
     "nama_kategori": namaKategori,
+  };
+}
+
+class Produk {
+  int id;
+  String variantImg;
+  double distance;
+  String namaProduk;
+  String namaToko;
+  int hargaVariant;
+
+  Produk({
+    required this.id,
+    required this.variantImg,
+    required this.distance,
+    required this.namaProduk,
+    required this.namaToko,
+    required this.hargaVariant,
+  });
+
+  factory Produk.fromJson(Map<String, dynamic> json) => Produk(
+    id: json["id"],
+    variantImg: json["variant_img"],
+    distance: json["distance"]?.toDouble(),
+    namaProduk: json["nama_produk"],
+    namaToko: json["nama_toko"],
+    hargaVariant: json["harga_variant"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "variant_img": variantImg,
+    "distance": distance,
+    "nama_produk": namaProduk,
+    "nama_toko": namaToko,
+    "harga_variant": hargaVariant,
   };
 }

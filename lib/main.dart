@@ -26,7 +26,6 @@ import 'package:kangsayur/register/register.dart';
 import 'package:kangsayur/register/register_profile.dart';
 import 'package:kangsayur/register/set_password.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
-import 'package:kangsayur/test.dart';
 import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'API/auth/Auth.dart';
 import 'UI/bottom_nav/items/home/home.dart';

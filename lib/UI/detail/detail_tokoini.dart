@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/promo_list.dart';
+import 'package:kangsayur/UI/detail/detail.dart';
+import 'package:kangsayur/widget/card_product.dart';
+
+import '../../model/detailproductmodel.dart';
 
 class Detail_tokoini extends StatefulWidget {
-  const Detail_tokoini({Key? key}) : super(key: key);
+  Detail_tokoini({Key? key, required this.widget}) : super(key: key);
+  DetailProductModel widget;
 
   @override
   State<Detail_tokoini> createState() => _Detail_tokoiniState();
@@ -16,15 +21,45 @@ class _Detail_tokoiniState extends State<Detail_tokoini> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text("Di toko ini", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          ),),
-        SizedBox(
-          height: 5,
+          child: Text(
+            "Di toko ini",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
         ),
         SizedBox(
-          height: 248,
-            width: double.infinity,
-            child: Promo_List())
+          height: 20,
+        ),
+        Container(
+            height: 248 ,
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              padding: EdgeInsets.only(left: 24, bottom: 5, top: 5),
+              itemCount: widget.widget.data.tokoIni.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 24),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return Detail(
+                          id: widget.widget.data.tokoIni[index].productId,
+                        );
+                      }));
+                    },
+                    child: CardProduk(
+                      imageProduk: widget.widget.data.tokoIni[index].variantImg,
+                      jarakProduk: widget.widget.data.tokoIni[index].distance.toString(),
+                      namaProduk: widget.widget.data.tokoIni[index].namaProduk,
+                      penjualProduk: widget.widget.data.tokoIni[index].namaToko,
+                      hargaProduk: widget.widget.data.tokoIni[index].hargaVariant.toString(),
+                    ),
+                  ),
+                );
+              },
+            ))
       ],
     );
   }

@@ -38,7 +38,7 @@ class _Register_profileState extends State<Register_profile> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          "Riwayat Transaksi",
+          "Foto Profil",
           style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
         ),
         leading: IconButton(
@@ -53,12 +53,18 @@ class _Register_profileState extends State<Register_profile> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 100,
-              backgroundImage: _imageFile == null
-                  ? const AssetImage("assets/images/profile.png")
-                  : FileImage(_imageFile!) as ImageProvider,
+            Spacer(),
+            GestureDetector(
+              onTap: () {
+                _showBottomSheet(context);
+              },
+              child: CircleAvatar(
+                backgroundColor: ColorValue.primaryColor,
+                radius: 130,
+                backgroundImage: _imageFile == null
+                    ? null
+                    : FileImage(_imageFile!) as ImageProvider,
+              ),
             ),
             Stack(
               clipBehavior: Clip.none,
@@ -109,18 +115,19 @@ class _Register_profileState extends State<Register_profile> {
                       ),
                     );
                     return;
-                  }else{
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Register_map(
-                        email: widget.email,
-                        name: widget.name,
-                        password: widget.password,
-                        image: _imageFile,
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Register_map(
+                          email: widget.email,
+                          name: widget.name,
+                          password: widget.password,
+                          image: _imageFile,
+                        ),
                       ),
-                    ),
-                  );}
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   primary: ColorValue.primaryColor,

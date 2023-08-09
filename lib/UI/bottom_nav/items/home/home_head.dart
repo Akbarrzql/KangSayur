@@ -28,34 +28,32 @@ class _Home_headState extends State<Home_head> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (_)=>_jsonBloc,
-      child: BlocListener<JsonBloc, JsonState>(
-          listener: (context, state) {
-            if (state is JsonError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                ),
-              );
-            }
-          },
-          child: BlocBuilder<JsonBloc,JsonState>(
-              builder: (context, state){
-                if (state is JsonInitial) {
-                  return _HeadHomeShimmer();
-                } else if (state is JsonLoading) {
-                  return _HeadHomeShimmer();;
-                } else if (state is JsonLoaded) {
-                  return _HeadHome(state.jsonProfile);
-                } else if (state is JsonError) {
-                  return Text(state.message);
-                }
-                return Container();
-              }
-          )
-      ),
+    return BlocProvider(
+      create: (_) => _jsonBloc,
+      child: BlocListener<JsonBloc, JsonState>(listener: (context, state) {
+        if (state is JsonError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+            ),
+          );
+        }
+      }, child: BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+        if (state is JsonInitial) {
+          return _HeadHomeShimmer();
+        } else if (state is JsonLoading) {
+          return _HeadHomeShimmer();
+          ;
+        } else if (state is JsonLoaded) {
+          return _HeadHome(state.jsonProfile);
+        } else if (state is JsonError) {
+          return Text(state.message);
+        }
+        return Container();
+      })),
     );
   }
+
   Widget _HeadHome(ProfileModel widget) {
     return Row(
       //make container rounded for profile
@@ -65,11 +63,14 @@ class _Home_headState extends State<Home_head> {
           width: 30,
           height: 30,
           decoration: BoxDecoration(
-              color: Colors.grey, borderRadius: BorderRadius.circular(50)),
-          child:
-          Image.network(
-              "https://kangsayur.nitipaja.online/${widget.data.photo}" == null ? "https://avatars.githubusercontent.com/u/60261133?v=4" : "https://kangsayur.nitipaja.online/${widget.data.photo}"
-          ),      ),
+              color: Colors.transparent, borderRadius: BorderRadius.circular(50)),
+          child: Image.network(
+              "https://kangsayur.nitipaja.online/${widget.data.photo}" == null
+                  ? "https://avatars.githubusercontent.com/u/60261133?v=4"
+                  : "https://kangsayur.nitipaja.online/${widget.data.photo}",
+          fit: BoxFit.cover,
+          ),
+        ),
         SizedBox(
           width: 15,
         ),
@@ -80,7 +81,10 @@ class _Home_headState extends State<Home_head> {
         ),
         Spacer(),
         GestureDetector(
-            onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Keranjang())); },
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Keranjang()));
+            },
             child: SvgPicture.asset("assets/icon/cart.svg")),
         SizedBox(
           width: 17,
@@ -89,6 +93,7 @@ class _Home_headState extends State<Home_head> {
       ],
     );
   }
+
   Widget _HeadHomeShimmer() {
     return Row(
       //make container rounded for profile
@@ -101,7 +106,8 @@ class _Home_headState extends State<Home_head> {
             width: 30,
             height: 30,
             decoration: BoxDecoration(
-                color: Colors.grey, borderRadius: BorderRadius.circular(50)),),
+                color: Colors.grey, borderRadius: BorderRadius.circular(50)),
+          ),
         ),
         SizedBox(
           width: 15,
@@ -114,13 +120,18 @@ class _Home_headState extends State<Home_head> {
             child: Text(
               "Hallo asdaasd",
               style: TextStyle(
-                  fontSize: 16, color: Colors.transparent, fontWeight: FontWeight.w600),
+                  fontSize: 16,
+                  color: Colors.transparent,
+                  fontWeight: FontWeight.w600),
             ),
           ),
         ),
         Spacer(),
         GestureDetector(
-            onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Keranjang())); },
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Keranjang()));
+            },
             child: SvgPicture.asset("assets/icon/cart.svg")),
         SizedBox(
           width: 17,
@@ -130,4 +141,3 @@ class _Home_headState extends State<Home_head> {
     );
   }
 }
-

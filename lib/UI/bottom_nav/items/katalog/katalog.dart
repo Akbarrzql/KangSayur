@@ -25,10 +25,10 @@ class _KatalogState extends State<Katalog> {
                 SizedBox(
                   height: 25,
                 ),
-                Katalog_head(),
-                SizedBox(
-                  height: 25,
-                ),
+                // Katalog_head(),
+                // SizedBox(
+                //   height: 25,
+                // ),
                 Katalog_search(),
                 SizedBox(
                   height: 35,

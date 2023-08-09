@@ -39,7 +39,6 @@ class _Bottom_NavState extends State<Bottom_Nav> {
         body: _body(),
         bottomNavigationBar: Container(
           color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: BottomNavigationBar(
             currentIndex: currentIndex,
             onTap: (value) {

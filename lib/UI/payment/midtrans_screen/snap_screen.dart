@@ -23,6 +23,7 @@ class _Snap_screenState extends State<Snap_screen> {
   late WebViewController webViewController;
 
   bool _isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -65,7 +66,8 @@ class _Snap_screenState extends State<Snap_screen> {
                       print('==========>>>>>>>>>>>>>> BEGIN');
                       print(receiver.message);
                       if (Platform.isAndroid) {
-                        if (receiver.message != null || receiver.message != 'undefined') {
+                        if (receiver.message != null ||
+                            receiver.message != 'undefined') {
                           if (receiver.message == 'close') {
                             Navigator.pop(context);
                           } else {
@@ -76,19 +78,22 @@ class _Snap_screenState extends State<Snap_screen> {
                       print('==========>>>>>>>>>>>>>> END');
                     },
                   ),
-                ].toSet()
-                ),onWebViewCreated: (_controller){
-                webViewController = _controller;
-                _loadHtmlFromAssets();
-              },
-                onPageFinished: (strURL){
+                ].toSet()),
+                onWebViewCreated: (_controller) {
+                  webViewController = _controller;
+                  _loadHtmlFromAssets();
+                },
+                onPageFinished: (strURL) {
                   setState(() {
                     _isLoading = false;
                   });
                 },
-                onWebResourceError: (error){
+                onWebResourceError: (error) {
                   print(error);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Riwayat_transaksi()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Bottom_Nav()));
                 },
               )
             ],
@@ -135,7 +140,8 @@ class _Snap_screenState extends State<Snap_screen> {
             }
         </script>
       </body>
-    </html>''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
+    </html>''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString());
   }
 
   _handleResponse(message) {
@@ -145,13 +151,16 @@ class _Snap_screenState extends State<Snap_screen> {
       if (Platform.isAndroid) {
         switch (message) {
           case 'ok':
-            midtrans = Midtrans(MIDTRANS_PAYMENT_TYPE.bank_transfer, MIDTRANS_STATUS_CODE.MIDTRANS_STATUS_CODE_200);
+            midtrans = Midtrans(MIDTRANS_PAYMENT_TYPE.bank_transfer,
+                MIDTRANS_STATUS_CODE.MIDTRANS_STATUS_CODE_200);
             break;
           case 'pending':
-            midtrans = Midtrans(MIDTRANS_PAYMENT_TYPE.bank_transfer, MIDTRANS_STATUS_CODE.MIDTRANS_STATUS_CODE_201);
+            midtrans = Midtrans(MIDTRANS_PAYMENT_TYPE.bank_transfer,
+                MIDTRANS_STATUS_CODE.MIDTRANS_STATUS_CODE_201);
             break;
           case 'error':
-            midtrans = Midtrans(MIDTRANS_PAYMENT_TYPE.bank_transfer, MIDTRANS_STATUS_CODE.MIDTRANS_STATUS_CODE_202);
+            midtrans = Midtrans(MIDTRANS_PAYMENT_TYPE.bank_transfer,
+                MIDTRANS_STATUS_CODE.MIDTRANS_STATUS_CODE_202);
             break;
         }
       } else {
@@ -161,7 +170,8 @@ class _Snap_screenState extends State<Snap_screen> {
       title = result[0];
       desc = result[1];
       if (title.length == 0 && desc.length == 0)
-        _showConfirmDialog('Payment Success', 'Your payment has been successfully processed');
+        _showConfirmDialog(
+            'Payment Success', 'Your payment has been successfully processed');
       else
         _showConfirmDialog(title, desc);
     } catch (e) {
@@ -306,16 +316,20 @@ class Midtrans {
 
   Midtrans.fromString(String message) {
     String? codeStr = RegExp(r'"status_code".*').stringMatch(message);
-    int code = int.parse(RegExp(r'\d+;$').stringMatch(codeStr!)!.replaceAll(RegExp(r';'), ''));
+    int code = int.parse(
+        RegExp(r'\d+;$').stringMatch(codeStr!)!.replaceAll(RegExp(r';'), ''));
     statusCode = MidtransStatusCodeMap[code]!;
 
     String? typeStr = RegExp(r'"payment_type".*').stringMatch(message);
-    typeStr = RegExp(r'"?\w+"?;').stringMatch(typeStr!)!.replaceAll(RegExp(r'[;"]'), '');
+    typeStr = RegExp(r'"?\w+"?;')
+        .stringMatch(typeStr!)!
+        .replaceAll(RegExp(r'[;"]'), '');
     paymentType = MidtransPaymentTypeMap[typeStr]!;
   }
 
   List<String> getResult() {
-    String title = '', desc = '';
+    String title = '',
+        desc = '';
     switch (statusCode) {
       case MIDTRANS_STATUS_CODE.MIDTRANS_STATUS_CODE_200:
         title = 'Purchase successfully!';

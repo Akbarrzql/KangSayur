@@ -26,6 +26,10 @@ class Detail_Riwayat_Pembelian extends StatefulWidget {
     required this.tokoId,
     required this.variantId,
     required this.transactionCode,
+    required this.banyakBarang,
+    required this.StatusDiulas,
+required this.latitude,
+required this.longitude,
   }) : super(key: key);
   String Status;
   String Nama;
@@ -34,6 +38,7 @@ class Detail_Riwayat_Pembelian extends StatefulWidget {
   String NamaToko;
   String AlamatToko;
   String GambarToko;
+  List<String> StatusDiulas;
   List GambarProduk;
   List NamaProduk;
   List<int> HargaProduk;
@@ -42,6 +47,8 @@ class Detail_Riwayat_Pembelian extends StatefulWidget {
   int Ongkir;
   String tokoId, transactionCode;
   List produkId, variantId;
+  double latitude, longitude;
+  List<int> banyakBarang;
 
   @override
   State<Detail_Riwayat_Pembelian> createState() =>
@@ -280,6 +287,7 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
                     //make review button
                     Spacer(),
                     if (widget.Status == 'Selesai')
+                      if (widget.StatusDiulas[index] == 'menunggu diulas')
                       Column(
                         children: [
                           Container(
@@ -297,11 +305,12 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
                                             builder: (context) => Mengulas(
                                                 namaToko: widget.NamaToko,
                                                 gambarToko:
-                                                    widget.GambarToko[0],
+                                                    widget.GambarToko,
                                                 alamatToko: widget.AlamatToko,
                                                 namaProduk:
                                                     widget.NamaProduk[index],
-                                                gambarProduk: 'asd',
+                                                gambarProduk: widget
+                                                    .GambarProduk[index],
                                                 productId: widget
                                                     .produkId[index]
                                                     .toString(),
@@ -429,6 +438,9 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
             context,
             MaterialPageRoute(
                 builder: (context) => Lacak_Pesanan(
+                  idPesanan: widget.transactionCode,
+                  latitude: widget.latitude,
+                  longitude: widget.longitude,
                     )));
       },
       child: Container(

@@ -38,12 +38,12 @@ class Data {
   String name;
   String photo;
   String email;
-  dynamic phoneNumber;
+  int phoneNumber;
   dynamic emailVerifiedAt;
   int sandiId;
-  dynamic jenisKelamin;
-  dynamic tanggalLahir;
-  dynamic address;
+  int jenisKelamin;
+  DateTime tanggalLahir;
+  String address;
   double longitude;
   double latitude;
   dynamic createdAt;
@@ -77,7 +77,7 @@ class Data {
     emailVerifiedAt: json["email_verified_at"],
     sandiId: json["sandi_id"],
     jenisKelamin: json["jenis_kelamin"],
-    tanggalLahir: json["tanggal_lahir"],
+    tanggalLahir: DateTime.parse(json["tanggal_lahir"]),
     address: json["address"],
     longitude: json["longitude"]?.toDouble(),
     latitude: json["latitude"]?.toDouble(),
@@ -95,7 +95,7 @@ class Data {
     "email_verified_at": emailVerifiedAt,
     "sandi_id": sandiId,
     "jenis_kelamin": jenisKelamin,
-    "tanggal_lahir": tanggalLahir,
+    "tanggal_lahir": tanggalLahir.toIso8601String(),
     "address": address,
     "longitude": longitude,
     "latitude": latitude,

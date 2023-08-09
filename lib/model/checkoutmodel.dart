@@ -10,20 +10,32 @@ CheckoutModel checkoutModelFromJson(String str) => CheckoutModel.fromJson(json.d
 String checkoutModelToJson(CheckoutModel data) => json.encode(data.toJson());
 
 class CheckoutModel {
+  String statusCode;
+  String messgae;
+  InfoPengiriman infoPengiriman;
   List<Datum> data;
   Rincian rincian;
 
   CheckoutModel({
+    required this.statusCode,
+    required this.messgae,
+    required this.infoPengiriman,
     required this.data,
     required this.rincian,
   });
 
   factory CheckoutModel.fromJson(Map<String, dynamic> json) => CheckoutModel(
+    statusCode: json["status_code"],
+    messgae: json["messgae"],
+    infoPengiriman: InfoPengiriman.fromJson(json["info_pengiriman"]),
     data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
     rincian: Rincian.fromJson(json["rincian"]),
   );
 
   Map<String, dynamic> toJson() => {
+    "status_code": statusCode,
+    "messgae": messgae,
+    "info_pengiriman": infoPengiriman.toJson(),
     "data": List<dynamic>.from(data.map((x) => x.toJson())),
     "rincian": rincian.toJson(),
   };
@@ -66,59 +78,91 @@ class Datum {
 }
 
 class GetProdukCheckout {
+  int produkId;
+  String namaProduk;
   int userId;
   int tokoId;
-  int produkId;
   int variantId;
-  dynamic? variantImg;
+  String variantImg;
   String variant;
   int stok;
-  int hargaVariant;
   String status;
+  int hargaVariant;
   int inCart;
 
   GetProdukCheckout({
+    required this.produkId,
+    required this.namaProduk,
     required this.userId,
     required this.tokoId,
-    required this.produkId,
     required this.variantId,
     required this.variantImg,
     required this.variant,
     required this.stok,
-    required this.hargaVariant,
     required this.status,
+    required this.hargaVariant,
     required this.inCart,
   });
 
   factory GetProdukCheckout.fromJson(Map<String, dynamic> json) => GetProdukCheckout(
+    produkId: json["produk_id"],
+    namaProduk: json["nama_produk"],
     userId: json["user_id"],
     tokoId: json["toko_id"],
-    produkId: json["produk_id"],
     variantId: json["variant_id"],
     variantImg: json["variant_img"],
     variant: json["variant"],
     stok: json["stok"],
-    hargaVariant: json["harga_variant"],
     status: json["status"],
+    hargaVariant: json["harga_variant"],
     inCart: json["inCart"],
   );
 
   Map<String, dynamic> toJson() => {
+    "produk_id": produkId,
+    "nama_produk": namaProduk,
     "user_id": userId,
     "toko_id": tokoId,
-    "produk_id": produkId,
     "variant_id": variantId,
     "variant_img": variantImg,
     "variant": variant,
     "stok": stok,
-    "harga_variant": hargaVariant,
     "status": status,
+    "harga_variant": hargaVariant,
     "inCart": inCart,
   };
 }
 
+class InfoPengiriman {
+  int alamatId;
+  String nama;
+  int nomotTelepon;
+  String alamat;
+
+  InfoPengiriman({
+    required this.alamatId,
+    required this.nama,
+    required this.nomotTelepon,
+    required this.alamat,
+  });
+
+  factory InfoPengiriman.fromJson(Map<String, dynamic> json) => InfoPengiriman(
+    alamatId: json["alamat_id"],
+    nama: json["nama"],
+    nomotTelepon: json["nomot_telepon"],
+    alamat: json["alamat"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "alamat_id": alamatId,
+    "nama": nama,
+    "nomot_telepon": nomotTelepon,
+    "alamat": alamat,
+  };
+}
+
 class Rincian {
-  int? subtotalProduk;
+  int subtotalProduk;
   double subtotalOngkir;
   double totalKeseluruhan;
 

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kangsayur/bloc/tokodetail_bloc/tokodetail_event.dart';
 import 'package:kangsayur/bloc/tokodetail_bloc/tokodetail_state.dart';

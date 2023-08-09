@@ -17,7 +17,14 @@ import '../../../../../../../Constants/app_constants.dart';
 import '../../../../../../../common/color_value.dart';
 
 class Lacak_Pesanan extends StatefulWidget {
-  const Lacak_Pesanan({Key? key}) : super(key: key);
+   Lacak_Pesanan({Key? key, required this.idPesanan,
+    required this.latitude,
+    required this.longitude,
+   }) : super(key: key);
+  String idPesanan;
+  double latitude;
+  double longitude;
+
 
   @override
   State<Lacak_Pesanan> createState() => _Lacak_PesananState();
@@ -39,7 +46,7 @@ class _Lacak_PesananState extends State<Lacak_Pesanan> {
 
   void _getAddressFromLatLng() async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
+      List<Placemark> placemarks = await placemarkFromCoordinates(widget.latitude, widget.longitude);
 
       if (placemarks.isNotEmpty) {
         Placemark currentPlacemark = placemarks[0];
@@ -89,7 +96,7 @@ class _Lacak_PesananState extends State<Lacak_Pesanan> {
 
   void _getPolyline(double latitude, double longitude) async {
 
-    String url = 'https://api.mapbox.com/directions/v5/mapbox/driving/${_currentPosition.longitude},${_currentPosition.latitude};${longitude},${latitude}?overview=full&geometries=geojson&access_token=${AppConstants.mapBoxAccessToken}';
+    String url = 'https://api.mapbox.com/directions/v5/mapbox/driving/${widget.longitude},${widget.latitude};${longitude},${latitude}?overview=full&geometries=geojson&access_token=${AppConstants.mapBoxAccessToken}';
 
     final response = await http.get(Uri.parse(url));
 
@@ -128,7 +135,7 @@ class _Lacak_PesananState extends State<Lacak_Pesanan> {
       await pusher.connect();
 
       // Subscribe to a channel
-      Channel channel = pusher.subscribe('delivery.168');
+      Channel channel = pusher.subscribe('delivery.${widget.idPesanan}');
 
       //untuk subscribe ke channel private
       // Channel channel = pusher.subscribePrivate('private-delivery');
@@ -221,7 +228,17 @@ class _Lacak_PesananState extends State<Lacak_Pesanan> {
                           Marker(
                             width: 80.0,
                             height: 80.0,
-                            point: _currentPosition,
+                            point: LatLng(latitude, longitude),
+                            builder: (ctx) => const Image(
+                              image: AssetImage('assets/images/driver.png'),
+                              width: 50,
+                              height: 50,
+                            )
+                          ),
+                          Marker(
+                            width: 80.0,
+                            height: 80.0,
+                            point: LatLng(widget.latitude, widget.longitude),
                             builder: (ctx) => const Icon(
                               Icons.location_pin,
                               size: 50,

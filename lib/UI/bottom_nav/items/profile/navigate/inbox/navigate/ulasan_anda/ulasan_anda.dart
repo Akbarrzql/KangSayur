@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/menunggu_diulas.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/riwayat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_pembelian.dart';
+import 'package:kangsayur/bloc/menuunggudiulas_bloc/menunggudiulas_bloc.dart';
 
+import '../../../../../../../../bloc/menuunggudiulas_bloc/menunggudiulas_event.dart';
+import '../../../../../../../../bloc/menuunggudiulas_bloc/menunggudiulas_state.dart';
 import '../../../../../../../../common/color_value.dart';
 
 class Ulasan_anda extends StatefulWidget {
@@ -15,11 +19,15 @@ class Ulasan_anda extends StatefulWidget {
 
 class _Ulasan_andaState extends State<Ulasan_anda>
     with SingleTickerProviderStateMixin {
+  //call bloc menunggu diulas
+  MenungguDiulasBloc menungguDiulasBloc = MenungguDiulasBloc();
   TabController? _tabController;
 
   @override
   void initState() {
     super.initState();
+    //bloc
+    menungguDiulasBloc.add(GetMenungguDiulasList());
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -75,7 +83,28 @@ class _Ulasan_andaState extends State<Ulasan_anda>
                 controller: _tabController,
                 children: [
                   // Widget konten untuk Tab 1
-                  Menunggu_diulas(),
+                  //Bloc
+                  BlocBuilder<MenungguDiulasBloc, MenungguDiulasState>(
+                    bloc: menungguDiulasBloc,
+                    builder: (context, state) {
+                      if (state is MenungguDiulasLoading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is MenungguDiulasLoaded) {
+                        return                   Menunggu_diulas(
+                          menungguDiulasModel: state.menungguDiulas,
+
+                        );
+                      } else if (state is MenungguDiulasError) {
+                        return Container();
+                      } else {
+                        return Center(
+                          child: Text(""),
+                        );
+                      }
+                    },
+                  ),
                   // Widget konten untuk Tab 2
                   Riwayat_ulasan()
                 ],

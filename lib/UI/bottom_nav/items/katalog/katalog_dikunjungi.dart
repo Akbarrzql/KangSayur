@@ -51,37 +51,38 @@ class _Katalog_dikunjungiState extends State<Katalog_dikunjungi> {
             ],
           ),
         ),
-        BlocProvider(create: (_)=>_jsonBloc,
-          child: BlocListener<JsonBloc, JsonState>(
-              listener: (context, state) {
-                if (state is JsonError) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                    ),
-                  );
-                }
-              },
-              child: BlocBuilder<JsonBloc,JsonState>(
-                  builder: (context, state){
-                    if (state is JsonInitial) {
-                      return Loading();
-                    } else if (state is JsonLoading) {
-                      return Loading();
-                    } else if (state is JsonLoaded) {
-                      return Container(
-                          height: 153,
-                          width: double.infinity,
-                          child: _TokoDikunjungiList(widget: state.jsonTokoPopular));
-                    } else if (state is JsonError) {
-                      return Text(state.message);
-                    }
-                    return Container();
-                  }
-              )
-          ),
+        SizedBox(
+          height: 20,
         ),
-        SizedBox(height: 24,),
+        BlocProvider(
+          create: (_) => _jsonBloc,
+          child: BlocListener<JsonBloc, JsonState>(listener: (context, state) {
+            if (state is JsonError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                ),
+              );
+            }
+          }, child: BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+            if (state is JsonInitial) {
+              return Loading();
+            } else if (state is JsonLoading) {
+              return Loading();
+            } else if (state is JsonLoaded) {
+              return Container(
+                  height: 153,
+                  width: double.infinity,
+                  child: _TokoDikunjungiList(widget: state.jsonTokoPopular));
+            } else if (state is JsonError) {
+              return Text(state.message);
+            }
+            return Container();
+          })),
+        ),
+        SizedBox(
+          height: 24,
+        ),
       ],
     );
   }
@@ -94,7 +95,6 @@ class _Katalog_dikunjungiState extends State<Katalog_dikunjungi> {
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.fromLTRB(24, 0, 0, 10),
-          height: 153,
           width: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
@@ -112,8 +112,6 @@ class _Katalog_dikunjungiState extends State<Katalog_dikunjungi> {
             children: [
               Container(
                 clipBehavior: Clip.antiAlias,
-                height: 92,
-                width: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(5),
@@ -132,13 +130,15 @@ class _Katalog_dikunjungiState extends State<Katalog_dikunjungi> {
                 ),
                 child: Center(
                   child: Container(
+                    margin: EdgeInsets.only(top: 10,bottom: 10),
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       color: Colors.white,
                     ),
                     child: Image.network(
-                     "https://kangsayur.nitipaja.online"+ widget.data[index].imgProfile,
+                      "https://kangsayur.nitipaja.online" +
+                          widget.data[index].imgProfile,
                       fit: BoxFit.cover,
                       width: 70,
                       height: 70,
@@ -153,6 +153,9 @@ class _Katalog_dikunjungiState extends State<Katalog_dikunjungi> {
                 widget.data[index].namaToko,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 5,
               ),
             ],
           ),

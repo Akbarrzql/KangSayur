@@ -69,7 +69,9 @@ Widget _HeadProfile(BuildContext context, ProfileModel widget) {
           child: Image.network(
               "https://kangsayur.nitipaja.online/${widget.data.photo}" == null
                   ? "https://avatars.githubusercontent.com/u/60261133?v=4"
-                  : "https://kangsayur.nitipaja.online/${widget.data.photo}"),
+                  : "https://kangsayur.nitipaja.online/${widget.data.photo}",
+            fit: BoxFit.cover,
+          ),
         ),
         SizedBox(
           width: 15,
@@ -95,7 +97,17 @@ Widget _HeadProfile(BuildContext context, ProfileModel widget) {
         GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Ubah_profile()));
+                  MaterialPageRoute(builder: (context) => Ubah_profile(
+                    name: widget.data.name,
+                    photo: widget.data.photo,
+                    email: widget.data.email,
+                    phone_number: widget.data.phoneNumber.toString(),
+                    tanggal_lahir: widget.data.tanggalLahir,
+                    address: widget.data.address,
+                    latitude: widget.data.latitude.toString(),
+                    longitude: widget.data.longitude.toString(),
+                    kelamin: widget.data.jenisKelamin.toString(),
+                  )));
             },
             child: SvgPicture.asset("assets/icon/edit.svg"))
       ],

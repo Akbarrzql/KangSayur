@@ -17,30 +17,17 @@ class Mengulas_post {
       String variantId,
       String transactionCode,
       BuildContext context) async {
-    // Logika autentikasi dan pengecekan username dan password
-    // const String _baseUrl = "https://kangsayur.nitipaja.online/api/";
-    List<int> imageBytes = await File(image!.path).readAsBytes();
-    var multipartFile = http.MultipartFile.fromBytes(
-      'photo',
-      imageBytes,
-      filename: image.path.split('/').last,
-    );
-    // var url = Uri.parse(_baseUrl+"auth/user/register");
-    // var response = await http
-    //     .post(Uri.parse(url.toString()),
-    //     headers: {
-    //       'Accept': 'application/json',
-    //     },
-    //     body: {
-    //       "name": "$name",
-    //       "photo": "$multipartFile",
-    //       "email": "$email",
-    //       "password": "$password",
-    //       "latitude": "$latitude",
-    //       "longitude": "$longitude",
-    //     });
-    //
-
+    http.MultipartFile? multipartFile = null; // Pindahkan deklarasi di sini
+    bool isImaged = false;
+    if (image != null) {
+      isImaged = true;
+      List<int> imageBytes = await File(image!.path).readAsBytes();
+      multipartFile = http.MultipartFile.fromBytes(
+        'img_product',
+        imageBytes,
+        filename: image.path.split('/').last,
+      );
+    }
     var url = Uri.parse('https://kangsayur.nitipaja.online/api/user/ulasan');
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
@@ -48,14 +35,17 @@ class Mengulas_post {
     request.headers['Accept'] = 'application/json';
     request.headers['Authorization'] = 'Bearer ' + '$token';
     request.fields['rating'] = rating;
-    request.files.add(multipartFile);
+    if (isImaged == true && image !=null){
+    request.files.add(multipartFile!);
+    }
     request.fields['comment'] = comment;
     request.fields['product_id'] = productId;
     request.fields['toko_id'] = tokoId;
     request.fields['variant_id'] = variantId;
     request.fields['transaction_code'] = transactionCode;
 
-
+    //print request body
+    print(request.fields);
     var response = await request.send();
     var responseBody = await response.stream.bytesToString();
 

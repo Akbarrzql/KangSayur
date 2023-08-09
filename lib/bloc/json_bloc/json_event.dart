@@ -22,6 +22,9 @@ class GetSearchProductList extends JsonEvent{
 
 class GetTokoPopularList extends JsonEvent{}
 class GetCartProductList extends JsonEvent{}
-class GetCheckoutList extends JsonEvent{}
+class GetCheckoutList extends JsonEvent{
+  final int alamatId;
+  const GetCheckoutList(this.alamatId);
+}
 class GetSubTotalCartList extends JsonEvent{}
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kangsayur/widget/card_katalog.dart';
 
 class Seller_katalog extends StatefulWidget {
-  const Seller_katalog({Key? key}) : super(key: key);
+  const   Seller_katalog({Key? key}) : super(key: key);
 
   @override
   State<Seller_katalog> createState() => _Seller_katalogState();

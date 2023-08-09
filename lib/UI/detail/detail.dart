@@ -95,14 +95,19 @@ class _DetailState extends State<Detail> {
                           SizedBox(
                             height: 25,
                           ),
-                          Detail_content(widget: state.jsonDetailProduct, photo: '',),
+                          Detail_content(
+                            widget: state.jsonDetailProduct,
+                            photo: '',
+                          ),
                           SizedBox(
                             height: 15,
                           ),
                           Container(
                             height: 15,
                           ),
-                          Detail_tokoini(),
+                          Detail_tokoini(
+                            widget: state.jsonDetailProduct,
+                          ),
                           SizedBox(
                             height: 15,
                           ),
@@ -152,7 +157,6 @@ class _DetailState extends State<Detail> {
       ),
     );
   }
-
 
   Widget _shimmerScreen() {
     return Container(
@@ -419,6 +423,9 @@ class _DetailState extends State<Detail> {
                         context: context,
                         builder: (builder) {
                           return Detail_popup(
+                            gambarToko: widget.data.imgProfile,
+                            namaToko: widget.data.namaToko,
+                            namaProduk: widget.data.namaProduk,
                             produkId: widget.data.produkId,
                             tokoId: widget.data.tokoId,
                             jumlahVariant: widget.data.variant.length,
@@ -430,6 +437,12 @@ class _DetailState extends State<Detail> {
                                   i < widget.data.variant.length;
                                   i++)
                                 widget.data.variant[i].stok
+                            ],
+                            gambarVariant: [
+                              for (int i = 0;
+                                  i < widget.data.variant.length;
+                                  i++)
+                                widget.data.variant[i].variantImg
                             ],
                           );
                         });
@@ -456,7 +469,37 @@ class _DetailState extends State<Detail> {
                 width: 4,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: (){
+                  setState(() {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (builder) {
+                          return Detail_popup(
+                            gambarToko: widget.data.imgProfile,
+                            namaToko: widget.data.namaToko,
+                            namaProduk: widget.data.namaProduk,
+                            produkId: widget.data.produkId,
+                            tokoId: widget.data.tokoId,
+                            jumlahVariant: widget.data.variant.length,
+                            namaVariant: namaVariant,
+                            variantId: variantId,
+                            hargaVariant: hargaVariant,
+                            stokVariant: [
+                              for (int i = 0;
+                              i < widget.data.variant.length;
+                              i++)
+                                widget.data.variant[i].stok
+                            ],
+                            gambarVariant: [
+                              for (int i = 0;
+                              i < widget.data.variant.length;
+                              i++)
+                                widget.data.variant[i].variantImg
+                            ],
+                          );
+                        });
+                  });
+                },
                 child: Container(
                   height: 46,
                   width: 128,

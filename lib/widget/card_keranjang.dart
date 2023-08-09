@@ -25,11 +25,11 @@ class Card_keranjang extends StatefulWidget {
     required this.inCart,
     required this.produk_variantIdList,
     required this.status,
-    required this.cartId, required this.gambar_produk, required this.checklist,
+    required this.cartId, required this.checklist, required this.tambah, required this.kurang,
   }) : super(key: key);
 
   //final = produk, nama produk, harga produk, nama toko, isDiscount, discount, harga diskon, isVariant, variant
-  final String gambar_produk, nama_toko, alamat_toko;
+  final String nama_toko, alamat_toko;
   final String profil_toko;
   final double discount, harga_diskon;
   final bool isDiscount;
@@ -47,7 +47,7 @@ class Card_keranjang extends StatefulWidget {
   late List<bool> addCard = [for (int i = 0; i < produkList.length; i++) false];
 
   //type data for function on tap
-  final VoidCallback hapus, checklist;
+  final VoidCallback hapus, checklist, tambah, kurang;
 
   @override
   State<Card_keranjang> createState() => _Card_keranjangState();
@@ -106,7 +106,7 @@ class _Card_keranjangState extends State<Card_keranjang> {
             children: [
               //make profile for toko
               Container(
-                  child: Image.network("https://kangsayur.nitipaja.online/"+widget.profil_toko),
+                  child: Image.network("https://kangsayur.nitipaja.online/"+widget.profil_toko,fit: BoxFit.cover,),
                   clipBehavior: Clip.antiAlias,
                   width: 40,
                   height: 40,
@@ -124,12 +124,16 @@ class _Card_keranjangState extends State<Card_keranjang> {
                     widget.nama_toko,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
-                  Text(
-                    widget.alamat_toko,
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: ColorValue.hinttext),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.65,
+                    child: Text(
+                      widget.alamat_toko,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: ColorValue.hinttext),
+                    ),
                   ),
                 ],
               )
@@ -188,18 +192,8 @@ class _Card_keranjangState extends State<Card_keranjang> {
                           height: 80,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  spreadRadius: 0,
-                                  blurRadius: 4,
-                                  offset: Offset(
-                                      0, 4), // changes position of shadow
                                 ),
-                              ],
-                              image: DecorationImage(
-                                  image: AssetImage(widget.gambar_produk),
-                                  fit: BoxFit.cover)),
+                          child: Image.network("https://kangsayur.nitipaja.online/"+widget.produk_gambarList[index], fit: BoxFit.cover,),
                         ),
                         SizedBox(
                           width: 12,
@@ -287,14 +281,16 @@ class _Card_keranjangState extends State<Card_keranjang> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              widget.hapus;
                               setState(() {
                                 Cart().DeleteProductCart(
                                   widget.produk_idList[index].toString(),
                                   widget.produk_idTokoList[index].toString(),
                                   widget.produk_variantIdList[index]
                                       .toString(),
-                                );
+                                ).then((value) => setState(() {
+                                    widget.hapus();
+
+                                    }));
                                 //remove at
                                 widget.produk_idList.removeAt(index);
                                 widget.produk_idTokoList.removeAt(index);
@@ -305,9 +301,6 @@ class _Card_keranjangState extends State<Card_keranjang> {
                                 widget.produk_gambarList.removeAt(index);
                                 widget.status.removeAt(index);
                                 widget.produkList.removeAt(index);
-                                if (widget.produk_idList.length == 0) {
-                                  widget.hapus;
-                                }
                               });
                             },
                             child: Text(
@@ -332,6 +325,7 @@ class _Card_keranjangState extends State<Card_keranjang> {
                               GestureDetector(
                                 onTap: () async {
                                   setState(() {
+                                    widget.kurang();
                                     _counter[index]--;
                                     if (_counter[index] <= 1) {
                                       _counter[index] = 1;
@@ -395,6 +389,7 @@ class _Card_keranjangState extends State<Card_keranjang> {
                               GestureDetector(
                                 onTap: () async {
                                   setState(() {
+                                    widget.tambah();
                                     _counter[index]++;
                                     _counterController[index].text =
                                         _counter[index].toString();

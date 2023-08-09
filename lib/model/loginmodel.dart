@@ -45,7 +45,7 @@ class Data {
   String? name;
   String? photo;
   String? email;
-  Null? phoneNumber;
+  int? phoneNumber;
   Null? emailVerifiedAt;
   int? jenisKelamin;
   String? tanggalLahir;
@@ -65,7 +65,7 @@ class Data {
     name = json['name'];
     photo = json['photo'];
     email = json['email'];
-    phoneNumber = json['phone_number'];
+    phoneNumber = json['phone_number'] ;
     emailVerifiedAt = json['email_verified_at'];
     jenisKelamin = json['jenis_kelamin'];
     tanggalLahir = json['tanggal_lahir'];

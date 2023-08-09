@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/UI/detail/beli_sekarang/beli_sekarang.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
 
 import '../../API/cart/cart.dart';
@@ -15,16 +16,22 @@ class Detail_popup extends StatefulWidget {
   Detail_popup(
       {Key? key,
       required this.produkId,
+      required this.namaProduk,
+      required this.namaToko,
+      required this.gambarToko,
       required this.tokoId,
       required this.jumlahVariant,
       required this.namaVariant,
       required this.variantId,
       required this.hargaVariant,
-      required this.stokVariant})
+      required this.stokVariant,
+      required this.gambarVariant})
       : super(key: key);
 
   final int produkId;
-
+  String namaProduk;
+  String gambarToko;
+  String namaToko;
   final int tokoId;
 
   final int jumlahVariant;
@@ -35,16 +42,13 @@ class Detail_popup extends StatefulWidget {
 
   final List<int> hargaVariant;
   final List<int> stokVariant;
+  final List<String> gambarVariant;
 
   @override
   State<Detail_popup> createState() => _Detail_popupState();
 }
 
 class _Detail_popupState extends State<Detail_popup> {
-  late List gambar = [
-    "assets/images/wortel.png",
-    "assets/images/asd.png",
-  ];
   late List<int> value = widget.variantId;
   late List<bool> isCheck = [
     // for (int i = 0; i < widget.jumlahVariant; i++) false
@@ -57,11 +61,15 @@ class _Detail_popupState extends State<Detail_popup> {
   ];
 
   late int idvariant = widget.variantId[0];
+  late int hargaVariant = widget.hargaVariant[0];
+  late String namaVariant = widget.namaVariant[0];
+  late String gambarVariant = widget.gambarVariant[0];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 2.2,
+      color: Colors.white,
+      height: MediaQuery.of(context).size.height / 2.4,
       child: Column(
         children: [
           //buat kondisi jika memencet variant 1 akan muncul gambar yang variant 1
@@ -69,31 +77,79 @@ class _Detail_popupState extends State<Detail_popup> {
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
+                SizedBox(
+                  height: 20,
+                ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     for (var i = 0; i < widget.jumlahVariant; i++)
                       if (isCheck[i] == true)
                         Container(
-                          height: 150,
-                          width: 150,
-                          child: Image.asset(gambar[i]),
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ]),
+                          child: Image.network(
+                            'https://kangsayur.nitipaja.online' +
+                                widget.gambarVariant[i],
+                            fit: BoxFit.cover,
+                          ),
                         ),
+                    SizedBox(
+                      width: 20,
+                    ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         for (var i = 0; i < widget.jumlahVariant; i++)
                           if (isCheck[i] == true)
                             Text(
-                              "Rp. ${widget.hargaVariant[i]}",
+                              widget.namaVariant[i],
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w400),
+                            ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        for (var i = 0; i < widget.jumlahVariant; i++)
+                          if (isCheck[i] == true)
+                            Text(
+                              widget.namaProduk,
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        for (var i = 0; i < widget.jumlahVariant; i++)
+                          if (isCheck[i] == true)
+                            Text(
+                              "Rp. ${widget.hargaVariant[i]},00",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorValue.secondaryColor),
+                            ),
+                        SizedBox(
+                          height: 4,
+                        ),
                         for (var i = 0; i < widget.jumlahVariant; i++)
                           if (isCheck[i] == true)
                             Text(
                               "Stok : ${widget.stokVariant[i]}",
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: 14, fontWeight: FontWeight.w400),
                             ),
                       ],
                     )
@@ -102,13 +158,20 @@ class _Detail_popupState extends State<Detail_popup> {
                 SizedBox(
                   height: 20,
                 ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+
                 //buat kondisi jika memencet variant 2 akan muncul gambar yang variant 2
                 GridView.builder(
                   shrinkWrap: true,
                   itemCount: widget.jumlahVariant,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 70,
-                      childAspectRatio: 5 / 2,
+                      childAspectRatio: 4 / 2,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 30),
                   itemBuilder: (context, index) {
@@ -118,7 +181,10 @@ class _Detail_popupState extends State<Detail_popup> {
                           if (index == isCheck.indexOf(false, index)) {
                             isCheck[index] = true;
                             value[index] = widget.variantId[index];
-                            idvariant=widget.variantId[index];
+                            idvariant = widget.variantId[index];
+                            hargaVariant = widget.hargaVariant[index];
+                            namaVariant = widget.namaVariant[index];
+                            gambarVariant = widget.gambarVariant[index];
                             print(idvariant);
                             print(value[index]);
                             variantId[index] = value[index];
@@ -175,7 +241,13 @@ class _Detail_popupState extends State<Detail_popup> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        Cart().AddProductCart(widget.produkId.toString(), widget.tokoId.toString(), idvariant.toString());
+                        Cart().AddProductCart(widget.produkId.toString(),
+                            widget.tokoId.toString(), idvariant.toString()).then((value) => (value) {
+                              setState(() {
+                                // snackbar
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Berhasil ditambahkan ke keranjang")));
+                              });
+                            });
                       });
                     },
                     child: Container(
@@ -200,8 +272,17 @@ class _Detail_popupState extends State<Detail_popup> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Beli_Sekarang(
+                                    nama_produk: widget.namaProduk,
+                                    nama_variant: namaVariant,
+                                    gambar_produk: gambarVariant,
+                                    harga_variant: hargaVariant,
+                                    nama_toko: widget.namaToko,
+                                    gambar_toko: widget.gambarToko,
+                                  )));
                     },
                     child: Container(
                       height: 46,
