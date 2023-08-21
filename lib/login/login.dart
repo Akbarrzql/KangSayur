@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../API/auth/Auth.dart';
+import '../firebase/firebase_messaging.dart';
 import '../validator/validator.dart';
 import '../widget/textfieldcustom.dart';
 
@@ -25,9 +26,6 @@ class _LoginState extends State<Login> {
   // circle progress
   bool _isLoading = false;
 
-  Future<void> _loginProcess() async {
-    Auth.login(context, _emailController, _passwordController);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +116,17 @@ class _LoginState extends State<Login> {
                       FocusScope.of(context).unfocus();
                       _isLoading = true;
                     });
+                    String? deviceToken = await FirebaseNotificationManager.getToken();
+                    print('Device Token: $deviceToken');
+
                     await Auth.login(
-                        context, _emailController, _passwordController);
+                        context, _emailController, _passwordController, deviceToken!).then((value) {
+                    if (value == true) {
+                      print('Login Success');
+                      Auth.deviceToken(_emailController.text,
+                          _passwordController.text, deviceToken, context);
+                    }
+                    });
                     setState(() {
                       _isLoading = false;
                     });

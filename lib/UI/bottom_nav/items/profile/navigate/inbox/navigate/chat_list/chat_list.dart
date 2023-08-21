@@ -7,6 +7,7 @@ import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ch
 import 'package:kangsayur/bloc/chatlist_bloc/chatlist_bloc.dart';
 import 'package:kangsayur/model/chatlistmodel.dart';
 import 'package:kangsayur/widget/list_chat.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../../../bloc/chatlist_bloc/chatlist_event.dart';
@@ -103,6 +104,36 @@ class _Chat_listState extends State<Chat_list> {
   }
 
   Widget chatList(ChatListModel chatListModel) {
+    if (chatListModel.list.isEmpty) {
+    return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.5,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            Spacer(),
+            Center(
+              child: Align(
+                alignment: Alignment.center,
+                child: LottieBuilder.asset(
+                  "assets/icon/lottie/chat.json",
+                  width: 350,
+                  height: 350,
+                ),
+              ),
+            ),
+            Center(
+              child: const Text(
+                "Belum ada chat",
+                style: TextStyle(
+                  color: ColorValue.neutralColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
+        ));
+    }else
     return ListView.builder(
       padding: const EdgeInsets.only(top: 30),
       physics: const NeverScrollableScrollPhysics(),
@@ -129,7 +160,7 @@ class _Chat_listState extends State<Chat_list> {
                               photoLawan: chatListModel.list[index].imgProfile,
                               idLawan:
                                   chatListModel.list[index].tokoId.toString(),
-                          data: chatListModel.list[index],
+                              data: chatListModel.list[index],
                             )));
               },
             ),

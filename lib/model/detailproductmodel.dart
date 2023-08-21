@@ -91,7 +91,7 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],
     namaProduk: json["nama_produk"],
-    rating: json["rating"]?.toDouble(),
+    rating: json["rating"]?.toDouble() ?? 0.0,
     tokoId: json["toko_id"],
     isOnsale: json["is_onsale"],
     imgProfile: json["img_profile"],
@@ -253,7 +253,7 @@ class TokoIni {
   factory TokoIni.fromJson(Map<String, dynamic> json) => TokoIni(
     id: json["id"],
     namaProduk: json["nama_produk"],
-    rating: json["rating"]?.toDouble(),
+    rating: json["rating"]?.toDouble() ?? 0,
     tokoId: json["toko_id"],
     isOnsale: json["is_onsale"],
     imgProfile: json["img_profile"],

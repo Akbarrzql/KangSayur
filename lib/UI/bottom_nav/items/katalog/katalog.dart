@@ -29,7 +29,7 @@ class _KatalogState extends State<Katalog> {
                 // SizedBox(
                 //   height: 25,
                 // ),
-                Katalog_search(),
+                // Katalog_search(),
                 Katalog_carousel(),
                 SizedBox(
                   width: double.maxFinite,

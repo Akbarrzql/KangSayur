@@ -15,6 +15,7 @@ class ProductSaleModel {
   String title;
   String start;
   String end;
+  int secDiff;
   List<Datum> data;
 
   ProductSaleModel({
@@ -23,6 +24,7 @@ class ProductSaleModel {
     required this.title,
     required this.start,
     required this.end,
+    required this.secDiff,
     required this.data,
   });
 
@@ -32,6 +34,7 @@ class ProductSaleModel {
     title: json["title"],
     start: json["start"],
     end: json["end"],
+    secDiff: json["sec_diff"],
     data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
@@ -41,6 +44,7 @@ class ProductSaleModel {
     "title": title,
     "start": start,
     "end": end,
+    "sec_diff": secDiff,
     "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }

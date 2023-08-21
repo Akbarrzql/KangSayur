@@ -541,7 +541,8 @@ class _CheckoutState extends State<Checkout> {
               "variant_id": widget.data[i].getProdukCheckout[j].variantId,
               "store_id": widget.data[i].getProdukCheckout[j].tokoId,
               for (var n = 0; n < _note.length; n++) "notes": _note[j],
-              "alamat_id": widget.infoPengiriman.alamatId
+              "alamat_id": widget.infoPengiriman.alamatId,
+              "discount": "0"
             },
     ];
     return Container(
@@ -579,12 +580,14 @@ class _CheckoutState extends State<Checkout> {
                   .Order(dataArray, widget.rincian.totalKeseluruhan.toInt());
               print('object');
               print(data.data.snapToken);
-              await Navigator.push(
+              await Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Snap_screen(
                             snap_token: data.data.snapToken,
-                          )));
+                          )),
+                  (route) => false);
+
             },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.3,

@@ -53,7 +53,8 @@ class _Home_carouselState extends State<Home_carousel> {
     List<String> carouselItems = [
       if (iklanHomeModel.data!.length > 0)
         for (var i = 0; i < 3; i++)
-          "https://kangsayur.nitipaja.online${iklanHomeModel.data![i].imgPamflet!}"
+          if (iklanHomeModel.data!.length > 0)
+            "https://kangsayur.nitipaja.online${iklanHomeModel.data![i].imgPamflet!}"
       else
         ""
     ];

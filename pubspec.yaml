@@ -74,6 +74,11 @@ dependencies:
   flutter_polyline_points:
   pusher_client:
   timer_count_down: ^2.2.2
+  firebase_auth:
+  firebase_core:
+  firebase_dynamic_links:
+  firebase_messaging:
+  flutter_local_notifications:
 
 dev_dependencies:
   flutter_test:

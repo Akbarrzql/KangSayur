@@ -72,8 +72,8 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
         bottom: TabBar(
           isScrollable: true,
           labelColor: ColorValue.primaryColor,
-          unselectedLabelColor:
-              ColorValue.neutralColor, // Warna teks tab yang tidak dipilih
+          unselectedLabelColor: ColorValue.neutralColor,
+          // Warna teks tab yang tidak dipilih
           controller: _tabController,
           tabs: [
             Tab(
@@ -153,19 +153,19 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                           );
                         }
                       }, child:
-                      BlocBuilder<StatusPesananBloc, StatusPesananState>(
-                          builder: (context, state) {
-                            if (state is StatusPesananInitial) {
-                              return loading_status();
-                            } else if (state is StatusPesananLoading) {
-                              return loading_status();
-                            } else if (state is StatusPesananLoaded) {
-                              return status_Disiapkan(state.seleseiList);
-                            } else if (state is StatusPesananError) {
-                              return Text(state.message);
-                            }
-                            return Container();
-                          })),
+                          BlocBuilder<StatusPesananBloc, StatusPesananState>(
+                              builder: (context, state) {
+                        if (state is StatusPesananInitial) {
+                          return loading_status();
+                        } else if (state is StatusPesananLoading) {
+                          return loading_status();
+                        } else if (state is StatusPesananLoaded) {
+                          return status_Disiapkan(state.seleseiList);
+                        } else if (state is StatusPesananError) {
+                          return Text(state.message);
+                        }
+                        return Container();
+                      })),
                     ),
                   )
                 ],
@@ -194,19 +194,19 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                           );
                         }
                       }, child:
-                      BlocBuilder<StatusPesananBloc, StatusPesananState>(
-                          builder: (context, state) {
-                            if (state is StatusPesananInitial) {
-                              return loading_status();
-                            } else if (state is StatusPesananLoading) {
-                              return loading_status();
-                            } else if (state is StatusPesananLoaded) {
-                              return status_Diantar(state.diantarList);
-                            } else if (state is StatusPesananError) {
-                              return Text(state.message);
-                            }
-                            return Container();
-                          })),
+                          BlocBuilder<StatusPesananBloc, StatusPesananState>(
+                              builder: (context, state) {
+                        if (state is StatusPesananInitial) {
+                          return loading_status();
+                        } else if (state is StatusPesananLoading) {
+                          return loading_status();
+                        } else if (state is StatusPesananLoaded) {
+                          return status_Diantar(state.diantarList);
+                        } else if (state is StatusPesananError) {
+                          return Text(state.message);
+                        }
+                        return Container();
+                      })),
                     ),
                   )
                 ],
@@ -356,79 +356,94 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
           ],
         ),
       );
-else
-    return ListView.builder(
-      itemCount: data.data!.length,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (context, i) {
-        return CardRiwayat(
-          jenisVerifikasiProduk: data.data[i].namaToko.toString(),
-          tanggalVerifikasiProduk: data.data[i].tanggal.toString(),
-          namaVerifikasiProduk: data.data[i].barangPesanan[0].namaProduk,
-          descVerifikasiProduk: data.data[i].barangPesanan[0].variant,
-          gambarVerifikasiProduk: data.data[i].barangPesanan[0].variantImg,
-          statusVerifikasiProduk:
-              data.data[i].barangPesanan[0].status.toString(),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Detail_Riwayat_Pembelian(
-                  StatusDiulas: [],
-                  banyakBarang: [
-                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
-                      data.data[i].barangPesanan[j].jumlahPembelian
-                  ],
-                  latitude: 0,
-                  longitude: 0,
-                  Status: data.data[i].barangPesanan[0].status,
-                  Nama: data.data[i].alamatPengiriman.namaPemesan,
-                  AlamatUser: data.data[i].alamatPengiriman.alamat,
-                  NoHP: data.data[i].alamatPengiriman.nomorTelfon.toString(),
-                  GambarProduk: [
-                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
-                      data.data[i].barangPesanan[j].variantImg
-                  ],
-                  GambarToko: data.data[i].profilToko,
-                  HargaProduk: [
-                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
-                      data.data[i].barangPesanan[j].hargaVariant
-                  ],
-                  NamaProduk: [
-                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
-                      data.data[i].barangPesanan[j].namaProduk
-                  ],
-                  AlamatToko: data.data[i].alamatToko,
-                  NamaToko: data.data[i].namaToko,
-                  TotalHarga: data.data[i].tagihan.totalHarga,
-                  VarianProduk: [
-                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
-                      data.data[i].barangPesanan[j].variant
-                  ],
-                  Ongkir: data.data[i].tagihan.ongkosKirim.toInt(),
-                  produkId: [
-                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
-                      data.data[i].barangPesanan[j].id
-                  ],
-                  tokoId: data.data[i].tokoId.toString(),
-                  variantId: [
-                    for (int j = 0; j < data.data[i].barangPesanan.length; j++)
-                      data.data[i].barangPesanan[j].variantId
-                  ],
-                  transactionCode: data.data[i].kodeTransaksi.toString(),
+    else
+      return ListView.builder(
+        itemCount: data.data!.length,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, i) {
+          return CardRiwayat(
+            jenisVerifikasiProduk: data.data[i].namaToko.toString(),
+            tanggalVerifikasiProduk: data.data[i].tanggal.toString(),
+            namaVerifikasiProduk: data.data[i].barangPesanan[0].namaProduk,
+            descVerifikasiProduk: data.data[i].barangPesanan[0].variant,
+            gambarVerifikasiProduk: data.data[i].barangPesanan[0].variantImg,
+            statusVerifikasiProduk:
+                data.data[i].barangPesanan[0].status.toString(),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Detail_Riwayat_Pembelian(
+                    StatusDiulas: [],
+                    banyakBarang: [
+                      for (int j = 0;
+                          j < data.data[i].barangPesanan.length;
+                          j++)
+                        data.data[i].barangPesanan[j].jumlahPembelian
+                    ],
+                    latitude: 0,
+                    longitude: 0,
+                    Status: data.data[i].barangPesanan[0].status,
+                    Nama: data.data[i].alamatPengiriman.namaPemesan,
+                    AlamatUser: data.data[i].alamatPengiriman.alamat,
+                    NoHP: data.data[i].alamatPengiriman.nomorTelfon.toString(),
+                    GambarProduk: [
+                      for (int j = 0;
+                          j < data.data[i].barangPesanan.length;
+                          j++)
+                        data.data[i].barangPesanan[j].variantImg
+                    ],
+                    GambarToko: data.data[i].profilToko,
+                    HargaProduk: [
+                      for (int j = 0;
+                          j < data.data[i].barangPesanan.length;
+                          j++)
+                        data.data[i].barangPesanan[j].hargaVariant
+                    ],
+                    NamaProduk: [
+                      for (int j = 0;
+                          j < data.data[i].barangPesanan.length;
+                          j++)
+                        data.data[i].barangPesanan[j].namaProduk
+                    ],
+                    AlamatToko: data.data[i].alamatToko,
+                    NamaToko: data.data[i].namaToko,
+                    TotalHarga: data.data[i].tagihan.totalHarga,
+                    VarianProduk: [
+                      for (int j = 0;
+                          j < data.data[i].barangPesanan.length;
+                          j++)
+                        data.data[i].barangPesanan[j].variant
+                    ],
+                    Ongkir: data.data[i].tagihan.ongkosKirim.toInt(),
+                    produkId: [
+                      for (int j = 0;
+                          j < data.data[i].barangPesanan.length;
+                          j++)
+                        data.data[i].barangPesanan[j].id
+                    ],
+                    tokoId: data.data[i].tokoId.toString(),
+                    variantId: [
+                      for (int j = 0;
+                          j < data.data[i].barangPesanan.length;
+                          j++)
+                        data.data[i].barangPesanan[j].variantId
+                    ],
+                    transactionCode: data.data[i].kodeTransaksi.toString(),
+                  ),
                 ),
-              ),
-            );
-          },
-          banyakVerifikasiProduk: [
-            for (int j = 0; j < data.data[i].barangPesanan.length; j++)
-              data.data[i].barangPesanan[j].variant
-          ],
-        );
-      },
-    );
+              );
+            },
+            banyakVerifikasiProduk: [
+              for (int j = 0; j < data.data[i].barangPesanan.length; j++)
+                data.data[i].barangPesanan[j].variant
+            ],
+          );
+        },
+      );
   }
+
   Widget status_Disiapkan(StatusPesananDisiapkan data) {
     if (data.data!.isEmpty)
       return Container(
@@ -525,6 +540,7 @@ else
       },
     );
   }
+
   Widget status_Diantar(StatusPesananDiantarModel data) {
     if (data.data!.isEmpty)
       return Container(
@@ -567,6 +583,11 @@ else
               context,
               MaterialPageRoute(
                 builder: (context) => Detail_Riwayat_Pembelian(
+                  platKendaraan: data.data[i].driver.platKendaraan,
+                  photorDriver: data.data[i].driver.fotoDriver,
+                  photoKendaraan: data.data[i].driver.photoKendaraan,
+                  namaDriver: data.data[i].driver.namaDriver,
+                  nameKendaraan: data.data[i].driver.namaKendaraan,
                   StatusDiulas: [],
                   banyakBarang: [
                     for (int j = 0; j < data.data[i].barangPesanan.length; j++)
@@ -654,9 +675,12 @@ else
         return CardRiwayat(
           jenisVerifikasiProduk: data.data[i].namaToko.toString(),
           tanggalVerifikasiProduk: data.data[i].tanggal.toString(),
-          namaVerifikasiProduk: data.data[i].barangPesanan[0].namaProduk.toString(),
-          descVerifikasiProduk: data.data[i].barangPesanan[0].variant.toString(),
-          gambarVerifikasiProduk: data.data[i].barangPesanan[0].variantImg.toString(),
+          namaVerifikasiProduk:
+              data.data[i].barangPesanan[0].namaProduk.toString(),
+          descVerifikasiProduk:
+              data.data[i].barangPesanan[0].variant.toString(),
+          gambarVerifikasiProduk:
+              data.data[i].barangPesanan[0].variantImg.toString(),
           statusVerifikasiProduk:
               data.data[i].barangPesanan[0].status.toString(),
           onPressed: () {
@@ -721,6 +745,7 @@ else
       },
     );
   }
+
   Widget loading_status() {
     return ListView.builder(
       itemCount: 3,
@@ -734,17 +759,14 @@ else
             margin: EdgeInsets.only(bottom: 5),
             color: Colors.grey[300],
             child: CardRiwayat(
-              onPressed: (){},
+              onPressed: () {},
               jenisVerifikasiProduk: 'asdasdasdasd',
               tanggalVerifikasiProduk: '12123123',
               namaVerifikasiProduk: 'asfasf',
               descVerifikasiProduk: 'jajang ajsdasfk',
               gambarVerifikasiProduk: '123123',
-              statusVerifikasiProduk:
-                  'afksfas',
-              banyakVerifikasiProduk: [
-                'asdasd'
-              ],
+              statusVerifikasiProduk: 'afksfas',
+              banyakVerifikasiProduk: ['asdasd'],
             ),
           ),
         );

@@ -1,4 +1,7 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kangsayur/UI/bottom_nav/bottom_nav.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/promo_kilat/promo_kilat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/toko_sekitar/toko_sekitar.dart';
@@ -11,6 +14,7 @@ import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ul
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/menunggu_diulas.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/ulasan_anda.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/notifikasi/notifikasi.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_akun/keamanan_profile/keamanan_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_akun/pengaturan_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_transaksi.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/toko_favorit/toko_favorit.dart';
@@ -29,10 +33,61 @@ import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'API/auth/Auth.dart';
 import 'UI/bottom_nav/items/home/home.dart';
 import 'common/color_value.dart';
+import 'firebase/firebase_messaging.dart';
+import 'firebase/firebase_notification.dart';
 import 'on_boarding/on_boarding_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase/firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await PushNotificationConfig().requestPermission();
+  await PushNotificationConfig().androidNotificationChanel();
+  await FirebaseNotificationManager.initializeFirebase();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  final FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+
+  final PendingDynamicLinkData? initialLink =
+      await dynamicLinks.getInitialLink();
+  _handleDeepLink(initialLink);
+
+  dynamicLinks.onLink.listen((dynamicLink) {
+    _handleDeepLink(dynamicLink);
+  }, onError: (e) {
+    print('onLinkError');
+    print(e.message);
+  });
+
+  _handleDeepLink(initialLink);
+}
+
+void _handleDeepLink(PendingDynamicLinkData? data) {
+  final Uri? uri = data?.link;
+  print('uri: $uri');
+  if (uri != null && uri.path == '/') {
+    runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: const Keamanan_profile(),
+    ));
+  } else {
+    runApp(const MyApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -42,79 +97,75 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        backgroundColor: Colors.white,
-        textTheme: TextTheme(
-            headline1: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: ColorValue.neutralColor),
-            headline2: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: ColorValue.neutralColor),
-            headline3: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: ColorValue.neutralColor),
-            headline4: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: ColorValue.neutralColor),
-            headline5: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: ColorValue.neutralColor),
-            headline6: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-                color: ColorValue.neutralColor),
-            bodyText1: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: ColorValue.neutralColor),
-            bodyText2: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: ColorValue.neutralColor),
-            subtitle1: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: ColorValue.neutralColor),
-            subtitle2: TextStyle(
-                fontSize: 8,
-                fontWeight: FontWeight.w400,
-                color: ColorValue.neutralColor),
-            caption: TextStyle(
-                fontSize: 6,
-                fontWeight: FontWeight.w400,
-                color: ColorValue.neutralColor),
-            button: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: ColorValue.neutralColor),
-            overline: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: ColorValue.neutralColor)),
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          backgroundColor: Colors.white,
+          textTheme: TextTheme(
+              headline1: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: ColorValue.neutralColor),
+              headline2: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: ColorValue.neutralColor),
+              headline3: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: ColorValue.neutralColor),
+              headline4: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: ColorValue.neutralColor),
+              headline5: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: ColorValue.neutralColor),
+              headline6: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: ColorValue.neutralColor),
+              bodyText1: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor),
+              bodyText2: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor),
+              subtitle1: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor),
+              subtitle2: TextStyle(
+                  fontSize: 8,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor),
+              caption: TextStyle(
+                  fontSize: 6,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor),
+              button: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: ColorValue.neutralColor),
+              overline: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: ColorValue.neutralColor)),
 
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.green,
-      ),
-      home:
-      SplashScreen()
-    );}
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.green,
+        ),
+        home: SplashScreen());
   }
-
-
-
+}

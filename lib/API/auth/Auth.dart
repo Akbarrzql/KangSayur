@@ -87,19 +87,20 @@ class Auth {
           context,
           MaterialPageRoute(builder: (context) => Bottom_Nav()),
           (route) => false);
+      return true;
     } else {
       print('object');
       print(response.statusCode);
       print(responseBody);
+      return false;
     }
 
     // Jika login berhasil, atur isLoggedIn menjadi true
-    return true;
   }
 
   //make login method
   static Future<bool> login(BuildContext context, TextEditingController _email,
-      TextEditingController _password) async {
+      TextEditingController _password, String deviceToken) async {
     final response = await http.post(
       Uri.parse('https://kangsayur.nitipaja.online/api/auth/login'),
       headers: {
@@ -113,7 +114,6 @@ class Auth {
 
     var data = response.body;
     print(data);
-    print("token ${response.statusCode}");
     if (response.statusCode == 200) {
       LoginModel user = loginModelFromJson(response.body);
       isLoggedIn = true;
@@ -125,7 +125,7 @@ class Auth {
           context,
           MaterialPageRoute(builder: (context) => Bottom_Nav()),
               (route) => false);
-      return false;
+      return true;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Email atau password salah')));
@@ -155,6 +155,22 @@ class Auth {
           context,
           MaterialPageRoute(builder: (context) => OnboardingScreen()),
               (route) => false);
+      isLoggedIn = false;
+    }
+    return true;
+  }
+  static Future<bool> deviceToken(String email, String password, String deviceToken,BuildContext context) async {
+    //get api logout
+     String _baseUrl = "https://kangsayur.nitipaja.online/api/auth/update/device/token?email=$email&password=$deviceToken&device_token=$deviceToken";
+    var url = Uri.parse(_baseUrl);
+    // call token
+    var response = await http.get(Uri.parse(url.toString()), headers: {
+      'Accept': 'application/json',
+    });
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
       isLoggedIn = false;
     }
     return true;

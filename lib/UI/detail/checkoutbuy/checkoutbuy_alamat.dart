@@ -113,8 +113,8 @@ class _CheckoutBuyAlamatState extends State<CheckoutBuyAlamat> {
                         bottom: 37,
                         child: GestureDetector(
                           onTap: () {
-                            int jumlahBeli =
-                                int.parse(widget.data.data.jumlahBeli.toString());
+                            int jumlahBeli = int.parse(
+                                widget.data.data.jumlahBeli.toString());
                             setState(() {
                               _isButtonDisabled = true;
                             });
@@ -146,23 +146,21 @@ class _CheckoutBuyAlamatState extends State<CheckoutBuyAlamat> {
                         ),
                       );
                     } else if (state is BeliLangsungLoading) {
-                      return Center(
-                        child: Positioned(
-                          bottom: 37,
-                          child: Container(
-                            height: 46,
-                            width: MediaQuery.of(context).size.width - 48,
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: const Center(
-                              child: Text(
-                                "Pilih Alamat",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
+                      return Positioned(
+                        bottom: 37,
+                        child: Container(
+                          height: 46,
+                          width: MediaQuery.of(context).size.width - 48,
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: const Center(
+                            child: Text(
+                              "Pilih Alamat",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),

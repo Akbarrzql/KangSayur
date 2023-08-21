@@ -186,9 +186,12 @@ class _Lacak_PesananState extends State<Lacak_Pesanan> {
     super.initState();
     _getAddressFromLatLng();
     mapController = MapController();
-    dateTimeOutTimer = Timer.periodic(Duration(seconds: 6), (timer) {
-      if(!dataStreamController.hasListener){
+    dateTimeOutTimer = Timer.periodic(const Duration(seconds: 6), (timer) {
+      // Check if you haven't received data within 6 seconds
+      if (dataStreamController.isClosed) {
+        // Close the page or perform any other action here
         Navigator.pop(context);
+        timer.cancel(); // Stop the timer
       }
     });
     _initPusher();

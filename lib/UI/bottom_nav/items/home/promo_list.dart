@@ -24,43 +24,6 @@ class _Promo_ListState extends State<Promo_List> {
 
   @override
   void initState() {
-    String timeString1 = "19:00:00";
-    String timeString2 = "17:00:00";
-
-    // Convert time strings to DateTime objects
-    DateTime time1 = DateTime.parse("2023-01-01 $timeString1");
-    DateTime time2 = DateTime.parse("2023-01-01 $timeString2");
-
-    // Calculate the time difference in hours
-    double hoursDifference = time1.difference(time2).inHours.toDouble();
-
-    // Convert hours to seconds (1 hour = 3600 seconds)
-    int secondsDifference = (hoursDifference * 3600).round();
-    // subtracting the current time with seconds difference
-
-    print(
-        "wuiiii${DateTime.now().subtract(Duration(seconds: secondsDifference))}");
-
-    DateTime now = DateTime.now();
-    DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
-
-    // Calculate the time difference between now and the end of the day
-    Duration timeDifference = endOfDay.difference(now);
-
-    int secondsRemaining = timeDifference.inSeconds;
-
-    // Convert the duration to seconds
-
-    print('Current time: $now');
-    print('End of the day: $endOfDay');
-    print('Seconds remaining in the day: $secondsRemaining seconds');
-
-    print(DateTime.now());
-    int seconds = DateTime.now().second;
-    print("asdasd${secondsDifference - seconds}");
-    print('Time difference in hours: $hoursDifference');
-    print('Time difference in seconds: $secondsDifference');
-
     // TODO: implement initState
     super.initState();
     productSaleBloc.add(GetProductSaleList());
@@ -98,6 +61,8 @@ class _Promo_ListState extends State<Promo_List> {
         return number.floor();
       }
     }
+
+
 
     if (data.data.length == 0) {
       return Container();
@@ -138,71 +103,97 @@ class _Promo_ListState extends State<Promo_List> {
                         width: 5,
                       ),
                       // Timer Countdown Widget
-                      //make timer here
-                      Container(
-                        width: 10,
-                        height: 15,
-                        decoration: const BoxDecoration(
-                          color: Color(0xffD9D9D9),
-                        ),
-                        child: const Center(
-                            child: Text(
-                          "2",
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                      const SizedBox(
-                        width: 2,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 15,
-                        decoration: const BoxDecoration(
-                          color: Color(0xffD9D9D9),
-                        ),
-                        child: const Center(
-                            child: Text(
-                          "3",
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 15,
-                        decoration: const BoxDecoration(
-                          color: Color(0xffD9D9D9),
-                        ),
-                        child: const Center(
-                            child: Text(
-                          "5",
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                      const SizedBox(
-                        width: 2,
-                      ),
-                      Container(
-                        width: 10,
-                        height: 15,
-                        decoration: const BoxDecoration(
-                          color: Color(0xffD9D9D9),
-                        ),
-                        child: const Center(
-                            child: Text(
-                          "0",
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                      const SizedBox(
-                        width: 2,
-                      ),
+                      Countdown(
+                          seconds: data.secDiff,
+                          build: (_, double time) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: Row(
+                                children: [
+                                  // Menit puluhan
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 3, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: ColorValue.primaryColor,
+                                    ),
+                                    child: Text(
+                                      "${time ~/ 600}",
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  // Menit satuan
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 3, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: ColorValue.primaryColor,
+                                    ),
+                                    child: Text(
+                                      "${(time ~/ 60) % 10}",
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    ":",
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  // Detik puluhan
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 3, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: ColorValue.primaryColor,
+                                    ),
+                                    child: Text(
+                                      "${(time % 60) ~/ 10}",
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  // Detik satuan
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 3, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: ColorValue.primaryColor,
+                                    ),
+                                    child: Text(
+                                      "${time.toInt() % 10}",
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                     ],
                   ),
                 ],
@@ -235,7 +226,7 @@ class _Promo_ListState extends State<Promo_List> {
                                     hargaAkhir: data.data[index].hargaSale,
                                     namaVariant: data.data[index].variant,
                                     variantId: data.data[index].variantId,
-                                diskon: data.data[index].diskon.ceil(),
+                                    diskon: data.data[index].diskon.ceil(),
                                   )));
                     },
                     child: CardProduk(

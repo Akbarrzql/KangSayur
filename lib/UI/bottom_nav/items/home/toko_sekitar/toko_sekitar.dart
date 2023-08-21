@@ -221,25 +221,15 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
       markers: [
         for (int i = 0; i < widget.data.length; i++)
           Marker(
-            height: 15,
-            width: 15,
+            height: 25,
+            width: 25,
             point: latLang[i],
             builder: (_) {
-              return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      print("tap");
-                      _showBottomSheet(context);
-                    });
-                  },
-                  child: Container(
-                    height: 1.5,
-                    width: 1.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.red,
-                    ),
-                  ));
+              return Icon(
+                Icons.add_business,
+                size: 25,
+                color: ColorValue.secondaryColor,
+              );
             },
           )
       ],

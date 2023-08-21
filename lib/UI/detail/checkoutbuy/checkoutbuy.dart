@@ -61,7 +61,7 @@ class _CheckoutBuyState extends State<CheckoutBuy> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => CheckoutBuyAlamat(
-                              discount: widget.discount,
+                                  discount: widget.discount,
                                   data: widget.data,
                                 )));
                   }),
@@ -98,9 +98,7 @@ class _CheckoutBuyState extends State<CheckoutBuy> {
           "store_id": widget.data.data.tokoId,
           if (_note != "") "notes": _note,
           "alamat_id": widget.data.infoPengiriman.alamatId,
-          if (widget.discount != 0)
-            "discount": widget.discount,
-
+          "discount": widget.discount,
         },
     ];
 
@@ -142,12 +140,13 @@ class _CheckoutBuyState extends State<CheckoutBuy> {
                     dataArray, widget.data.rincian.totalKeseluruhan.toInt());
                 print('object');
                 print(data.data.snapToken);
-                await Navigator.push(
+                await Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Snap_screen(
                               snap_token: data.data.snapToken,
-                            )));
+                            )),
+                    (route) => false);
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.3,

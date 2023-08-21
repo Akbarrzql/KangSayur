@@ -8,6 +8,7 @@ import 'package:location/location.dart' as loc;
 import '../../../Constants/app_constants.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../common/color_value.dart';
+import '../firebase/firebase_messaging.dart';
 
 class Register_map extends StatefulWidget {
   Register_map({
@@ -37,6 +38,7 @@ class _Register_mapState extends State<Register_map> {
   LatLng _currentPosition = AppConstants.myLocation;
   final List<Marker> _markers = [];
   Marker? _currentMarker;
+
   // circle progress
   bool _isLoading = false;
 
@@ -212,45 +214,54 @@ class _Register_mapState extends State<Register_map> {
                   if (_isLoading)
                     const Center(child: CircularProgressIndicator())
                   else
-                  GestureDetector(
-                    onTap: () async {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      await Auth.register(
-                          widget.name.toString(),
-                          widget.image,
-                          widget.email.toString(),
-                          widget.password.toString(),
-                          widget.address.toString(),
-                          widget.phone,
-                          widget.dateOfBirth,
-                          context,
-                          _currentPosition.latitude.toDouble().toString(),
-                          _currentPosition.longitude.toDouble().toString());
-                      setState(() {
-                        _isLoading = false;
-                      });
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: ColorValue.primaryColor,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Pilih Lokasi & Daftar',
-                            style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        String? deviceToken = await FirebaseNotificationManager.getToken();
+                        print('Device Token: $deviceToken');
+                        await Auth.register(
+                            widget.name.toString(),
+                            widget.image,
+                            widget.email.toString(),
+                            widget.password.toString(),
+                            widget.address.toString(),
+                            widget.phone,
+                            widget.dateOfBirth,
+                            context,
+                            _currentPosition.latitude.toDouble().toString(),
+                            _currentPosition.longitude.toDouble().toString()).then((value) {
+                              if (value == true) {
+                                Auth.deviceToken(widget.email, widget.password,
+                                    deviceToken!, context);
+                              }
+                        });
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      },
+                      child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: ColorValue.primaryColor,
                           ),
-                        )),
-                  )
+                          child: Center(
+                            child: Text(
+                              'Pilih Lokasi & Daftar',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                            ),
+                          )),
+                    )
                 ],
               ),
             ),
@@ -259,8 +270,9 @@ class _Register_mapState extends State<Register_map> {
       ),
     );
   }
-  Widget _loadin(){
-    return                   Container(
+
+  Widget _loadin() {
+    return Container(
         width: double.infinity,
         height: 50,
         decoration: BoxDecoration(
@@ -270,14 +282,12 @@ class _Register_mapState extends State<Register_map> {
         child: Center(
           child: Text(
             'Pilih Lokasi & Daftar',
-            style:
-            Theme.of(context).textTheme.subtitle1!.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
           ),
         ));
-
   }
 }
