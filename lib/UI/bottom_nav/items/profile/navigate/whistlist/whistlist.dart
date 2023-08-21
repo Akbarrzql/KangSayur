@@ -51,7 +51,7 @@ class _WhistlistState extends State<Whistlist> {
                         crossAxisSpacing: 20,
                       ),
                       itemBuilder: (context, index) {
-                        return const CardProduk(
+                        return  CardProduk(
                           hargaProduk: '12000',
                           imageProduk: 'assets/images/wortel.png',
                           jarakProduk: '1.2 km',

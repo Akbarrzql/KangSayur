@@ -135,6 +135,9 @@ class _Alamat_mapState extends State<Alamat_map> {
     mapController = MapController(); // Initialize the mapController
   }
 
+  //loading
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,17 +214,24 @@ class _Alamat_mapState extends State<Alamat_map> {
                     'Longitude: ${_currentPosition.longitude.toStringAsFixed(6)}',
                   ),
                   const SizedBox(height: 15),
+                  if (_isLoading)
+                    _loading()
+                  else
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
-                        Alamat.alamat(
-                            widget.namaPenerima,
-                            widget.alamat,
-                            widget.noHpPenerima,
-                            _currentPosition.latitude,
-                            _currentPosition.longitude,
-                            widget.labelAlamat,
-                            context);
+                        _isLoading = true;
+                      });
+                      await Alamat.alamat(
+                          widget.namaPenerima,
+                          widget.alamat,
+                          widget.noHpPenerima,
+                          _currentPosition.latitude,
+                          _currentPosition.longitude,
+                          widget.labelAlamat,
+                          context);
+                      setState(() {
+                        _isLoading = false;
                       });
                     },
                     child: Container(
@@ -250,5 +260,25 @@ class _Alamat_mapState extends State<Alamat_map> {
         ],
       ),
     );
+  }
+  Widget _loading(){
+    return                   Container(
+        width: double.infinity,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.grey,
+        ),
+        child: Center(
+          child: Text(
+            'Pilih Lokasi',
+            style:
+            Theme.of(context).textTheme.subtitle1!.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+        ));
   }
 }

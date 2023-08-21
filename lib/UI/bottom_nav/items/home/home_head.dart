@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/notif/notification.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
 import 'package:kangsayur/UI/payment/keranjang/keranjang.dart';
 import 'package:kangsayur/bloc/json_bloc/json_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:kangsayur/model/profilemodel.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../bloc/json_bloc/json_state.dart';
+import '../profile/navigate/inbox/inbox.dart';
 
 class Home_head extends StatefulWidget {
   const Home_head({Key? key}) : super(key: key);
@@ -63,12 +65,13 @@ class _Home_headState extends State<Home_head> {
           width: 30,
           height: 30,
           decoration: BoxDecoration(
-              color: Colors.transparent, borderRadius: BorderRadius.circular(50)),
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(50)),
           child: Image.network(
-              "https://kangsayur.nitipaja.online/${widget.data.photo}" == null
-                  ? "https://avatars.githubusercontent.com/u/60261133?v=4"
-                  : "https://kangsayur.nitipaja.online/${widget.data.photo}",
-          fit: BoxFit.cover,
+            "https://kangsayur.nitipaja.online/${widget.data.photo}" == null
+                ? "https://avatars.githubusercontent.com/u/60261133?v=4"
+                : "https://kangsayur.nitipaja.online/${widget.data.photo}",
+            fit: BoxFit.cover,
           ),
         ),
         SizedBox(
@@ -89,7 +92,12 @@ class _Home_headState extends State<Home_head> {
         SizedBox(
           width: 17,
         ),
-        SvgPicture.asset("assets/icon/mail.svg"),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NotificationPage()));
+          },
+            child: SvgPicture.asset("assets/icon/mail.svg")),
       ],
     );
   }
@@ -136,7 +144,12 @@ class _Home_headState extends State<Home_head> {
         SizedBox(
           width: 17,
         ),
-        SvgPicture.asset("assets/icon/mail.svg"),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NotificationPage()));
+            },
+            child: SvgPicture.asset("assets/icon/mail.svg")),
       ],
     );
   }

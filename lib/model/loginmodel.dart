@@ -46,7 +46,7 @@ class Data {
   String? photo;
   String? email;
   int? phoneNumber;
-  Null? emailVerifiedAt;
+  String? emailVerifiedAt;
   int? jenisKelamin;
   String? tanggalLahir;
   String? address;

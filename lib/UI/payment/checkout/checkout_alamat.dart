@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/tambah_alamat.dart';
 import 'package:kangsayur/UI/payment/checkout/checkout.dart';
 import 'package:kangsayur/common/color_value.dart';
 import 'package:kangsayur/model/alamatmodel.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../bloc/alamat_bloc/alamat_bloc.dart';
 import '../../../../../../bloc/alamat_bloc/alamat_event.dart';
@@ -39,25 +39,6 @@ class _CheckoutAlamatState extends State<CheckoutAlamat> {
           "Alamat",
           style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 24.0),
-            child: Center(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Tambah_alamat();
-                  }));
-                },
-                child: Text("Tambah Alamat",
-                    style: TextStyle(
-                        color: ColorValue.primaryColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400)),
-              ),
-            ),
-          ),
-        ],
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -83,13 +64,9 @@ class _CheckoutAlamatState extends State<CheckoutAlamat> {
                     bloc: _alamatBloc,
                     builder: (context, state) {
                       if (state is AlamatInitial) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return _alamatLoading();
                       } else if (state is AlamatLoading) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return _alamatLoading();
                       } else if (state is AlamatLoaded) {
                         return Alamat_list(
                           alamatModel: state.alamat,
@@ -148,6 +125,117 @@ class _CheckoutAlamatState extends State<CheckoutAlamat> {
       ),
     );
   }
+  Widget _alamatLoading(){
+    return Positioned(
+
+      child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        //make color radio button func
+                          color: ColorValue.hinttext,
+                          width: 1)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                        const EdgeInsets.only(left: 16, right: 16, top: 8),
+                        child: Row(
+                          children: [
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                width: 50,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                    color: ColorValue.primaryColor,
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                            ),
+                            Spacer(),
+                            SvgPicture.asset("assets/icon/pinpoint.svg")
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        color: ColorValue.hinttext,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(
+                            left: 16, right: 16, top: 5, bottom: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                height : 20,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                height : 15,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                height : 20,
+                                width: 160,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                )
+              ],
+            );
+          }),
+    );
+  }
+
 }
 
 class Alamat_list extends StatefulWidget {

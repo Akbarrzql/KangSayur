@@ -332,6 +332,7 @@ class _CheckoutState extends State<Checkout> {
           context, MaterialPageRoute(builder: (context) => CheckoutAlamat()));
     });
   }
+
   Widget _infoPengirimanLoading() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -433,6 +434,7 @@ class _CheckoutState extends State<Checkout> {
       total_harga: widget.rincian.subtotalProduk.toDouble(),
     );
   }
+
   Widget _ringkasanPembayaranLoading() {
     return Container(
       color: Colors.white,
@@ -521,7 +523,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
                   ],
                 ),
-                ],
+              ],
             ),
           )
         ],
@@ -619,6 +621,12 @@ class _CheckoutState extends State<Checkout> {
         itemCount: widget.data.length,
         itemBuilder: (context, index) {
           return Checkout_items(
+            jumlah_barang: [
+              for (var i = 0;
+                  i < widget.data[index].getProdukCheckout.length;
+                  i++)
+                widget.data[index].getProdukCheckout[i].inCart.toString()
+            ],
             seller_list: [
               for (var i = 0; i < widget.data.length; i++)
                 widget.data[index].namaToko
@@ -712,6 +720,7 @@ class _CheckoutState extends State<Checkout> {
       ),
     ]);
   }
+
   Widget _chekoutItemsLoading() {
     return Column(children: [
       ListView.builder(
@@ -736,7 +745,7 @@ class _CheckoutState extends State<Checkout> {
                             width: 35,
                             clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
-                              color:  Colors.grey[300],
+                              color: Colors.grey[300],
                               borderRadius: BorderRadius.circular(50),
                             ),
                           ),
@@ -745,18 +754,18 @@ class _CheckoutState extends State<Checkout> {
                           width: 10,
                         ),
                         //text name seller
-                          Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(5),
-                              ),
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5),
                             ),
                           ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 10),
@@ -801,11 +810,13 @@ class _CheckoutState extends State<Checkout> {
                                       highlightColor: Colors.grey[100]!,
                                       child: Container(
                                         width:
-                                        MediaQuery.of(context).size.width * 0.5,
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
                                         height: 20,
                                         decoration: BoxDecoration(
                                           color: Colors.grey[300],
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                       ),
                                     ),
@@ -817,7 +828,8 @@ class _CheckoutState extends State<Checkout> {
                                         width: 30,
                                         decoration: BoxDecoration(
                                           color: Colors.grey[300],
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                       ),
                                     ),
@@ -830,7 +842,8 @@ class _CheckoutState extends State<Checkout> {
                                         width: 60,
                                         decoration: BoxDecoration(
                                           color: Colors.grey[300],
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                       ),
                                     ),

@@ -5,23 +5,26 @@ import '../common/color_value.dart';
 
 //make stateless widget for card menunggu_diulas
 class CardMenunggu extends StatelessWidget {
-  const CardMenunggu({Key? key,
+  const CardMenunggu({
+    Key? key,
     //required gambar, title, and toko
     required this.gambar,
     required this.title,
     required this.toko,
     required this.onTap,
   }) : super(key: key);
+
   //declare variable
   final String gambar;
   final String title;
   final String toko;
+
   //void callback
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return           Container(
+    return Container(
       margin: EdgeInsets.symmetric(horizontal: 24),
       height: 123,
       width: MediaQuery.of(context).size.width,
@@ -46,7 +49,10 @@ class CardMenunggu extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Image.network('https://kangsayur.nitipaja.online'+this.gambar, fit: BoxFit.cover,),
+            child: Image.network(
+              'https://kangsayur.nitipaja.online' + this.gambar,
+              fit: BoxFit.cover,
+            ),
           ),
           Container(
             margin: EdgeInsets.only(left: 10),
@@ -54,13 +60,29 @@ class CardMenunggu extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(this.title, style: TextStyle(color: ColorValue.blackColor, fontSize: 14, fontWeight: FontWeight.w600),),
-                SizedBox(height: 5,),
-                Text(this.toko, style: TextStyle(color: ColorValue.blackColor, fontSize: 12, fontWeight: FontWeight.w400),),
-                SizedBox(height: 5,),
+                Text(
+                  this.title,
+                  style: TextStyle(
+                      color: ColorValue.blackColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  this.toko,
+                  style: TextStyle(
+                      color: ColorValue.blackColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
                 Spacer(),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     this.onTap();
                   },
                   child: Container(
@@ -71,11 +93,16 @@ class CardMenunggu extends StatelessWidget {
                       color: ColorValue.primaryColor,
                     ),
                     child: Center(
-                      child: Text("Beri Ulasan", style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),),
+                      child: Text(
+                        "Beri Ulasan",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 )
-
               ],
             ),
           )

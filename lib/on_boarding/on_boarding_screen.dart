@@ -84,6 +84,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           contents[i].title,
                           style: textTheme.headline6!.copyWith(
+                            fontSize: 20,
                             color: ColorValue.secondaryColor,
                             fontWeight: FontWeight.w900,
                           ),
@@ -96,6 +97,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           contents[i].desc,
                           textAlign: TextAlign.center,
                           style: textTheme.bodyText1!.copyWith(
+                            fontSize: 16,
                             color: const Color(0xffB6B6B6),
                             fontWeight: FontWeight.normal,
                           ),

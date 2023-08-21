@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home_most_popular.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home_most_visit.dart';
+import 'package:kangsayur/UI/bottom_nav/items/home/paling_banyak_dikunjungi/palingbanyakdikunjungi.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/promo_list.dart';
 
 import 'home_carousel.dart';
@@ -38,7 +39,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Column(
-                    children: [
+                    children: const [
                       Home_head(),
                     ],
                   ),
@@ -68,112 +69,7 @@ class _HomeState extends State<Home> {
                   height: 35,
                 ),
                 // Promo Kilat
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Promo kilat",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              Spacer(),
-                              Text(
-                                "Lihat semua",
-                                style: TextStyle(
-                                    fontSize: 14, color: Color(0xffA0A0A0)),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Berakhir dalam",
-                                style: TextStyle(
-                                    fontSize: 14, color: Color(0xffA0A0A0)),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Container(
-                                width: 10,
-                                height: 15,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffD9D9D9),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  "0",
-                                  style: TextStyle(
-                                      fontSize: 12, fontWeight: FontWeight.bold),
-                                )),
-                              ),
-                              SizedBox(
-                                width: 2,
-                              ),
-                              Container(
-                                width: 10,
-                                height: 15,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffD9D9D9),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  "0",
-                                  style: TextStyle(
-                                      fontSize: 12, fontWeight: FontWeight.bold),
-                                )),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Container(
-                                width: 10,
-                                height: 15,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffD9D9D9),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  "0",
-                                  style: TextStyle(
-                                      fontSize: 12, fontWeight: FontWeight.bold),
-                                )),
-                              ),
-                              SizedBox(
-                                width: 2,
-                              ),
-                              Container(
-                                width: 10,
-                                height: 15,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffD9D9D9),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  "0",
-                                  style: TextStyle(
-                                      fontSize: 12, fontWeight: FontWeight.bold),
-                                )),
-                              ),
-                              SizedBox(
-                                width: 2,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(height: 248, child: Promo_List()),
-                  ],
-                ),
+                Promo_List(),
                 SizedBox(
                   height: 35,
                 ),
@@ -183,7 +79,7 @@ class _HomeState extends State<Home> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text(
                             "Biji kakao lokan andalan",
                             style: TextStyle(
@@ -192,8 +88,8 @@ class _HomeState extends State<Home> {
                           Spacer(),
                           Text(
                             "Lihat toko",
-                            style:
-                                TextStyle(fontSize: 14, color: Color(0xffA0A0A0)),
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xffA0A0A0)),
                           ),
                         ],
                       ),
@@ -218,17 +114,20 @@ class _HomeState extends State<Home> {
                       child: Column(
                         children: [
                           Row(
-                            children: [
+                            children:  [
                               Text(
                                 "Paling banyak dikunjungi",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Spacer(),
-                              Text(
-                                "Lihat semua",
-                                style: TextStyle(
-                                    fontSize: 14, color: Color(0xffA0A0A0)),
+                              GestureDetector(
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PalingBanyakDikunjungi(),)),
+                                child: Text(
+                                  "Lihat semua",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Color(0xffA0A0A0)),
+                                ),
                               ),
                             ],
                           ),
@@ -242,6 +141,7 @@ class _HomeState extends State<Home> {
                       height: 20,
                     ),
                     SizedBox(
+                        width: double.infinity,
                         height: 248,
                         child: Home_most_visited())
                   ],
@@ -249,42 +149,7 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: 35,
                 ),
-                // Paling Sering Dicari
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Paling sering kamu kunjungi",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              Spacer(),
-                              Text(
-                                "Lihat semua",
-                                style: TextStyle(
-                                    fontSize: 14, color: Color(0xffA0A0A0)),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                        height: 248,
-                        child: Home_most_visit())
-                  ],
-                ),
+                Home_most_visit()
               ],
             ),
           ),

@@ -13,6 +13,7 @@ import 'package:kangsayur/model/statuspesanandikemas.dart';
 import 'package:kangsayur/model/statuspesanandisiapkanmodel.dart';
 import 'package:kangsayur/model/statuspesananselesaiselesai.dart';
 import 'package:kangsayur/widget/card_riwayat.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../common/color_value.dart';
@@ -69,10 +70,10 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
           icon: SvgPicture.asset("assets/icon/arrow_left.svg"),
         ),
         bottom: TabBar(
+          isScrollable: true,
           labelColor: ColorValue.primaryColor,
           unselectedLabelColor:
               ColorValue.neutralColor, // Warna teks tab yang tidak dipilih
-
           controller: _tabController,
           tabs: [
             Tab(
@@ -94,37 +95,6 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Container(
-                    height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: ColorValue.primaryColor,
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icon/payment_card.svg",
-                          height: 24.0,
-                          width: 24.0,
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Menunggu Status Pembayaran",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
                   SizedBox(
                     height: 16,
                   ),
@@ -168,37 +138,6 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               child: Column(
                 children: [
                   SizedBox(
-                    height: 12,
-                  ),
-                  Container(
-                    height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: ColorValue.primaryColor,
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icon/payment_card.svg",
-                          height: 24.0,
-                          width: 24.0,
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Menunggu Status Pembayaran",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
                     height: 16,
                   ),
                   Container(
@@ -240,37 +179,6 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               child: Column(
                 children: [
                   SizedBox(
-                    height: 12,
-                  ),
-                  Container(
-                    height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: ColorValue.primaryColor,
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icon/payment_card.svg",
-                          height: 24.0,
-                          width: 24.0,
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Menunggu Status Pembayaran",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
                     height: 16,
                   ),
                   Container(
@@ -311,37 +219,6 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Container(
-                    height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: ColorValue.primaryColor,
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icon/payment_card.svg",
-                          height: 24.0,
-                          width: 24.0,
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Menunggu Status Pembayaran",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
                   SizedBox(
                     height: 16,
                   ),
@@ -456,6 +333,30 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
   // }
 
   Widget status_SemuaPesanan(StatusPesananDikemasModel data) {
+    if (data.data!.isEmpty)
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Column(
+          children: [
+            Spacer(),
+            LottieBuilder.asset(
+              'assets/icon/lottie/confirmstatus.json',
+              height: 250,
+            ),
+            Center(
+              child: Text(
+                "Tidak ada pesanan",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+else
     return ListView.builder(
       itemCount: data.data!.length,
       physics: const NeverScrollableScrollPhysics(),
@@ -483,8 +384,8 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                   longitude: 0,
                   Status: data.data[i].barangPesanan[0].status,
                   Nama: data.data[i].alamatPengiriman.namaPemesan,
-                  AlamatUser: "asdasdsdadsasadasd",
-                  NoHP: "123018308132",
+                  AlamatUser: data.data[i].alamatPengiriman.alamat,
+                  NoHP: data.data[i].alamatPengiriman.nomorTelfon.toString(),
                   GambarProduk: [
                     for (int j = 0; j < data.data[i].barangPesanan.length; j++)
                       data.data[i].barangPesanan[j].variantImg
@@ -529,6 +430,29 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
     );
   }
   Widget status_Disiapkan(StatusPesananDisiapkan data) {
+    if (data.data!.isEmpty)
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Column(
+          children: [
+            Spacer(),
+            LottieBuilder.asset(
+              'assets/icon/lottie/packingstatus.json',
+              height: 250,
+            ),
+            Center(
+              child: Text(
+                "Tidak ada pesanan",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     return ListView.builder(
       itemCount: data.data!.length,
       physics: const NeverScrollableScrollPhysics(),
@@ -556,8 +480,8 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                   longitude: 0,
                   Status: data.data[i].barangPesanan[0].status,
                   Nama: data.data[i].alamatPengiriman.namaPemesan,
-                  AlamatUser: "asdasdsdadsasadasd",
-                  NoHP: "123018308132",
+                  AlamatUser: data.data[i].alamatPengiriman.alamat,
+                  NoHP: data.data[i].alamatPengiriman.nomorTelfon,
                   GambarProduk: [
                     for (int j = 0; j < data.data[i].barangPesanan.length; j++)
                       data.data[i].barangPesanan[j].variantImg
@@ -602,6 +526,29 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
     );
   }
   Widget status_Diantar(StatusPesananDiantarModel data) {
+    if (data.data!.isEmpty)
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Column(
+          children: [
+            Spacer(),
+            LottieBuilder.asset(
+              'assets/icon/lottie/deliverystatus.json',
+              height: 250,
+            ),
+            Center(
+              child: Text(
+                "Tidak ada pesanan",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     return ListView.builder(
       itemCount: data.data!.length,
       physics: const NeverScrollableScrollPhysics(),
@@ -609,7 +556,7 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
       itemBuilder: (context, i) {
         return CardRiwayat(
           jenisVerifikasiProduk: data.data[i].namaToko.toString(),
-          tanggalVerifikasiProduk: data.data[i].tanggal,
+          tanggalVerifikasiProduk: data.data[i].tanggal.toString(),
           namaVerifikasiProduk: data.data[i].barangPesanan[0].namaProduk,
           descVerifikasiProduk: data.data[i].barangPesanan[0].variant,
           gambarVerifikasiProduk: data.data[i].barangPesanan[0].variantImg,
@@ -630,7 +577,7 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                   Status: data.data[i].barangPesanan[0].status,
                   Nama: data.data[i].alamatPengiriman.namaPemesan,
                   AlamatUser: data.data[i].alamatPengiriman.alamat,
-                  NoHP: "123018308132",
+                  NoHP: data.data[i].alamatPengiriman.nomorTelfon.toString(),
                   GambarProduk: [
                     for (int j = 0; j < data.data[i].barangPesanan.length; j++)
                       data.data[i].barangPesanan[j].variantImg
@@ -676,6 +623,29 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
   }
 
   Widget status_Selesai(StatusPesananSelesaiModel data) {
+    if (data.data!.isEmpty)
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Column(
+          children: [
+            Spacer(),
+            LottieBuilder.asset(
+              'assets/icon/lottie/completestatus.json',
+              height: 250,
+            ),
+            Center(
+              child: Text(
+                "Tidak ada pesanan",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: ColorValue.neutralColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     return ListView.builder(
       itemCount: data.data!.length,
       physics: const NeverScrollableScrollPhysics(),
@@ -706,8 +676,8 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                   longitude: 0,
                   Status: data.data[i].barangPesanan[0].status.toString(),
                   Nama: data.data[i].alamatPengiriman.namaPemesan.toString(),
-                  AlamatUser: "asdasdsdadsasadasd",
-                  NoHP: "123018308132",
+                  AlamatUser: data.data[i].alamatPengiriman.alamat.toString(),
+                  NoHP: data.data[i].alamatPengiriman.nomorTelfon.toString(),
                   GambarProduk: [
                     for (int j = 0; j < data.data[i].barangPesanan.length; j++)
                       data.data[i].barangPesanan[j].variantImg

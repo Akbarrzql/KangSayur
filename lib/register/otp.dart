@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kangsayur/common/color_value.dart';
 import 'package:kangsayur/register/otp_form.dart';
-import 'package:kangsayur/register/set_password.dart';
+import 'package:kangsayur/register/register_personal_information.dart';
 
 class OTP extends StatefulWidget {
-  const OTP({Key? key}) : super(key: key);
+  final String email;
+  final String password;
+
+  const OTP({Key? key, required this.email, required this.password})
+      : super(key: key);
 
   @override
   State<OTP> createState() => _OTPState();
@@ -28,29 +32,11 @@ class _OTPState extends State<OTP> {
                     color: ColorValue.secondaryColor,
                     fontWeight: FontWeight.w800),
               ),
-              Expanded(child: otpForm()),
-              Padding(
-                padding: EdgeInsets.only(bottom: 37),
-                child: GestureDetector(
-                  onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Container() )),
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: ColorValue.primaryColor,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: const Center(
-                      child: Text(
-                        "Verifikasi",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              Expanded(
+                  child: otpForm(
+                email: widget.email,
+                password: widget.password,
+              )),
             ],
           ),
         ),

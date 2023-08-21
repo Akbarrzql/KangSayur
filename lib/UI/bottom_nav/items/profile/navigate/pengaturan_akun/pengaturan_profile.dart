@@ -16,13 +16,16 @@ class Pengaturan_Profile extends StatefulWidget {
 class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
   bool isSwitched = false;
 
+  // circle progress
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Pengaturan Akun",
           style: TextStyle(color: ColorValue.neutralColor, fontSize: 16),
         ),
@@ -37,13 +40,13 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Keamanan_profile();
+                  return const Keamanan_profile();
                 }));
               },
               child: Container(
@@ -54,12 +57,12 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                       "assets/icon/lock.svg",
                       width: 18,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: const [
                         Text(
                           "Keamanan Akun",
                           style: TextStyle(
@@ -70,7 +73,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                                 fontSize: 12, color: ColorValue.hinttext)),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     SvgPicture.asset(
                       "assets/icon/arrow_right.svg",
                       height: 20,
@@ -79,7 +82,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 14,
             ),
             Container(
@@ -90,12 +93,12 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                     "assets/icon/maphouse.svg",
                     width: 18,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         "Geolokasi",
                         style: TextStyle(
@@ -106,7 +109,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                               fontSize: 12, color: ColorValue.hinttext)),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   FlutterSwitch(
                     value: isSwitched,
                     width: 40,
@@ -140,7 +143,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 14,
             ),
             Container(
@@ -151,12 +154,12 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                     "assets/icon/sun.svg",
                     width: 18,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         "Dark Mode",
                         style: TextStyle(
@@ -167,7 +170,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                               fontSize: 12, color: ColorValue.hinttext)),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   FlutterSwitch(
                     value: isSwitched,
                     width: 40,
@@ -201,7 +204,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 14,
             ),
             Container(
@@ -212,12 +215,12 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                     "assets/icon/clean.svg",
                     width: 18,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         "Cache",
                         style: TextStyle(
@@ -231,12 +234,20 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 14,
             ),
+
+            if (!_isLoading)
             GestureDetector(
-              onTap: () {
-                Auth.logout(context);
+              onTap:() async {
+                setState(() {
+                  _isLoading = true;
+                });
+                await Auth.logout(context);
+                setState(() {
+                  _isLoading = false;
+                });
               },
               child: Container(
                 color: Colors.white,
@@ -246,10 +257,10 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                       "assets/icon/logout.svg",
                       width: 18,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
-                    Text(
+                    const Text(
                       "Keluar Akun",
                       style: TextStyle(fontSize: 16, color: Color(0xffFF0000)),
                     ),
@@ -257,8 +268,30 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
                 ),
               ),
             ),
+            if (_isLoading)
+            _logoutLoading(),
           ],
         ),
+      ),
+    );
+  }
+  Widget _logoutLoading(){
+    return             Container(
+      color: Colors.white,
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            "assets/icon/logout.svg",
+            width: 18,
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Text(
+            "Keluar Akun",
+            style: TextStyle(fontSize: 16, color: Colors.grey.withOpacity(0.5)),
+          ),
+        ],
       ),
     );
   }

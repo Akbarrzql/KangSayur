@@ -21,7 +21,7 @@ class _KatalogState extends State<Katalog> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
-              children: [
+              children: const [
                 SizedBox(
                   height: 25,
                 ),
@@ -30,16 +30,10 @@ class _KatalogState extends State<Katalog> {
                 //   height: 25,
                 // ),
                 Katalog_search(),
-                SizedBox(
-                  height: 35,
-                ),
                 Katalog_carousel(),
                 SizedBox(
-                  height: 35,
-                ),
-                SizedBox(
-                  child: Katalog_box_list(),
                   width: double.maxFinite,
+                  child: Katalog_box_list(),
                 ),
                 SizedBox(
                   height: 35,),

@@ -31,9 +31,13 @@ class Card_katalog extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(
-              title,
-              style: TextStyle(fontSize: 14),
+
+            Container(
+              width: MediaQuery.of(context).size.width /2 - 24 - 24 - 10 - 28- 10 - 5,
+              child: Text(
+                title,
+                style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
+              ),
             ),
             Spacer(),
             Container(

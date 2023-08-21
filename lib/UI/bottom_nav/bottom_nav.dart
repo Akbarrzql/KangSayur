@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/home/home.dart';
 import 'package:kangsayur/UI/bottom_nav/items/katalog/katalog.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile.dart';
+import 'package:kangsayur/UI/bottom_nav/items/transaction/transaction.dart';
 
 class Bottom_Nav extends StatefulWidget {
   const Bottom_Nav({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _Bottom_NavState extends State<Bottom_Nav> {
       case 1:
         return const Katalog();
       case 2:
-        return const Home();
+        return const Transaction();
       default:
         return const Profile();
     }
@@ -50,48 +51,48 @@ class _Bottom_NavState extends State<Bottom_Nav> {
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
             iconSize: 24,
-            items: [
+            items: const [
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.home)
                 ),
-                label: 'Home',
+                label: 'Beranda',
                 activeIcon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.home)
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.list)
                 ),
-                label: 'Explore',
+                label: 'Jelajah',
                 activeIcon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.list)
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.monetization_on)
                 ),
-                label: 'Transaction',
+                label: 'Transaksi',
                 activeIcon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.monetization_on)
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                     child: Icon(Icons.person)
                 ),
-                label: 'Profile',
+                label: 'Profil',
                 activeIcon: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                   child: Icon(Icons.person)
                   ),
                 ),

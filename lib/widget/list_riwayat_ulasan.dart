@@ -4,23 +4,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:kangsayur/common/color_value.dart';
 
-
 class List_riwayatulasan extends StatelessWidget {
-   List_riwayatulasan({
+  List_riwayatulasan({
     Key? key,
     required this.gambar,
     required this.produk,
-    required this.pcs,
     required this.rating,
     required this.tanggal,
     required this.ulasan,
     required this.balas,
     required this.banyak_balas,
+    required this.gambarReview,
   }) : super(key: key);
 
   final String gambar;
+  final String gambarReview;
   final String produk;
-  final String pcs;
   final int rating;
   final String tanggal;
   final String ulasan;
@@ -52,7 +51,8 @@ class List_riwayatulasan extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           image: DecorationImage(
-                            image: AssetImage(gambar),
+                            image: NetworkImage(
+                                "https://kangsayur.nitipaja.online/" + gambar),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -75,17 +75,6 @@ class List_riwayatulasan extends StatelessWidget {
                           const SizedBox(
                             height: 4,
                           ),
-                          Text(
-                            pcs,
-                            style: TextStyle(
-                              color: ColorValue.hinttext,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 2,
-                          ),
                           Row(
                             children: [
                               RatingBar.builder(
@@ -101,6 +90,7 @@ class List_riwayatulasan extends StatelessWidget {
                                 onRatingUpdate: (rating) {
                                   print(rating);
                                 },
+                                ignoreGestures: true,
                               ),
                               const SizedBox(
                                 width: 5,
@@ -118,7 +108,7 @@ class List_riwayatulasan extends StatelessWidget {
                                 width: 5,
                               ),
                               Text(
-                                ubahFormatTanggal(tanggal),
+                                tanggal,
                                 style: TextStyle(
                                   color: ColorValue.hinttext,
                                   fontSize: 14,
@@ -145,9 +135,31 @@ class List_riwayatulasan extends StatelessWidget {
                   ),
                   //make text : 1 balasan dari penjual with color hinttext and size 12 weight 600
                   //make if balas true return text
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      //gambar
+                      if (gambarReview != "null")
+                        Container(
+                          clipBehavior: Clip.antiAlias,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://kangsayur.nitipaja.online/" +
+                                      gambarReview),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                   if (balas == true)
-                  Container(
-                    child: Column(
+                    Column(
                       children: [
                         SizedBox(
                           height: 10,
@@ -162,9 +174,6 @@ class List_riwayatulasan extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 12),
                 ],
               ),
             ),
@@ -176,10 +185,4 @@ class List_riwayatulasan extends StatelessWidget {
       ),
     );
   }
-}
-
-String ubahFormatTanggal(String tanggal) {
-  DateTime dateTime = DateFormat("dd/MM/yyyy").parse(tanggal);
-  String tanggalBaru = DateFormat("dd MMMM yyyy").format(dateTime);
-  return tanggalBaru;
 }

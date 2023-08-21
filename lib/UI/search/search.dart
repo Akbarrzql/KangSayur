@@ -25,6 +25,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     // TODO: implement initState
+    _jsonBloc.add(GetSearchProductList(' '));
     _searchFocusNode.requestFocus();
     super.initState();
   }
@@ -63,7 +64,7 @@ class _SearchState extends State<Search> {
                 onChanged: (value) {
                   setState(() {
                     if (value.isEmpty) {
-                      _jsonBloc.add(GetSearchProductList(' '));
+                      _jsonBloc.add(GetSearchProductList(''));
                     }
                     _jsonBloc.add(GetSearchProductList(value ?? ' '));
                   });
@@ -133,12 +134,13 @@ class _SearchState extends State<Search> {
       );
     } else {
       return GridView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 24),
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.7,
+              childAspectRatio: 0.6,
               crossAxisSpacing: 10,
-              mainAxisSpacing: 10),
+              mainAxisSpacing: 20),
           itemCount: widget.data!.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
@@ -153,7 +155,7 @@ class _SearchState extends State<Search> {
               },
               child: CardProduk(
                   imageProduk: widget.data![index].image.toString(),
-                  jarakProduk: "1.2 km",
+                  jarakProduk: widget.data![index].distance.toString() + " km",
                   namaProduk: widget.data![index].namaProduk!,
                   penjualProduk: widget.data![index].namaToko.toString(),
                   hargaProduk: widget.data![index].harga.toString()),

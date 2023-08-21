@@ -23,12 +23,13 @@ class ListChat extends StatelessWidget {
               Row(
                 children: [
                   Container(
+                    clipBehavior: Clip.antiAlias,
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(100),
                       image: DecorationImage(
-                        image: AssetImage(imagePelanggan),
+                        image: NetworkImage("https://kangsayur.nitipaja.online/"+imagePelanggan),
                         fit: BoxFit.cover,
                       ),
                     ),

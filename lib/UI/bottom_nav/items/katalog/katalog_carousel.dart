@@ -61,6 +61,9 @@ class _Katalog_carouselState extends State<Katalog_carousel> {
     if (carouselItems.length > 0) {
       return Column(
         children: [
+          SizedBox(
+            height: 35,
+          ),
           CarouselSlider(
             items: carouselItems.map((item) {
               return Builder(
@@ -98,10 +101,13 @@ class _Katalog_carouselState extends State<Katalog_carousel> {
               },
             ),
           ),
+          SizedBox(
+            height: 35,
+          )
         ],
       );
     } else {
-      return Container();
+      return SizedBox(height: 10,);
     }
   }
 
@@ -114,6 +120,8 @@ class _Katalog_carouselState extends State<Katalog_carousel> {
     int _currentIndex = 0;
     return Column(
       children: [
+        SizedBox(
+          height: 35,),
         CarouselSlider(
           items: carouselItems.map((item) {
             return Builder(
@@ -155,6 +163,9 @@ class _Katalog_carouselState extends State<Katalog_carousel> {
               });
             },
           ),
+        ),
+        SizedBox(
+          height: 35,
         ),
       ],
     );

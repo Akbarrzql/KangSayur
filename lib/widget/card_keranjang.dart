@@ -46,6 +46,7 @@ class Card_keranjang extends StatefulWidget {
   final List<String> status;
   late List<bool> addCard = [for (int i = 0; i < produkList.length; i++) false];
 
+
   //type data for function on tap
   final VoidCallback hapus, checklist, tambah, kurang;
 
@@ -54,22 +55,24 @@ class Card_keranjang extends StatefulWidget {
 }
 
 class _Card_keranjangState extends State<Card_keranjang> {
+
   late List<int> _counter = [
     for (int i = 0; i < widget.produkList.length; i++) 1
   ];
 
+
   late List<TextEditingController> _counterController = [
-    for (int i = 0; i < widget.produkList.length; i++) TextEditingController()
+      for (int i = 0; i < widget.produkList.length; i++) TextEditingController()
   ];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    for (int i = 0; i < widget.produkList.length; i++) {
+      for (int i = 0; i < widget.produkList.length; i++) {
       _counter[i] = widget.inCart[i];
     }
-    for (int i = 0; i < widget.produkList.length; i++) {
+      for (int i = 0; i < widget.produkList.length; i++) {
       _counterController[i].text = _counter[i].toString();
     }
   }
@@ -77,17 +80,17 @@ class _Card_keranjangState extends State<Card_keranjang> {
   void _updateCounter(String value) {
     int parsedValue = int.tryParse(value) ?? 1;
     setState(() {
-      for (int i = 0; i < widget.produkList.length; i++) {
+        for (int i = 0; i < widget.produkList.length; i++) {
         _counter[i] = parsedValue;
       }
       //make logic if counter == 0 counter=0
-      for (int i = 0; i < widget.produkList.length; i++) {
+        for (int i = 0; i < widget.produkList.length; i++) {
         if (_counter[i] == 0) {
           _counter[i] = 1;
         }
       }
       // make logic if controller.text == 0 controller.text = 0
-      for (int i = 0; i < widget.produkList.length; i++) {
+        for (int i = 0; i < widget.produkList.length; i++) {
         if (_counterController[i].text == "0") {
           _counterController[i].text = "1";
         }
@@ -325,7 +328,6 @@ class _Card_keranjangState extends State<Card_keranjang> {
                               GestureDetector(
                                 onTap: () async {
                                   setState(() {
-                                    widget.kurang();
                                     _counter[index]--;
                                     if (_counter[index] <= 1) {
                                       _counter[index] = 1;
@@ -339,7 +341,9 @@ class _Card_keranjangState extends State<Card_keranjang> {
                                       widget.produk_idList[index].toString(),
                                       widget.produk_idTokoList[index].toString(),
                                       _counter[index].toString(),
-                                      widget.produk_variantIdList[index].toString());
+                                      widget.produk_variantIdList[index].toString()).then((value) => setState(() {
+                                    widget.kurang();
+                                      }));
                                 },
                                 child: Icon(
                                   Icons.remove,
@@ -389,7 +393,6 @@ class _Card_keranjangState extends State<Card_keranjang> {
                               GestureDetector(
                                 onTap: () async {
                                   setState(() {
-                                    widget.tambah();
                                     _counter[index]++;
                                     _counterController[index].text =
                                         _counter[index].toString();
@@ -398,7 +401,10 @@ class _Card_keranjangState extends State<Card_keranjang> {
                                       widget.produk_idList[index].toString(),
                                       widget.produk_idTokoList[index].toString(),
                                       _counter[index].toString(),
-                                      widget.produk_variantIdList[index].toString());
+                                      widget.produk_variantIdList[index].toString()).then((value) => setState(() {
+                                    widget.tambah();
+
+                                  }));
                                 },
                                 child: Icon(
                                   Icons.add,

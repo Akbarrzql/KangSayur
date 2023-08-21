@@ -115,7 +115,7 @@ class _Detail_contentState extends State<Detail_content> {
                               itemCount: 5,
                               itemSize: 14,
                               itemPadding: EdgeInsets.symmetric(horizontal: 2),
-                              minRating: 1,
+                              minRating: 0,
                               glow: false,
                               unratedColor: ColorValue.neutralColor,
                             ),
@@ -124,7 +124,7 @@ class _Detail_contentState extends State<Detail_content> {
                             ),
                             Center(
                                 child: Text(
-                              widget.widget!.data.rating.toString(),
+                              widget.widget!.data.rating.toStringAsFixed(1),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,

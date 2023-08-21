@@ -3,24 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/API/resource/api_provider.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/detail_chat/detail_chat.dart';
 import 'package:kangsayur/UI/detail/detail_content.dart';
-import 'package:kangsayur/UI/detail/detail_popup.dart';
-import 'package:kangsayur/UI/detail/detail_storebox.dart';
+import 'package:kangsayur/UI/detail/detail_popup_beli.dart';
+import 'package:kangsayur/UI/detail/detail_popup_keranjang.dart';
 import 'package:kangsayur/UI/detail/detail_tokoini.dart';
 import 'package:kangsayur/UI/detail/detail_ulasan.dart';
 import 'package:kangsayur/bloc/json_bloc/json_event.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../API/cart/cart.dart';
 import '../../bloc/json_bloc/json_bloc.dart';
 import '../../bloc/json_bloc/json_state.dart';
 import '../../common/color_value.dart';
 import '../bottom_nav/items/profile/profile_head.dart';
 
 class Detail extends StatefulWidget {
-  Detail({Key? key, required this.id}) : super(key: key);
+  Detail({Key? key, required this.id, this.diskon = 0, this.hargaAkhir = 0, this.isDiskon = false
+  })
+      : super(key: key);
   final int id;
+  final int diskon;
+  final int hargaAkhir;
+  bool isDiskon = false;
 
   @override
   State<Detail> createState() => _DetailState();
@@ -42,7 +47,7 @@ class _DetailState extends State<Detail> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Detail",
           style: TextStyle(color: Colors.black, fontSize: 16),
         ),
@@ -58,7 +63,6 @@ class _DetailState extends State<Detail> {
             icon: SvgPicture.asset("assets/icon/share.svg"),
             color: Colors.black,
             onPressed: () {
-              Navigator.pop(context);
             },
           ),
         ],
@@ -92,14 +96,14 @@ class _DetailState extends State<Detail> {
                     } else if (state is JsonLoaded) {
                       return Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 25,
                           ),
                           Detail_content(
                             widget: state.jsonDetailProduct,
                             photo: '',
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Container(
@@ -108,13 +112,13 @@ class _DetailState extends State<Detail> {
                           Detail_tokoini(
                             widget: state.jsonDetailProduct,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Detail_ulasan(
                             widget: state.jsonDetailProduct,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 80,
                           )
                         ],
@@ -146,7 +150,7 @@ class _DetailState extends State<Detail> {
               } else if (state is JsonLoading) {
                 return _shimmerScreen();
               } else if (state is JsonLoaded) {
-                return _bottomBar(widget: state.jsonDetailProduct);
+                return _bottomBar(widgetm: state.jsonDetailProduct);
               } else if (state is JsonError) {
                 return Text(state.message);
               }
@@ -165,7 +169,7 @@ class _DetailState extends State<Detail> {
       color: Colors.white,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           _shimmerContent(),
@@ -194,53 +198,49 @@ class _DetailState extends State<Detail> {
                       highlightColor: Colors.grey[100]!,
                       child: Image.asset(
                         "assets/images/detail.png",
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     Positioned(
-                      left: 2,
+                      left: 3,
                       bottom: 7,
                       child: Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           height: 40,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(15),
                                   bottomLeft: Radius.circular(15))),
                           child: Row(
                             children: [
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: Container(
-                                  color: Colors.grey[300]!,
-                                  child: RatingBar.builder(
-                                    itemBuilder: (context, index) {
-                                      return SvgPicture.asset(
-                                          "assets/icon/star.svg");
-                                    },
-                                    onRatingUpdate: (value) {},
-                                    initialRating: 5,
-                                    ignoreGestures: true,
-                                    allowHalfRating: true,
-                                    itemCount: 5,
-                                    itemSize: 14,
-                                    itemPadding:
-                                        EdgeInsets.symmetric(horizontal: 2),
-                                    minRating: 1,
-                                    glow: false,
-                                    unratedColor: ColorValue.neutralColor,
-                                  ),
+                              Container(
+                                color: Colors.grey[300]!,
+                                child: RatingBar.builder(
+                                  itemBuilder: (context, index) {
+                                    return SvgPicture.asset(
+                                        "assets/icon/star.svg");
+                                  },
+                                  onRatingUpdate: (value) {},
+                                  initialRating: 5,
+                                  ignoreGestures: true,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemSize: 14,
+                                  itemPadding:
+                                      const EdgeInsets.symmetric(horizontal: 2),
+                                  minRating: 1,
+                                  glow: false,
+                                  unratedColor: ColorValue.neutralColor,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
-                              Center(
+                              const Center(
                                   child: Text(
                                 "asdasdadsa",
                                 style: TextStyle(
@@ -256,7 +256,7 @@ class _DetailState extends State<Detail> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 18,
               ),
               Shimmer.fromColors(
@@ -264,7 +264,7 @@ class _DetailState extends State<Detail> {
                 highlightColor: Colors.grey[100]!,
                 child: Container(
                   color: Colors.grey[300]!,
-                  child: Text(
+                  child: const Text(
                     "Rp. 20.000,00",
                     style: TextStyle(
                         color: Colors.transparent,
@@ -273,7 +273,7 @@ class _DetailState extends State<Detail> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Shimmer.fromColors(
@@ -281,7 +281,7 @@ class _DetailState extends State<Detail> {
                 highlightColor: Colors.grey[100]!,
                 child: Container(
                   color: Colors.grey[300]!,
-                  child: Text(
+                  child: const Text(
                     "asdasdasd",
                     // widget!.widget!.data.namaProduk,
                     style: TextStyle(
@@ -291,7 +291,7 @@ class _DetailState extends State<Detail> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Shimmer.fromColors(
@@ -300,7 +300,7 @@ class _DetailState extends State<Detail> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   color: Colors.grey[300]!,
-                  child: Text(
+                  child: const Text(
                       "lorem ipsum dolor sit amet, consectetur adipiscing asdaf asfpija saojfoafjsoafj aosdja odjaojdsaj asojasod asdasda  asdasd sasdsad asda sda dapsjoasfp ssaj pa jpjdsjsa asdas",
                       style: TextStyle(
                           fontSize: 16,
@@ -308,14 +308,14 @@ class _DetailState extends State<Detail> {
                           color: Colors.transparent)),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Shimmer.fromColors(
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                   height: 70,
                   decoration: BoxDecoration(
                     color: Colors.grey[300]!,
@@ -328,14 +328,14 @@ class _DetailState extends State<Detail> {
                         height: 46,
                         width: 46,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             "asdasasda",
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w600),
@@ -346,9 +346,9 @@ class _DetailState extends State<Detail> {
                                   width: 8,
                                   height: 8,
                                   decoration: BoxDecoration(
-                                      color: Color(0xff25C570),
+                                      color: const Color(0xff25C570),
                                       borderRadius: BorderRadius.circular(50))),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
                               Text(
@@ -362,7 +362,7 @@ class _DetailState extends State<Detail> {
                           )
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       // Container(width: 110, height: 43, decoration: BoxDecoration(
                       //   borderRadius: BorderRadius.circular(10),
                       //   border: Border.all(color: Color(0xff009245))
@@ -380,19 +380,19 @@ class _DetailState extends State<Detail> {
     );
   }
 
-  Widget _bottomBar({required DetailProductModel widget}) {
+  Widget _bottomBar({required DetailProductModel widgetm}) {
     List<String> namaVariant = [
-      for (int i = 0; i < widget.data.variant.length; i++)
-        widget.data.variant[i].variant
+      for (int i = 0; i < widgetm.data.variant.length; i++)
+        widgetm.data.variant[i].variant
     ];
     List<int> hargaVariant = [
-      for (int i = 0; i < widget.data.variant.length; i++)
-        widget.data.variant[i].hargaVariant
+      for (int i = 0; i < widgetm.data.variant.length; i++)
+        widgetm.data.variant[i].hargaVariant
     ];
 
     List<int> variantId = [
-      for (int i = 0; i < widget.data.variant.length; i++)
-        widget.data.variant[i].id
+      for (int i = 0; i < widgetm.data.variant.length; i++)
+        widgetm.data.variant[i].id
     ];
 
     return Positioned(
@@ -400,20 +400,28 @@ class _DetailState extends State<Detail> {
       child: Container(
         height: 76,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Color(0xff0E4F55)),
+        decoration: const BoxDecoration(color: Color(0xff0E4F55)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
             children: [
-              Container(
-                height: 48,
-                width: 48,
-                decoration: BoxDecoration(
-                    color: Color(0xff009245),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Center(child: SvgPicture.asset("assets/icon/chat.svg")),
+              GestureDetector(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Detail_chat())),
+                child: Container(
+                  height: 48,
+                  width: MediaQuery.of(context).size.width * 0.28 - 24 - 24,
+                  decoration: BoxDecoration(
+                      color: const Color(0xff009245),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                      child: SvgPicture.asset(
+                    "assets/icon/chat.svg",
+                    color: Colors.white,
+                  )),
+                ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 4,
               ),
               GestureDetector(
@@ -422,27 +430,27 @@ class _DetailState extends State<Detail> {
                     showModalBottomSheet(
                         context: context,
                         builder: (builder) {
-                          return Detail_popup(
-                            gambarToko: widget.data.imgProfile,
-                            namaToko: widget.data.namaToko,
-                            namaProduk: widget.data.namaProduk,
-                            produkId: widget.data.produkId,
-                            tokoId: widget.data.tokoId,
-                            jumlahVariant: widget.data.variant.length,
+                          return Detail_popup_keranjang(
+                            gambarToko: widgetm.data.imgProfile,
+                            namaToko: widgetm.data.namaToko,
+                            namaProduk: widgetm.data.namaProduk,
+                            produkId: widgetm.data.produkId,
+                            tokoId: widgetm.data.tokoId,
+                            jumlahVariant: widgetm.data.variant.length,
                             namaVariant: namaVariant,
                             variantId: variantId,
                             hargaVariant: hargaVariant,
                             stokVariant: [
                               for (int i = 0;
-                                  i < widget.data.variant.length;
+                                  i < widgetm.data.variant.length;
                                   i++)
-                                widget.data.variant[i].stok
+                                widgetm.data.variant[i].stok
                             ],
                             gambarVariant: [
                               for (int i = 0;
-                                  i < widget.data.variant.length;
+                                  i < widgetm.data.variant.length;
                                   i++)
-                                widget.data.variant[i].variantImg
+                                widgetm.data.variant[i].variantImg
                             ],
                           );
                         });
@@ -450,11 +458,12 @@ class _DetailState extends State<Detail> {
                 },
                 child: Container(
                   height: 46,
-                  width: 128,
+                  width: MediaQuery.of(context).size.width * 0.46 - 24 - 24,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xff009245)),
+                      border: Border.all(color: const Color(0xff009245)),
                       borderRadius: BorderRadius.circular(5)),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "+Keranjang",
                       style: TextStyle(
@@ -465,36 +474,37 @@ class _DetailState extends State<Detail> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 4,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   setState(() {
                     showModalBottomSheet(
                         context: context,
                         builder: (builder) {
-                          return Detail_popup(
-                            gambarToko: widget.data.imgProfile,
-                            namaToko: widget.data.namaToko,
-                            namaProduk: widget.data.namaProduk,
-                            produkId: widget.data.produkId,
-                            tokoId: widget.data.tokoId,
-                            jumlahVariant: widget.data.variant.length,
+                          return Detail_popup_beli(
+                            gambarToko: widgetm.data.imgProfile,
+                            namaToko: widgetm.data.namaToko,
+                            namaProduk: widgetm.data.namaProduk,
+                            produkId: widgetm.data.produkId,
+                            tokoId: widgetm.data.tokoId,
+                            jumlahVariant: widgetm.data.variant.length,
                             namaVariant: namaVariant,
                             variantId: variantId,
+                            diskon: widget.diskon,
                             hargaVariant: hargaVariant,
                             stokVariant: [
                               for (int i = 0;
-                              i < widget.data.variant.length;
-                              i++)
-                                widget.data.variant[i].stok
+                                  i < widgetm.data.variant.length;
+                                  i++)
+                                widgetm.data.variant[i].stok
                             ],
                             gambarVariant: [
                               for (int i = 0;
-                              i < widget.data.variant.length;
-                              i++)
-                                widget.data.variant[i].variantImg
+                                  i < widgetm.data.variant.length;
+                                  i++)
+                                widgetm.data.variant[i].variantImg
                             ],
                           );
                         });
@@ -502,11 +512,12 @@ class _DetailState extends State<Detail> {
                 },
                 child: Container(
                   height: 46,
-                  width: 128,
+                  width: MediaQuery.of(context).size.width * 0.5 - 48,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                      color: Color(0xff009245),
+                      color: const Color(0xff009245),
                       borderRadius: BorderRadius.circular(5)),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "Beli Sekarang",
                       style: TextStyle(

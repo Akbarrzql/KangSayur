@@ -12,7 +12,7 @@ import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ul
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/ulasan_anda.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/notifikasi/notifikasi.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_akun/pengaturan_profile.dart';
-import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_pembelian.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_transaksi.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/toko_favorit/toko_favorit.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/ubah_profile/ubah_profile.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/whistlist/whistlist.dart';
@@ -23,8 +23,7 @@ import 'package:kangsayur/UI/payment/keranjang/keranjang.dart';
 import 'package:kangsayur/UI/payment/pembayaran/pembayaran.dart';
 import 'package:kangsayur/login/login.dart';
 import 'package:kangsayur/register/register.dart';
-import 'package:kangsayur/register/register_profile.dart';
-import 'package:kangsayur/register/set_password.dart';
+import 'package:kangsayur/register/register_personal_information.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
 import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'API/auth/Auth.dart';

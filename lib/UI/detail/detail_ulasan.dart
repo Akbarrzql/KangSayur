@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:kangsayur/UI/detail/detail_photo.dart';
 import 'package:kangsayur/UI/detail/ulasan/ulasan.dart';
 import 'package:kangsayur/model/detailproductmodel.dart';
@@ -24,18 +25,19 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
   Widget build(BuildContext context) {
     if (widget.widget.data!.review!.isEmpty) {
       return Container(
-        margin: EdgeInsets.only(left: 24, right: 24),
+        margin: const EdgeInsets.only(left: 24, right: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Ulasan ${widget.widget.data!.rating} | 0 ulasan',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                'Rating ${widget.widget.data!.rating} | 0 ulasan',
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text(
@@ -58,26 +60,34 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
               children: [
                 Text(
                   'Ulasan ${widget.widget!.data!.rating} | ${widget.widget!.data!.review!.length} ulasan',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Ulasan(
+                            ratingProduct: widget.widget!.data!.rating,
+                                reply: [
+                                  for (var i = 0;
+                                      i < widget.widget!.data!.review!.length;
+                                      i++)
+                                    widget.widget!.data!.review![i].reply
+                                ],
                                 rating: [
                                   for (var i = 0;
                                       i < widget.widget!.data!.review!.length;
                                       i++)
-                                    widget.widget!.data!.review![i].rating
+                                    widget.widget!.data!.review![i].ratingProduk
                                 ],
                                 comment: [
                                   for (var i = 0;
                                       i < widget.widget!.data!.review!.length;
                                       i++)
-                                    widget.widget!.data!.review![i].comment
+                                    widget.widget!.data!.review![i].komentarUser
                                 ],
                                 name: [
                                   for (var i = 0;
@@ -89,7 +99,8 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                                   for (var i = 0;
                                       i < widget.widget!.data!.review!.length;
                                       i++)
-                                    widget.widget!.data!.review![i].createdAt
+                                    widget
+                                        .widget!.data!.review![i].tanggalComment
                                 ],
                                 photo: [
                                   for (var i = 0;
@@ -116,17 +127,16 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Review(
-              profile: widget.widget.data!.review![0].gambarUser ?? "aasd",
-              name: widget.widget.data!.review![0].nameUser ?? "aasd",
-              date: '12/12/2021',
-              comment:
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget risus porta, tincidunt turpis at, ultricies sapien. Sed eget risus porta, tincidunt turpis at, ultricies sapien.',
-              image: 'assets/images/review.jpg',
-              rating: 5,
+              profile: widget.widget.data!.review![0].gambarUser,
+              name: widget.widget.data!.review![0].nameUser,
+              date: widget.widget.data!.review![0].tanggalComment.toString(),
+              comment: widget.widget.data!.review![0].komentarUser,
+              image: widget.widget.data.review![0].imgProduct ?? "null",
+              rating: widget.widget.data!.review![0].ratingProduk.toDouble(),
               context: context,
             ),
           ],
@@ -155,15 +165,17 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
             Container(
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
+                // borderRadius: BorderRadius.circular(100),
+                shape: BoxShape.circle,
               ),
               width: 42,
+              height: 42,
               child: Image.network(
-                "https://kangsayur.nitipaja.online/" + profile,
+                "https://kangsayur.nitipaja.online/$profile",
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Column(
@@ -173,10 +185,10 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                   children: [
                     Text(
                       name,
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     RatingBar.builder(
@@ -188,7 +200,7 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                       allowHalfRating: true,
                       itemCount: 5,
                       itemSize: 14,
-                      itemPadding: EdgeInsets.only(right: 1),
+                      itemPadding: const EdgeInsets.only(right: 1),
                       minRating: 1,
                       glow: false,
                       unratedColor: ColorValue.neutralColor,
@@ -196,59 +208,60 @@ class _Detail_ulasanState extends State<Detail_ulasan> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  date,
-                  style: TextStyle(fontSize: 12, color: Color(0xffA0A0A0)),
+                  DateFormat('dd MMMM yyyy').format(DateTime.parse(date)),
+                  style:
+                      const TextStyle(fontSize: 12, color: Color(0xffA0A0A0)),
                 ),
               ],
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text(comment),
-        SizedBox(
+        const SizedBox(
           height: 15,
         ),
         //make image review
-        GestureDetector(
-          onTap: () {
-            //make navigate to detail_photo
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Detail_photo(),
+        if (image == "null") Container(),
+        if (image != "null")
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  //make navigate to detail_photo
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>  Detail_photo(tag: image, networkImage: image,),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Hero(
+                    tag: "$image",
+                    child: Image.network(
+                      "https://kangsayur.nitipaja.online/$image",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
-            );
-          },
-          child: Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Hero(
-              tag: "someTag",
-              child: Image.asset(
-                image,
-                fit: BoxFit.cover,
+              const SizedBox(
+                height: 15,
               ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: 1,
-          color: Color(0xffA0A0A0),
-        ),
-        //make image review
+            ],
+          ), //make image review
       ],
     );
   }

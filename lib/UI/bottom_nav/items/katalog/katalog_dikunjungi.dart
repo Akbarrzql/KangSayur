@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
 import 'package:kangsayur/model/tokopopularmodel.dart';
 
 import '../../../../bloc/json_bloc/json_bloc.dart';
@@ -93,71 +94,74 @@ class _Katalog_dikunjungiState extends State<Katalog_dikunjungi> {
       scrollDirection: Axis.horizontal,
       itemCount: widget.data.length,
       itemBuilder: (context, index) {
-        return Container(
-          margin: EdgeInsets.fromLTRB(24, 0, 0, 10),
-          width: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                spreadRadius: 0,
-                blurRadius: 4,
-                offset: Offset(0, 1), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(5),
-                      topLeft: Radius.circular(5),
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15)),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
-                      spreadRadius: 0,
-                      blurRadius: 4,
-                      offset: Offset(0, 1), // changes position of shadow
-                    ),
-                  ],
+        return GestureDetector(
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Seller_Detail(tokoId: widget.data[index].id.toString()),)),
+          child: Container(
+            margin: EdgeInsets.fromLTRB(24, 0, 0, 10),
+            width: 120,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 0,
+                  blurRadius: 4,
+                  offset: Offset(0, 1), // changes position of shadow
                 ),
-                child: Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10,bottom: 10),
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.white,
-                    ),
-                    child: Image.network(
-                      "https://kangsayur.nitipaja.online" +
-                          widget.data[index].imgProfile,
-                      fit: BoxFit.cover,
-                      width: 70,
-                      height: 70,
+              ],
+            ),
+            child: Column(
+              children: [
+                Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(5),
+                        topLeft: Radius.circular(5),
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 4,
+                        offset: Offset(0, 1), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.white,
+                      ),
+                      child: Image.network(
+                        "https://kangsayur.nitipaja.online" +
+                            widget.data[index].imgProfile,
+                        fit: BoxFit.cover,
+                        width: 70,
+                        height: 70,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                widget.data[index].namaToko,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-            ],
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  widget.data[index].namaToko,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+              ],
+            ),
           ),
         );
       },

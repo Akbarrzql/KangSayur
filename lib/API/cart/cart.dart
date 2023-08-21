@@ -10,7 +10,7 @@ class Cart {
   final String _url = 'https://kangsayur.nitipaja.online/api/';
 
   Future<bool> AddProductCart(
-      String produkId, String tokoId, String variantId) async {
+      String produkId, String tokoId, String variantId, BuildContext context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
     print('dibawah ini token');
@@ -23,6 +23,16 @@ class Cart {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
           });
+      if (response.statusCode == 200) {
+        //snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Produk berhasil ditambahkan')));
+        return true;
+      } else {
+        print(response.body);
+        print(response.statusCode);
+        return false;
+      }
       print(response.body);
       print(response.statusCode);
       return true;
@@ -100,6 +110,7 @@ class Cart {
 
   Future<OrderModel> Order(
       List<Map<String, dynamic>> dataArray, int total_keseluruhan) async {
+    print('total kesuluruhan : $total_keseluruhan');
     print('masuk order');
     print(dataArray);
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -137,4 +148,36 @@ class Cart {
       throw Exception("Exception occured: $error stackTrace: $stacktrace");
     }
   }
+  Future<void> PilihSemua() async {
+    print('masuk order');
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    String? token = pref.getString('token');
+    print(token);
+    try {
+      var response = await http.get(
+          Uri.parse(_url +
+              'user/produk/cart/select/all'),
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        print('order');
+        print(response.body);
+        print("berhasil");
+      } else {
+        print(response.body);
+        throw response.body;
+      }
+      print(response.body);
+      print(response.statusCode);
+      // return true;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      throw Exception("Exception occured: $error stackTrace: $stacktrace");
+    }
+  }
+
 }

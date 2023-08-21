@@ -84,7 +84,7 @@ class _Seller_DetailState extends State<Seller_Detail>
             backgroundColor: Colors.white,
             leading: IconButton(
               icon: Icon(
-                Icons.arrow_back_ios,
+                Icons.arrow_back,
                 color: _isShrink ? ColorValue.primaryColor : Colors.white,
               ),
               onPressed: () {
@@ -169,49 +169,76 @@ class _Seller_DetailState extends State<Seller_Detail>
         ];
       },
       body: Container(
-        child: AutoScaleTabBarView(
+        child: TabBarView(
           controller: _tabController,
           children: [
-            BlocBuilder<TokoDetailBloc, TokoDetailState>(
-              bloc: _tokoDetailBloc,
-              builder: (context, state) {
-                if (state is TokoDetailInitial) {
-                  return _produkLoading();
-                } else if (state is TokoDetailLoading) {
-                  return _produkLoading();
-                } else if (state is TokoDetailLoaded) {
-                  return Seller_produk(tokoDetailModel: state.tokoDetailList);
-                } else if (state is TokoDetailError) {
-                  return Center(
-                    child: Text(state.message),
-                  );
-                } else {
-                  return Center(
-                    child: Text(""),
-                  );
-                }
-              },
+            SingleChildScrollView(
+              child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                bloc: _tokoDetailBloc,
+                builder: (context, state) {
+                  if (state is TokoDetailInitial) {
+                    return _produkLoading();
+                  } else if (state is TokoDetailLoading) {
+                    return _produkLoading();
+                  } else if (state is TokoDetailLoaded) {
+                    return Seller_produk(tokoDetailModel: state.tokoDetailList);
+                  } else if (state is TokoDetailError) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(""),
+                    );
+                  }
+                },
+              ),
             ),
-            Seller_katalog(),
-            BlocBuilder<TokoDetailBloc, TokoDetailState>(
-              bloc: _tokoDetailBloc,
-              builder: (context, state) {
-                if (state is TokoDetailInitial) {
-                  return Loading();
-                } else if (state is TokoDetailLoading) {
-                  return Loading();
-                } else if (state is TokoDetailLoaded) {
-                  return Seller_tentang(tokoDetailModel: state.tokoDetailList);
-                } else if (state is TokoDetailError) {
-                  return Center(
-                    child: Text(state.message),
-                  );
-                } else {
-                  return Center(
-                    child: Text(""),
-                  );
-                }
-              },
+            SingleChildScrollView(
+              child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                bloc: _tokoDetailBloc,
+                builder: (context, state) {
+                  if (state is TokoDetailInitial) {
+                    return _produkLoading();
+                  } else if (state is TokoDetailLoading) {
+                    return _produkLoading();
+                  } else if (state is TokoDetailLoaded) {
+                    return Seller_katalog(
+                        tokoDetailModel: state.tokoDetailList);
+                  } else if (state is TokoDetailError) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(""),
+                    );
+                  }
+                },
+              ),
+            ),
+            SingleChildScrollView(
+              child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                bloc: _tokoDetailBloc,
+                builder: (context, state) {
+                  if (state is TokoDetailInitial) {
+                    return Loading();
+                  } else if (state is TokoDetailLoading) {
+                    return Loading();
+                  } else if (state is TokoDetailLoaded) {
+                    return Seller_tentang(
+                        tokoDetailModel: state.tokoDetailList);
+                  } else if (state is TokoDetailError) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(""),
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),
@@ -324,7 +351,7 @@ class _Seller_DetailState extends State<Seller_Detail>
                             width: 4,
                           ),
                           Text(
-                            "4.5",
+                            "${data.data.rating.toStringAsFixed(1)}",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600),
                           ),
@@ -344,10 +371,14 @@ class _Seller_DetailState extends State<Seller_Detail>
   Widget _headLoading() {
     return Column(
       children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: 92,
-          color: Colors.blueAccent,
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 92,
+            color: Colors.blueAccent,
+          ),
         ),
         Stack(
           clipBehavior: Clip.none,
@@ -364,18 +395,16 @@ class _Seller_DetailState extends State<Seller_Detail>
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 70,
-                      width: 70,
-                      decoration: BoxDecoration(
-                        // shape: BoxShape.circle,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.network(
-                          'asdasd',
-                          fit: BoxFit.cover,
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: 70,
+                        width: 70,
+                        decoration: BoxDecoration(
+                          // shape: BoxShape.circle,
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(100),
                         ),
                       ),
                     ),
@@ -384,12 +413,21 @@ class _Seller_DetailState extends State<Seller_Detail>
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 25.0, left: 5),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: Text('asfasfsa asfasfsfa',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600)),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.grey,
+                              ),
+                              child: Text("",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600)),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -432,10 +470,21 @@ class _Seller_DetailState extends State<Seller_Detail>
                           SizedBox(
                             width: 4,
                           ),
-                          Text(
-                            "4.5",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 10,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.grey,
+                              ),
+                              child: Text(
+                                "",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -477,8 +526,6 @@ class _Seller_DetailState extends State<Seller_Detail>
       },
     );
   }
-
-
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {

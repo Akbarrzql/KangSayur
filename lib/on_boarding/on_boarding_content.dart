@@ -13,12 +13,14 @@ List<OnboardingContents> contents = [
   OnboardingContents(
     title: "Kualitas Terbaik Dari Petani",
     image: "assets/images/boarding_one.png",
-    desc: "Kami menghadirkan produk-produk segar dan berkualitas tinggi dari petani & peternak terbaik di Indonesia.",
+    desc:
+        "Kami menghadirkan produk-produk segar dan berkualitas tinggi dari petani & peternak terbaik di Indonesia.",
   ),
   OnboardingContents(
     title: "Kirim Sesuai Jadwal",
     image: "assets/images/boarding_two.png",
-    desc: "Dengan fitur langganan kamu dapat mudah untuk memenentukan jadwal pengiriman sesui hari yang kamu tentukan.",
+    desc:
+        "Dengan fitur langganan kamu dapat mudah untuk memenentukan jadwal pengiriman sesui hari yang kamu tentukan.",
   ),
   OnboardingContents(
     title: "Petani Sejahtara & Senang",

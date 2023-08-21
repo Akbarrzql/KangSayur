@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class Detail_photo extends StatefulWidget {
-  const Detail_photo({Key? key}) : super(key: key);
+  Detail_photo({Key? key, required this.tag, required this.networkImage}) : super(key: key);
+  final String tag;
+  final String networkImage;
 
   @override
   State<Detail_photo> createState() => _Detail_photoState();
@@ -24,9 +26,9 @@ class _Detail_photoState extends State<Detail_photo> {
               maxScale: PhotoViewComputedScale.covered * 1.2,
               initialScale: PhotoViewComputedScale.contained * 1.0,
               imageProvider:
-              AssetImage("assets/images/review.jpg"),
+              NetworkImage("https://kangsayur.nitipaja.online/${widget.networkImage}"),
               heroAttributes:
-              PhotoViewHeroAttributes(tag: "someTag"),
+              PhotoViewHeroAttributes(tag: widget.tag),
             ),
           )
         ],

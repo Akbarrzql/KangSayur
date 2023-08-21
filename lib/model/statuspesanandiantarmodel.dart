@@ -38,10 +38,11 @@ class Datum {
   String namaToko;
   String profilToko;
   String alamatToko;
-  String tanggal;
+  DateTime tanggal;
   int kodeTransaksi;
   int tokoId;
   AlamatPengiriman alamatPengiriman;
+  Driver driver;
   List<BarangPesanan> barangPesanan;
   Tagihan tagihan;
   double total;
@@ -55,6 +56,7 @@ class Datum {
     required this.kodeTransaksi,
     required this.tokoId,
     required this.alamatPengiriman,
+    required this.driver,
     required this.barangPesanan,
     required this.tagihan,
     required this.total,
@@ -65,10 +67,11 @@ class Datum {
     namaToko: json["nama_toko"],
     profilToko: json["profil_toko"],
     alamatToko: json["alamat_toko"],
-    tanggal: json["tanggal"],
+    tanggal: DateTime.parse(json["tanggal"]),
     kodeTransaksi: json["kode_transaksi"],
     tokoId: json["toko_id"],
     alamatPengiriman: AlamatPengiriman.fromJson(json["alamat pengiriman"]),
+    driver: Driver.fromJson(json["driver"]),
     barangPesanan: List<BarangPesanan>.from(json["barang_pesanan"].map((x) => BarangPesanan.fromJson(x))),
     tagihan: Tagihan.fromJson(json["tagihan"]),
     total: json["total"]?.toDouble(),
@@ -79,10 +82,11 @@ class Datum {
     "nama_toko": namaToko,
     "profil_toko": profilToko,
     "alamat_toko": alamatToko,
-    "tanggal": tanggal,
+    "tanggal": tanggal.toIso8601String(),
     "kode_transaksi": kodeTransaksi,
     "toko_id": tokoId,
     "alamat pengiriman": alamatPengiriman.toJson(),
+    "driver": driver.toJson(),
     "barang_pesanan": List<dynamic>.from(barangPesanan.map((x) => x.toJson())),
     "tagihan": tagihan.toJson(),
     "total": total,
@@ -90,33 +94,33 @@ class Datum {
 }
 
 class AlamatPengiriman {
-  String namaPemesan;
-  dynamic nomorTelfon;
   double userLat;
   double userLong;
+  String namaPemesan;
+  int nomorTelfon;
   String alamat;
 
   AlamatPengiriman({
-    required this.namaPemesan,
-    required this.nomorTelfon,
     required this.userLat,
     required this.userLong,
+    required this.namaPemesan,
+    required this.nomorTelfon,
     required this.alamat,
   });
 
   factory AlamatPengiriman.fromJson(Map<String, dynamic> json) => AlamatPengiriman(
+    userLat: json["user_lat"]?.toDouble(),
+    userLong: json["user_long"]?.toDouble(),
     namaPemesan: json["nama_pemesan"],
     nomorTelfon: json["nomor_telfon"],
-    userLat: json["user_lat"].toDouble(),
-    userLong: json["user_long"].toDouble(),
     alamat: json["alamat"],
   );
 
   Map<String, dynamic> toJson() => {
-    "nama_pemesan": namaPemesan,
-    "nomor_telfon": nomorTelfon,
     "user_lat": userLat,
     "user_long": userLong,
+    "nama_pemesan": namaPemesan,
+    "nomor_telfon": nomorTelfon,
     "alamat": alamat,
   };
 }
@@ -128,7 +132,12 @@ class BarangPesanan {
   int variantId;
   int storeId;
   int userId;
+  String notes;
+  int alamatId;
+  String statusDiulas;
   String status;
+  int deliveredBy;
+  int discount;
   DateTime createdAt;
   DateTime updatedAt;
   String variantImg;
@@ -143,6 +152,7 @@ class BarangPesanan {
   int ulasanId;
   int isOnsale;
   int jumlahPembelian;
+  int pembelian;
 
   BarangPesanan({
     required this.id,
@@ -151,7 +161,12 @@ class BarangPesanan {
     required this.variantId,
     required this.storeId,
     required this.userId,
+    required this.notes,
+    required this.alamatId,
+    required this.statusDiulas,
     required this.status,
+    required this.deliveredBy,
+    required this.discount,
     required this.createdAt,
     required this.updatedAt,
     required this.variantImg,
@@ -166,6 +181,7 @@ class BarangPesanan {
     required this.ulasanId,
     required this.isOnsale,
     required this.jumlahPembelian,
+    required this.pembelian,
   });
 
   factory BarangPesanan.fromJson(Map<String, dynamic> json) => BarangPesanan(
@@ -175,7 +191,12 @@ class BarangPesanan {
     variantId: json["variant_id"],
     storeId: json["store_id"],
     userId: json["user_id"],
+    notes: json["notes"],
+    alamatId: json["alamat_id"],
+    statusDiulas: json["status_diulas"],
     status: json["status"],
+    deliveredBy: json["delivered_by"],
+    discount: json["discount"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     variantImg: json["variant_img"],
@@ -184,12 +205,13 @@ class BarangPesanan {
     stok: json["stok"],
     hargaVariant: json["harga_variant"],
     namaProduk: json["nama_produk"],
-    rating: json["rating"]?.toDouble() ?? 0.0 ,
+    rating: json["rating"]?.toDouble(),
     kategoriId: json["kategori_id"],
     tokoId: json["toko_id"],
     ulasanId: json["ulasan_id"],
     isOnsale: json["is_onsale"],
     jumlahPembelian: json["jumlah_pembelian"],
+    pembelian: json["pembelian"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -199,7 +221,12 @@ class BarangPesanan {
     "variant_id": variantId,
     "store_id": storeId,
     "user_id": userId,
+    "notes": notes,
+    "alamat_id": alamatId,
+    "status_diulas": statusDiulas,
     "status": status,
+    "delivered_by": deliveredBy,
+    "discount": discount,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "variant_img": variantImg,
@@ -214,6 +241,39 @@ class BarangPesanan {
     "ulasan_id": ulasanId,
     "is_onsale": isOnsale,
     "jumlah_pembelian": jumlahPembelian,
+    "pembelian": pembelian,
+  };
+}
+
+class Driver {
+  String namaDriver;
+  String fotoDriver;
+  String platKendaraan;
+  String namaKendaraan;
+  String photoKendaraan;
+
+  Driver({
+    required this.namaDriver,
+    required this.fotoDriver,
+    required this.platKendaraan,
+    required this.namaKendaraan,
+    required this.photoKendaraan,
+  });
+
+  factory Driver.fromJson(Map<String, dynamic> json) => Driver(
+    namaDriver: json["nama_driver"],
+    fotoDriver: json["foto_driver"],
+    platKendaraan: json["plat_kendaraan"],
+    namaKendaraan: json["nama_kendaraan"],
+    photoKendaraan: json["photo_kendaraan"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "nama_driver": namaDriver,
+    "foto_driver": fotoDriver,
+    "plat_kendaraan": platKendaraan,
+    "nama_kendaraan": namaKendaraan,
+    "photo_kendaraan": photoKendaraan,
   };
 }
 

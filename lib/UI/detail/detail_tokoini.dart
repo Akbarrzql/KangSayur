@@ -16,6 +16,9 @@ class Detail_tokoini extends StatefulWidget {
 class _Detail_tokoiniState extends State<Detail_tokoini> {
   @override
   Widget build(BuildContext context) {
+    if (widget.widget.data.tokoIni.length == 0) {
+      return Container();
+    } else
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -30,7 +33,7 @@ class _Detail_tokoiniState extends State<Detail_tokoini> {
           height: 20,
         ),
         Container(
-            height: 248 ,
+            height: 248,
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
               padding: EdgeInsets.only(left: 24, bottom: 5, top: 5),
@@ -51,10 +54,13 @@ class _Detail_tokoiniState extends State<Detail_tokoini> {
                     },
                     child: CardProduk(
                       imageProduk: widget.widget.data.tokoIni[index].variantImg,
-                      jarakProduk: widget.widget.data.tokoIni[index].distance.toString(),
+                      jarakProduk:
+                          widget.widget.data.tokoIni[index].distance.toString(),
                       namaProduk: widget.widget.data.tokoIni[index].namaProduk,
                       penjualProduk: widget.widget.data.tokoIni[index].namaToko,
-                      hargaProduk: widget.widget.data.tokoIni[index].hargaVariant.toString(),
+                      hargaProduk: widget
+                          .widget.data.tokoIni[index].hargaVariant
+                          .toString(),
                     ),
                   ),
                 );

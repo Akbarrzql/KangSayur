@@ -40,6 +40,7 @@ class Datum {
   String variant;
   String image;
   int harga;
+  double distance;
 
   Datum({
     required this.id,
@@ -48,6 +49,7 @@ class Datum {
     required this.variant,
     required this.image,
     required this.harga,
+    required this.distance,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -57,6 +59,7 @@ class Datum {
     variant: json["variant"],
     image: json["image"],
     harga: json["harga"],
+    distance: json["distance"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -66,5 +69,6 @@ class Datum {
     "variant": variant,
     "image": image,
     "harga": harga,
+    "distance": distance,
   };
 }

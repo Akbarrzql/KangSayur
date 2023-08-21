@@ -110,7 +110,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const Detail_photo(),
+                  builder: (context) => Detail_photo(tag: widget.image, networkImage: widget.image,),
                 ),
               );
             },

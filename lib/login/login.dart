@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../API/auth/Auth.dart';
+import '../validator/validator.dart';
+import '../widget/textfieldcustom.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -17,9 +19,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  // circle progress
+  bool _isLoading = false;
 
   Future<void> _loginProcess() async {
     Auth.login(context, _emailController, _passwordController);
@@ -64,74 +68,18 @@ class _LoginState extends State<Login> {
               const SizedBox(
                 height: 37,
               ),
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.25),
-                        spreadRadius: 0,
-                        blurRadius: 4,
-                        offset:
-                            const Offset(0, 1), // changes position of shadow
-                      ),
-                    ],
-                    color: const Color(0xFFF6F6F6),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: TextField(
-                    controller: _emailController,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal),
-                    decoration: InputDecoration(
-                      hintText: "Masukkan Email atau No. Handphone",
-                      hintStyle: TextStyle(
-                          fontSize: 16,
-                          color: ColorValue.hinttext,
-                          fontWeight: FontWeight.normal),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
+              CustomTextFormField(
+                label: "Email",
+                controller: _emailController,
               ),
               SizedBox(
                 height: 20,
               ),
               //make container for password like before
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.25),
-                        spreadRadius: 0,
-                        blurRadius: 4,
-                        offset:
-                            const Offset(0, 1), // changes position of shadow
-                      ),
-                    ],
-                    color: const Color(0xFFF6F6F6),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal),
-                    decoration: InputDecoration(
-                      hintText: "Masukkan Password",
-                      hintStyle: TextStyle(
-                          fontSize: 16,
-                          color: ColorValue.hinttext,
-                          fontWeight: FontWeight.normal),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
+              CustomTextFormField(
+                label: "Password",
+                isPassword: true,
+                controller: _passwordController,
               ),
               Spacer(),
               Row(
@@ -160,31 +108,64 @@ class _LoginState extends State<Login> {
               const SizedBox(
                 height: 10,
               ),
-              GestureDetector(
-                onTap: () {
-                  _loginProcess();
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 37),
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: ColorValue.primaryColor,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: const Center(
-                      child: Text(
-                        "Masuk",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
+              if (_isLoading == true)
+                _Loading()
+              else
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      //close keyboard
+                      FocusScope.of(context).unfocus();
+                      _isLoading = true;
+                    });
+                    await Auth.login(
+                        context, _emailController, _passwordController);
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 37),
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: ColorValue.primaryColor,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: const Center(
+                        child: Text(
+                          "Masuk",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              )
+                )
             ]),
           ),
         ));
+  }
+
+  Widget _Loading() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 37),
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(5)),
+        child: const Center(
+          child: Text(
+            "Masuk",
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

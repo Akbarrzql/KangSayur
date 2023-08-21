@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/alamat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/inbox.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/notifikasi/notifikasi.dart';
-import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_pembelian.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/riwayat_transaksi.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/toko_favorit/toko_favorit.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/whistlist/whistlist.dart';
 import 'package:kangsayur/UI/detail/detail.dart';
@@ -41,11 +41,6 @@ class _Profile_contentState extends State<Profile_content> {
           //     name: "Wishlist",
           //     route: Whistlist(),
           //     context: context),
-          Profile_list(
-              icon: "assets/icon/market.svg",
-              name: "Toko Favorit",
-              route: Toko_favorit(),
-              context: context),
           // Text("Kategori",
           //     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
           // SizedBox(
@@ -100,11 +95,6 @@ class _Profile_contentState extends State<Profile_content> {
               icon: "assets/icon/store.svg",
               name: "Alamat",
               route: Alamat(),
-              context: context),
-          Profile_list(
-              icon: "assets/icon/other.svg",
-              name: "Lainnya",
-              route: Home(),
               context: context),
         ],
       ),

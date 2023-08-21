@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kangsayur/common/color_value.dart';
 
 class Seller_twobox extends StatefulWidget {
   const Seller_twobox({Key? key}) : super(key: key);
@@ -15,29 +16,16 @@ class _Seller_twoboxState extends State<Seller_twobox> {
       child: Row(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width / 2 - 32,
+            width: MediaQuery.of(context).size.width- 48,
             height: 32,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: Colors.black)
+              border: Border.all(color: ColorValue.primaryColor)
             ),
             child: Center(
-              child: Text("Chat", style: TextStyle(fontSize: 14),),
+              child: Text("Chat", style: TextStyle(fontSize: 14, color: ColorValue.primaryColor),),
             ),
           ),
-          Spacer(),
-          Container(
-            width: MediaQuery.of(context).size.width / 2 - 32,
-            height: 32,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color(0xff009245))
-            ),
-            child: Center(
-              child: Text("Langganan", style: TextStyle(fontSize: 14,color: Color(0xff009245)),),
-            ),
-          ),
-
         ],
       ),
     );

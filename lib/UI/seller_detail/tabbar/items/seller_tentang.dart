@@ -24,13 +24,17 @@ class _Seller_tentangState extends State<Seller_tentang> {
           SizedBox(
             height: 20,
           ),
-          Seller_info(),
-          
+          _informasiToko(
+              widget.tokoDetailModel.data.alamat,
+              widget.tokoDetailModel.data.open,
+              widget.tokoDetailModel.data.close,
+              widget.tokoDetailModel.data.phoneNumber.toString()),
         ],
       ),
     );
   }
-  Widget _deskripsi (String deskripsi){
+
+  Widget _deskripsi(String deskripsi) {
     return Column(
       children: [
         Container(
@@ -61,65 +65,54 @@ class _Seller_tentangState extends State<Seller_tentang> {
       ],
     );
   }
-  Widget _informasiToko(String alamat, String open, String close, String noTelp){
+  Widget _informasiToko(
+      String alamat, String open, String close, String noTelp) {
     return Column(
       children: [
         Container(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Informasi Toko",
-                      style:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  InformasiToko(
-                      context: context,
-                        title: alamat,
-                      value: "Jl. Jalan 1 sakfpsafkskfdksfkas  dakksajf asf"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InformasiToko(
-                      context: context,
-                      title: "Jam Kerja",
-                      value: "$open - $close"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InformasiToko(
-                      context: context,
-                      title: "No Telepon",
-                      value: noTelp),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  //make info ulasan
-                  InformasiToko(
-                      context: context, title: "Ulasan", value: "100 ulasan"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  //make info transaksi
-                  InformasiToko(
-                      context: context,
-                      title: "Transaksi",
-                      value: "100 transaksi"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Divider(
-                    thickness: 1,
-                  )
-                ]))
-
+            child:
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text("Informasi Toko",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              SizedBox(
+                height: 15,
+              ),
+              InformasiToko(
+                  context: context,
+                  title: "Alamat",
+                  value: widget.tokoDetailModel.data.alamat),
+              SizedBox(
+                height: 10,
+              ),
+              InformasiToko(
+                  context: context, title: "Jam Kerja", value: "${open.substring(0,5)} - ${close.substring(0,5)}"),
+              SizedBox(
+                height: 10,
+              ),
+              InformasiToko(context: context, title: "No Telepon", value: noTelp),
+              SizedBox(
+                height: 10,
+              ),
+              //make info ulasan
+              InformasiToko(context: context, title: "Ulasan", value: "${widget.tokoDetailModel.data.diulasSebanyak} Ulasan"),
+              SizedBox(
+                height: 10,
+              ),
+              //make info transaksi
+              InformasiToko(
+                  context: context, title: "Transaksi", value: "${widget.tokoDetailModel.data.transaksiBerhasil} Transaksi"),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                thickness: 1,
+              )
+            ]))
       ],
     );
-
   }
-
 }
+
 
 //make custom widget of informasi toko
 Widget InformasiToko({
@@ -179,27 +172,27 @@ class _Seller_deskripsiState extends State<Seller_deskripsi> {
 //text deskripsi
               Text(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                    "Sed euismod, diam id tincidunt dapibus, "
-                    "nunc libero ultricies nunc, "
-                    "ut aliquam diam mauris eget risus. "
-                    "Sed euismod, diam id tincidunt dapibus, "
-                    "nunc libero ultricies nunc, "
-                    "ut aliquam diam mauris eget risus. "
-                    "Sed euismod, diam id tincidunt dapibus, "
-                    "nunc libero ultricies nunc, "
-                    "ut aliquam diam mauris eget risus. "
-                    "Sed euismod, diam id tincidunt dapibus, "
-                    "nunc libero ultricies nunc, "
-                    "ut aliquam diam mauris eget risus. "
-                    "Sed euismod, diam id tincidunt dapibus, "
-                    "nunc libero ultricies nunc, "
-                    "ut aliquam diam mauris eget risus. "
-                    "Sed euismod, diam id tincidunt dapibus, "
-                    "nunc libero ultricies nunc, "
-                    "ut aliquam diam mauris eget risus. "
-                    "Sed euismod, diam id tincidunt dapibus, "
-                    "nunc libero ultricies nunc, "
-                    "ut aliquam diam mauris eget risus. ",
+                "Sed euismod, diam id tincidunt dapibus, "
+                "nunc libero ultricies nunc, "
+                "ut aliquam diam mauris eget risus. "
+                "Sed euismod, diam id tincidunt dapibus, "
+                "nunc libero ultricies nunc, "
+                "ut aliquam diam mauris eget risus. "
+                "Sed euismod, diam id tincidunt dapibus, "
+                "nunc libero ultricies nunc, "
+                "ut aliquam diam mauris eget risus. "
+                "Sed euismod, diam id tincidunt dapibus, "
+                "nunc libero ultricies nunc, "
+                "ut aliquam diam mauris eget risus. "
+                "Sed euismod, diam id tincidunt dapibus, "
+                "nunc libero ultricies nunc, "
+                "ut aliquam diam mauris eget risus. "
+                "Sed euismod, diam id tincidunt dapibus, "
+                "nunc libero ultricies nunc, "
+                "ut aliquam diam mauris eget risus. "
+                "Sed euismod, diam id tincidunt dapibus, "
+                "nunc libero ultricies nunc, "
+                "ut aliquam diam mauris eget risus. ",
                 maxLines: 10,
                 style: TextStyle(fontSize: 12),
               ),
@@ -217,7 +210,6 @@ class _Seller_deskripsiState extends State<Seller_deskripsi> {
   }
 }
 
-
 class Seller_info extends StatefulWidget {
   const Seller_info({Key? key}) : super(key: key);
 
@@ -231,58 +223,46 @@ class _Seller_infoState extends State<Seller_info> {
     return Column(
       children: [
         Container(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Informasi Toko",
-                      style:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  InformasiToko(
-                      context: context,
-                      title: "Alamat",
-                      value: "Jl. Jalan 1 sakfpsafkskfdksfkas  dakksajf asf"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InformasiToko(
-                      context: context,
-                      title: "Jam Kerja",
-                      value: "08.00 - 17.00"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InformasiToko(
-                      context: context,
-                      title: "No Telepon",
-                      value: "08123456789"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  //make info ulasan
-                  InformasiToko(
-                      context: context, title: "Ulasan", value: "100 ulasan"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  //make info transaksi
-                  InformasiToko(
-                      context: context,
-                      title: "Transaksi",
-                      value: "100 transaksi"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Divider(
-                    thickness: 1,
-                  )
-                ]))
-
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text("Informasi Toko",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          SizedBox(
+            height: 15,
+          ),
+          InformasiToko(
+              context: context,
+              title: "Alamat",
+              value: "Jl. Jalan 1 sakfpsafkskfdksfkas  dakksajf asf"),
+          SizedBox(
+            height: 10,
+          ),
+          InformasiToko(
+              context: context, title: "Jam Kerja", value: "08.00 - 17.00"),
+          SizedBox(
+            height: 10,
+          ),
+          InformasiToko(
+              context: context, title: "No Telepon", value: "08123456789"),
+          SizedBox(
+            height: 10,
+          ),
+          //make info ulasan
+          InformasiToko(context: context, title: "Ulasan", value: "100 ulasan"),
+          SizedBox(
+            height: 10,
+          ),
+          //make info transaksi
+          InformasiToko(
+              context: context, title: "Transaksi", value: "100 transaksi"),
+          SizedBox(
+            height: 10,
+          ),
+          Divider(
+            thickness: 1,
+          )
+        ]))
       ],
     );
   }
 }
-
-

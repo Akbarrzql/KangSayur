@@ -4,10 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/alamat/tambah_alamat.dart';
 import 'package:kangsayur/common/color_value.dart';
 import 'package:kangsayur/model/alamatmodel.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../bloc/alamat_bloc/alamat_bloc.dart';
 import '../../../../../../bloc/alamat_bloc/alamat_event.dart';
 import '../../../../../../bloc/alamat_bloc/alamat_state.dart';
+import 'editalamat.dart';
 
 class Alamat extends StatefulWidget {
   const Alamat({Key? key}) : super(key: key);
@@ -82,59 +84,31 @@ class _AlamatState extends State<Alamat> {
                     builder: (context, state) {
                       if (state is AlamatInitial) {
                         return Center(
-                          child: CircularProgressIndicator(),
+                          child: _alamatLoading(),
                         );
                       } else if (state is AlamatLoading) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return _alamatLoading();
                       } else if (state is AlamatLoaded) {
                         return Alamat_list(
                           alamatModel: state.alamat,
                         );
                       } else if (state is AlamatError) {
-                        return Center(
-                          child: Text(state.message),
-                        );
+                        return Text(state.message);
                       } else {
-                        return Center(
-                          child: Text(""),
-                        );
+                        return _alamatLoading();
                       }
                     },
                   ),
-                  SizedBox(
-                    height: 85,
-                  )
                 ],
               ),
             ),
-            Positioned(
-              right: 0,
-              left: 0,
-              bottom: 35,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: ColorValue.primaryColor,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Center(
-                  child: Text("Pilih Alamat",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400)),
-                ),
-              ),
-            )
           ],
         ),
       ),
     );
   }
-  Widget _alamatListLoading (){
+
+  Widget _alamatLoading() {
     return ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -146,10 +120,10 @@ class _AlamatState extends State<Alamat> {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.2,
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      //make color radio button func
+                        //make color radio button func
                         color: ColorValue.hinttext,
                         width: 1)),
                 child: Column(
@@ -157,18 +131,32 @@ class _AlamatState extends State<Alamat> {
                   children: [
                     Padding(
                       padding:
-                      const EdgeInsets.only(left: 16, right: 16, top: 8),
+                          const EdgeInsets.only(left: 16, right: 16, top: 8),
                       child: Row(
                         children: [
-                          Container(
-                            width: 50,
-                            height: 20,
-                            decoration: BoxDecoration(
-                                color: ColorValue.primaryColor,
-                                borderRadius: BorderRadius.circular(5)),
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 50,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  color: ColorValue.primaryColor,
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
                           ),
                           Spacer(),
-                          SvgPicture.asset("assets/icon/pinpoint.svg")
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 30,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  color: ColorValue.primaryColor,
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -182,28 +170,43 @@ class _AlamatState extends State<Alamat> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            height : 20,
-                            width: 100,
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 20,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
                           ),
                           SizedBox(
                             height: 5,
                           ),
-                          Container(
-                            height : 20,
-                            width: 100,
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 15,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
                           ),
                           SizedBox(
                             height: 5,
                           ),
-                          Container(
-
-                            child: Text(
-                              "",
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w400),
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 20,
+                              width: 160,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(5)),
                             ),
                           ),
                           SizedBox(
@@ -233,8 +236,6 @@ class Alamat_list extends StatefulWidget {
 }
 
 class _Alamat_listState extends State<Alamat_list> {
-  int _selectedItem = 0;
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -245,9 +246,6 @@ class _Alamat_listState extends State<Alamat_list> {
           return GestureDetector(
             onTap: () {
               //make function for radio button
-              setState(() {
-                _selectedItem = index;
-              });
             },
             child: Column(
               children: [
@@ -255,15 +253,11 @@ class _Alamat_listState extends State<Alamat_list> {
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.2,
                   decoration: BoxDecoration(
-                      color: _selectedItem == index
-                          ? Color(0xffECFDF3)
-                          : Colors.white,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                           //make color radio button func
-                          color: _selectedItem == index
-                              ? ColorValue.primaryColor
-                              : ColorValue.hinttext,
+                          color: ColorValue.hinttext,
                           width: 1)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,20 +268,32 @@ class _Alamat_listState extends State<Alamat_list> {
                         child: Row(
                           children: [
                             Text(
-                              widget.alamatModel.name[index].labelAlamat,
+                              widget.alamatModel.name[index].labelAlamat + " - "+widget.alamatModel.name[index].prioritasAlamat,
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.w600),
                             ),
                             Spacer(),
-                            SvgPicture.asset("assets/icon/pinpoint.svg")
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditAlamat(
+                                            index: index,
+                                            alamat: widget.alamatModel)));
+                              },
+                              child: Text("Ubah",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorValue.primaryColor,
+                                      fontWeight: FontWeight.w600)),
+                            )
                           ],
                         ),
                       ),
                       Divider(
                         thickness: 1,
-                        color: _selectedItem == index
-                            ? ColorValue.primaryColor
-                            : ColorValue.hinttext,
+                        color: ColorValue.hinttext,
                       ),
                       Container(
                         padding: EdgeInsets.only(

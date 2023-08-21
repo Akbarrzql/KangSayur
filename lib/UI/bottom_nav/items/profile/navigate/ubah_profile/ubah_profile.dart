@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kangsayur/API/profile/edit_profile.dart';
 import 'package:kangsayur/common/color_value.dart';
+import 'package:kangsayur/validator/validator.dart';
+import 'package:kangsayur/widget/textfieldcustom.dart';
 
 class Ubah_profile extends StatefulWidget {
   Ubah_profile({
@@ -36,9 +38,9 @@ class Ubah_profile extends StatefulWidget {
 }
 
 class _Ubah_profileState extends State<Ubah_profile> {
-
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
+  bool _isLoading = false;
 
   Future<void> _getImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
@@ -48,7 +50,6 @@ class _Ubah_profileState extends State<Ubah_profile> {
       });
     }
   }
-
 
   late TextEditingController _controller_name =
   TextEditingController(text: widget.name);
@@ -101,7 +102,7 @@ class _Ubah_profileState extends State<Ubah_profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xfff2f2f2),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
@@ -119,217 +120,211 @@ class _Ubah_profileState extends State<Ubah_profile> {
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Form(
           key: _formKey,
-          child: Stack(
-            children: [
-              Container(height: MediaQuery.of(context).size.height,),
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Center(
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Stack(
-                          children: [
-                            if (_imageFile != null)
-                              Container(
-                                clipBehavior: Clip.antiAlias,
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Image.file(
-                                  _imageFile!,
-                                  fit: BoxFit.cover,
-                                  width: 100,
-                                  height: 100,
-                                ),
-                              )
-                            else
-                              Container(
-                                clipBehavior: Clip.antiAlias,
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Image.network(
-                                  "https://kangsayur.nitipaja.online" + widget.photo,
-                                  fit: BoxFit.cover,
-                                  width: 100,
-                                  height: 100,
-                                ),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height -
+                  AppBar().preferredSize.height -
+                  MediaQuery
+                      .of(context)
+                      .padding
+                      .top,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 24,
+                  ),
+                  Center(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Stack(
+                        children: [
+                          if (_imageFile != null)
+                            Container(
+                              clipBehavior: Clip.antiAlias,
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
                               ),
-                            GestureDetector(
+                              child: Image.file(
+                                _imageFile!,
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
+                              ),
+                            )
+                          else
+                            Container(
+                              clipBehavior: Clip.antiAlias,
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Image.network(
+                                "https://kangsayur.nitipaja.online" +
+                                    widget.photo,
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
+                              ),
+                            ),
+                          GestureDetector(
+                            onTap: () {
+                              _showBottomSheet(context);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: Colors.black.withOpacity(0.20),
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: GestureDetector(
                               onTap: () {
                                 _showBottomSheet(context);
                               },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Colors.black.withOpacity(0.20),
-                                ),
-                              ),
-                            ),
-                            Center(
                               child: SvgPicture.asset(
                                 "assets/icon/camera.svg",
                                 width: 30,
                                 height: 30,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "Akbar Rizqullah",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
-                    ),
-                    Text(
-                      "akbarrizqullah228@gmail.com",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Color(0xffA0A0A0)),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _Form(
-                        label: "Nama",
-                        controller: _controller_name,
-                        keyboardType: TextInputType.name,
-                        readOnly: false,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your name';
-                          }
-                          return null;
-                        }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    _Form(
-                        label: "Email",
-                        controller: _controller_email,
-                        keyboardType: TextInputType.emailAddress,
-                        readOnly: false,
-                        validator: (value) {
-                          //if not contain @
-                          if (!value!.contains('@')) {
-                            return 'Please enter a valid email address';
-                          }
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    _Form(
-                        label: "No Handphone",
-                        controller: _controller_nohp,
-                        keyboardType: TextInputType.phone,
-                        readOnly: false,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          if (value!.length < 10 || value.length > 13) {
-                            return 'Please enter a valid phone number';
-                          }
-                        }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Jenis Kelamin",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                        )),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xff35363B),
-                        ),
-                      ),
-                      child: DropdownButtonFormField(
-                        decoration: InputDecoration(
-                          contentPadding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                              color: Color(0xffA0A0A0)),
-                        ),
-                        value: _controller_jeniskelamin.text,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _controller_jeniskelamin.text = newValue!;
-                          });
-                        },
-                        items: <String>['Pria', 'Wanita'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xff35363B),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Tanggal Lahir",
-                          style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                    ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Container(
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    widget.name,
+                    style:
+                    TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                  ),
+                  Text(
+                    widget.email,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: Color(0xffA0A0A0)),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextFormField(
+                      label: "Nama Lengkap",
+                      controller: _controller_name,
+                      validator: (value) =>
+                          InputValidator.nameValidator(value)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                      textInputType: TextInputType.number,
+                      label: "Nomor Handphone",
+                      controller: _controller_nohp,
+                      validator: (value) =>
+                          InputValidator.phoneValidator(value)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  // Column(
+                  //   children: [
+                  //     Align(
+                  //         alignment: Alignment.centerLeft,
+                  //         child: Text(
+                  //           "Jenis Kelamin",
+                  //           style:
+                  //               TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  //         )),
+                  //     SizedBox(
+                  //       height: 6,
+                  //     ),
+                  //     Container(
+                  //       height: 50,
+                  //       decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(5),
+                  //         border: Border.all(
+                  //           color: Color(0xff35363B),
+                  //         ),
+                  //       ),
+                  //       child: DropdownButtonFormField(
+                  //         decoration: InputDecoration(
+                  //           contentPadding:
+                  //               EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  //           border: InputBorder.none,
+                  //           hintStyle: TextStyle(
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Color(0xffA0A0A0)),
+                  //         ),
+                  //         value: _controller_jeniskelamin.text,
+                  //         onChanged: (String? newValue) {
+                  //           setState(() {
+                  //             _controller_jeniskelamin.text = newValue!;
+                  //           });
+                  //         },
+                  //         items: <String>['Pria', 'Wanita'].map((String value) {
+                  //           return DropdownMenuItem<String>(
+                  //             value: value,
+                  //             child: Text(
+                  //               value,
+                  //               style: TextStyle(
+                  //                 fontSize: 14,
+                  //                 fontWeight: FontWeight.normal,
+                  //                 color: Color(0xff35363B),
+                  //               ),
+                  //             ),
+                  //           );
+                  //         }).toList(),
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       height: 10,
+                  //     ),
+                  //   ],
+                  // ),
+                  // Align(
+                  //   alignment: Alignment.centerLeft,
+                  //   child: Text("Tanggal Lahir",
+                  //       style:
+                  //           TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                  // ),
+                  // SizedBox(
+                  //   height: 6,
+                  // ),
+                  GestureDetector(
+                    onTap: () {
+                      return _bukaCalendar();
+                    },
+                    child: Container(
                         padding: EdgeInsets.only(left: 10),
                         height: 50,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: Color(0xff35363B),
+                            color: ColorValue.hinttext,
+                            width: 0.5,
                           ),
                         ),
                         child: Row(
                           children: [
                             Text(
                                 _dateTime == null
-                                    ? '23-11-2023'
-                                    : DateFormat('dd-MM-yyyy').format(_dateTime),
+                                    ? "Tanggal Lahir"
+                                    : DateFormat('dd-MM-yyyy')
+                                    .format(_dateTime!),
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.normal,
@@ -339,53 +334,57 @@ class _Ubah_profileState extends State<Ubah_profile> {
                               onPressed: () {
                                 return _bukaCalendar();
                               },
-                              icon: SvgPicture.asset("assets/icon/calendar.svg"),
+                              icon:
+                              SvgPicture.asset("assets/icon/calendar.svg"),
                             ),
                           ],
                         )),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: GestureDetector(
-                  onTap: () {
-                    print(_imageFile);
-                    if (_formKey.currentState!.validate()) {
-                      Edit_Profile.edit(
-                          _controller_name.text,
-                          _imageFile,
-                          _controller_email.text,
-                          _controller_nohp.text,
-                          widget.address,
-                          _dateTime.toString(),
-                          widget.latitude,
-                          widget.longitude,
-                          context);
-                    }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 37),
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(0xff009245),
-                    ),
-                    child: Center(
-                      child: Text("Simpan",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
-                    ),
                   ),
-                ),
-              )
-
-            ],
+                  Spacer(),
+                  if (_isLoading)
+                    _loading()
+                  else
+                  GestureDetector(
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await Edit_Profile.edit(
+                            _controller_name.text,
+                            _imageFile,
+                            _controller_email.text,
+                            _controller_nohp.text,
+                            widget.address,
+                            _dateTime.toString(),
+                            widget.latitude,
+                            widget.longitude,
+                            context);
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 35),
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: ColorValue.primaryColor,
+                      ),
+                      child: Center(
+                        child: Text("Simpan",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white)),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -486,55 +485,22 @@ class _Ubah_profileState extends State<Ubah_profile> {
           );
         });
   }
-
-  Widget _Form({
-    required String label,
-    required TextEditingController controller,
-    required TextInputType keyboardType,
-    required bool readOnly,
-    //make variable for validator
-    required FormFieldValidator validator,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        ),
-        SizedBox(
-          height: 6,
-        ),
-        Container(
-          height: 50,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: Color(0xff35363B),
-            ),
-          ),
-          child: TextFormField(
-              validator: validator,
-              controller: controller,
-              keyboardType: keyboardType,
-              readOnly: readOnly,
-              decoration: InputDecoration(
-                contentPadding:
-                EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                border: InputBorder.none,
-                hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: Color(0xffA0A0A0)),
-              ),
-              style: TextStyle(
+  Widget _loading(){
+    return Container(
+      margin: EdgeInsets.only(bottom: 35),
+      height: 50,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.grey,
+      ),
+      child: Center(
+        child: Text("Simpan",
+            style: TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.normal,
-              )),
-        ),
-      ],
+                fontWeight: FontWeight.w600,
+                color: Colors.white)),
+      ),
     );
   }
-
 }
-

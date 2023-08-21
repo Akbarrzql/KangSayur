@@ -53,6 +53,7 @@ class Data {
   String close;
   int produkId;
   String status;
+  String alasan;
   String image;
   int harga;
   List<TokoIni> tokoIni;
@@ -79,6 +80,7 @@ class Data {
     required this.close,
     required this.produkId,
     required this.status,
+    required this.alasan,
     required this.image,
     required this.harga,
     required this.tokoIni,
@@ -89,7 +91,7 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],
     namaProduk: json["nama_produk"],
-    rating: json["rating"]?.toDouble() ?? 0,
+    rating: json["rating"]?.toDouble(),
     tokoId: json["toko_id"],
     isOnsale: json["is_onsale"],
     imgProfile: json["img_profile"],
@@ -106,6 +108,7 @@ class Data {
     close: json["close"],
     produkId: json["produk_id"],
     status: json["status"],
+    alasan: json["alasan"],
     image: json["image"],
     harga: json["harga"],
     tokoIni: List<TokoIni>.from(json["toko_ini"].map((x) => TokoIni.fromJson(x))),
@@ -133,6 +136,7 @@ class Data {
     "close": close,
     "produk_id": produkId,
     "status": status,
+    "alasan": alasan,
     "image": image,
     "harga": harga,
     "toko_ini": List<dynamic>.from(tokoIni.map((x) => x.toJson())),
@@ -142,54 +146,54 @@ class Data {
 }
 
 class Review {
-  int rating;
-  dynamic imgProduct;
-  String comment;
+  int ratingProduk;
+  String komentarUser;
   int variantId;
   int transactionCode;
   String reply;
   String direply;
-  DateTime createdAt;
+  DateTime tanggalComment;
   String nameUser;
   String gambarUser;
+  dynamic imgProduct;
 
   Review({
-    required this.rating,
-    required this.imgProduct,
-    required this.comment,
+    required this.ratingProduk,
+    required this.komentarUser,
     required this.variantId,
     required this.transactionCode,
     required this.reply,
     required this.direply,
-    required this.createdAt,
+    required this.tanggalComment,
     required this.nameUser,
     required this.gambarUser,
+    required this.imgProduct,
   });
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
-    rating: json["rating"],
-    imgProduct: json["img_product"],
-    comment: json["comment"],
+    ratingProduk: json["rating_produk"],
+    komentarUser: json["komentar_user"],
     variantId: json["variant_id"],
     transactionCode: json["transaction_code"],
     reply: json["reply"],
     direply: json["direply"],
-    createdAt: DateTime.parse(json["created_at"]),
+    tanggalComment: DateTime.parse(json["tanggal_comment"]),
     nameUser: json["name_user"],
     gambarUser: json["gambar_user"],
+    imgProduct: json["img_product"],
   );
 
   Map<String, dynamic> toJson() => {
-    "rating": rating,
-    "img_product": imgProduct,
-    "comment": comment,
+    "rating_produk": ratingProduk,
+    "komentar_user": komentarUser,
     "variant_id": variantId,
     "transaction_code": transactionCode,
     "reply": reply,
     "direply": direply,
-    "created_at": createdAt.toIso8601String(),
+    "tanggal_comment": "${tanggalComment.year.toString().padLeft(4, '0')}-${tanggalComment.month.toString().padLeft(2, '0')}-${tanggalComment.day.toString().padLeft(2, '0')}",
     "name_user": nameUser,
     "gambar_user": gambarUser,
+    "img_product": imgProduct,
   };
 }
 
@@ -249,7 +253,7 @@ class TokoIni {
   factory TokoIni.fromJson(Map<String, dynamic> json) => TokoIni(
     id: json["id"],
     namaProduk: json["nama_produk"],
-    rating: json["rating"]?.toDouble() ?? 0,
+    rating: json["rating"]?.toDouble(),
     tokoId: json["toko_id"],
     isOnsale: json["is_onsale"],
     imgProfile: json["img_profile"],

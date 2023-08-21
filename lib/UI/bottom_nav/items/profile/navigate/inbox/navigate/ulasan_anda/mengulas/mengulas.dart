@@ -40,6 +40,7 @@ class Mengulas extends StatefulWidget {
 }
 
 class _MengulasState extends State<Mengulas> {
+  bool _isLoading = false;
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
@@ -72,94 +73,116 @@ class _MengulasState extends State<Mengulas> {
           icon: SvgPicture.asset("assets/icon/arrow_left.svg"),
         ),
       ),
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                Head_mengulas(
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height - //statusbar
+              MediaQuery.of(context).padding.top - //appbar
+              kToolbarHeight,
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Head_mengulas(
+                nama_seller: widget.namaToko,
+                alamat_seller: widget.alamatToko,
+                profil_seller: widget.gambarToko,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              // Card_mengulas(
+              //     gambar_produk: "assets/images/wortel.png",
+              //     nama_produk: widget.namaProduk,
+              //     nama_seller: widget.namaToko),
+              card_mengulas(
+                  gambar_produk: widget.gambarProduk,
                   nama_seller: widget.namaToko,
-                  alamat_seller: widget.alamatToko,
-                  profil_seller: widget.gambarToko,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // Card_mengulas(
-                //     gambar_produk: "assets/images/wortel.png",
-                //     nama_produk: widget.namaProduk,
-                //     nama_seller: widget.namaToko),
-                card_mengulas(
-                    gambar_produk: widget.gambarProduk,
-                    nama_seller: widget.namaToko,
-                    alamat_seller: widget.alamatToko),
-                //make button "Kirim Ulasan" height 50
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: GestureDetector(
-                onTap: () {
-                  if (widget.rating == 0.0) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Rating tidak boleh kosong"),
+                  alamat_seller: widget.alamatToko),
+              Spacer(),
+              if (_isLoading)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 35),
+                    decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(5)),
+                    height: 50,
+                    child: const Center(
+                      child: Text(
+                        "Kirim Ulasan",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white),
                       ),
-                    );
-                    return;
-                  }
-                  if (commentController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Komentar tidak boleh kosong"),
+                    ),
+                  ),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: GestureDetector(
+                    onTap: () async {
+                      if (widget.rating == 0.0) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Rating tidak boleh kosong"),
+                          ),
+                        );
+                        return;
+                      }
+                      if (commentController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Komentar tidak boleh kosong"),
+                          ),
+                        );
+                        return;
+                      } else {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        print(_imageFile);
+                        await Mengulas_post.mengulas(
+                            widget.rating.toString(),
+                            _imageFile,
+                            commentController.text,
+                            widget.productId,
+                            widget.tokoId,
+                            widget.variantId,
+                            widget.transactionCode,
+                            context);
+
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 35),
+                      decoration: BoxDecoration(
+                          color: ColorValue.primaryColor,
+                          borderRadius: BorderRadius.circular(5)),
+                      height: 50,
+                      child: const Center(
+                        child: Text(
+                          "Kirim Ulasan",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white),
+                        ),
                       ),
-                    );
-                    return;
-                  } else {
-                    print(_imageFile);
-                    Mengulas_post.mengulas(
-                        widget.rating.toString(),
-                        _imageFile,
-                        commentController.text,
-                        widget.productId,
-                        widget.tokoId,
-                        widget.variantId,
-                        widget.transactionCode,
-                        context);
-                  }
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 35),
-                  decoration: BoxDecoration(
-                      color: ColorValue.primaryColor,
-                      borderRadius: BorderRadius.circular(5)),
-                  height: 50,
-                  child: const Center(
-                    child: Text(
-                      "Kirim Ulasan",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
 
-        ],
+              //make button "Kirim Ulasan" height 50
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -365,6 +388,34 @@ class _MengulasState extends State<Mengulas> {
                   image: FileImage(_imageFile!),
                   fit: BoxFit.cover,
                 ),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 5,
+                    right: 5,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _imageFile = null;
+                        });
+                      },
+                      child: Container(
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const Icon(
+                          Icons.close,
+                          size: 15,
+                          color: ColorValue.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
         ],

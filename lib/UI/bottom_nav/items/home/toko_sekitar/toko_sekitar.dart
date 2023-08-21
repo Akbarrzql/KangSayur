@@ -93,6 +93,8 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
     super.initState();
   }
 
+  final scaffoldState = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final paneHeightClosed = MediaQuery.of(context).size.height * 0.5;
@@ -116,7 +118,6 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
               Navigator.pop(context);
             },
           ),
-
         ),
         body: Stack(
           children: [
@@ -127,11 +128,12 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
                   height: MediaQuery.of(context).size.height * 0.4,
                   child: FlutterMap(
                       options: MapOptions(
-                          center: AppConstants.myLocation,
-                          screenSize: MediaQuery.of(context).size,
-                          interactiveFlags: InteractiveFlag.pinchZoom |
-                              InteractiveFlag.drag |
-                              InteractiveFlag.doubleTapZoom,),
+                        center: AppConstants.myLocation,
+                        screenSize: MediaQuery.of(context).size,
+                        interactiveFlags: InteractiveFlag.pinchZoom |
+                            InteractiveFlag.drag |
+                            InteractiveFlag.doubleTapZoom,
+                      ),
                       mapController: mapController,
                       children: [
                         TileLayer(
@@ -146,9 +148,9 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
                           circles: [
                             CircleMarker(
                               point: _currentPosition,
-                              color: Colors.transparent,
+                              color: ColorValue.primaryColor.withOpacity(0.1),
                               radius: 25000,
-                              borderColor: Colors.black,
+                              borderColor: Colors.transparent,
                               borderStrokeWidth: 1,
                               useRadiusInMeter: true,
                             ),
@@ -199,8 +201,9 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
             ),
             SlidingUpPanel(
               color: Colors.transparent,
-              panelBuilder:
-              (controller) => PanelWidget(controller: controller,),
+              panelBuilder: (controller) => PanelWidget(
+                controller: controller,
+              ),
               minHeight: paneHeightClosed,
               maxHeight: paneHeightOpen,
               parallaxEnabled: true,
@@ -209,30 +212,49 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
           ],
         ));
   }
+
+  Widget marker({required NearestTokoModel widget}) {
+    var latLang =
+        widget.data.map((e) => LatLng(e.latitude, e.longitude)).toList();
+
+    return MarkerLayer(
+      markers: [
+        for (int i = 0; i < widget.data.length; i++)
+          Marker(
+            height: 15,
+            width: 15,
+            point: latLang[i],
+            builder: (_) {
+              return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      print("tap");
+                      _showBottomSheet(context);
+                    });
+                  },
+                  child: Container(
+                    height: 1.5,
+                    width: 1.5,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.red,
+                    ),
+                  ));
+            },
+          )
+      ],
+    );
+  }
 }
 
-//make widget marker
-Widget marker({required NearestTokoModel widget}) {
-  var latLang =
-      widget.data.map((e) => LatLng(e.latitude, e.longitude)).toList();
-
-  return MarkerLayer(
-    markers: [
-      for (int i = 0; i < widget.data.length; i++)
-        Marker(
-          height: 15,
-          width: 15,
-          point: latLang[i],
-          builder: (_) {
-            return GestureDetector(
-                onTap: () {
-                },
-                child: Container(height: 1.5,width: 1.5, decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: Colors.red,
-                ),));
-          },
-        )
-    ],
-  );
+void _showBottomSheet(BuildContext context) {
+  showBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: 150,
+          padding: const EdgeInsets.all(24),
+          child: Container(),
+        );
+      });
 }

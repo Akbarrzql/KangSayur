@@ -4,6 +4,7 @@ import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ul
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/riwayat_pembelian/lacak_pesanan/lacakpesanan.dart';
 
 import '../../../../../../../common/color_value.dart';
+import '../../../../../../../model/statuspesanandiantarmodel.dart';
 import '../../../../../../payment/keranjang/keranjang.dart';
 
 class Detail_Riwayat_Pembelian extends StatefulWidget {
@@ -30,6 +31,11 @@ class Detail_Riwayat_Pembelian extends StatefulWidget {
     required this.StatusDiulas,
 required this.latitude,
 required this.longitude,
+    this.namaDriver = "",
+    this.nameKendaraan = "",
+    this.photoKendaraan = "",
+    this.photorDriver = "",
+    this.platKendaraan = "",
   }) : super(key: key);
   String Status;
   String Nama;
@@ -49,6 +55,12 @@ required this.longitude,
   List produkId, variantId;
   double latitude, longitude;
   List<int> banyakBarang;
+  String namaDriver;
+  String nameKendaraan ;
+  String photoKendaraan;
+  String photorDriver;
+  String platKendaraan;
+
 
   @override
   State<Detail_Riwayat_Pembelian> createState() =>
@@ -441,6 +453,11 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
                   idPesanan: widget.transactionCode,
                   latitude: widget.latitude,
                   longitude: widget.longitude,
+                  namaDriver: widget.namaDriver,
+                  nameKendaraan: widget.nameKendaraan,
+                  photoKendaraan: widget.photoKendaraan,
+                  photorDriver: widget.photorDriver,
+                  platKendaraan: widget.platKendaraan,
                     )));
       },
       child: Container(

@@ -9,6 +9,7 @@ import 'package:kangsayur/model/cartproductmodel.dart';
 import 'package:kangsayur/model/checkoutmodel.dart';
 import 'package:kangsayur/model/subtotalcartmodel.dart';
 import 'package:kangsayur/widget/card_keranjang.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../bloc/json_bloc/json_bloc.dart';
@@ -24,18 +25,8 @@ class Keranjang extends StatefulWidget {
 }
 
 class _KeranjangState extends State<Keranjang> {
-  bool isChecked = false;
   double total = 0.0;
-
-  void updateTotal() {
-    setState(() {
-      if (isChecked) {
-        total += 10.0; // Jumlah total bertambah saat checkbox diperiksa
-      } else {
-        total -= 10.0; // Jumlah total berkurang saat checkbox tidak diperiksa
-      }
-    });
-  }
+  bool isCheckedAll = false;
 
   final JsonBloc _jsonBloc = JsonBloc();
   final JsonBloc _cart = JsonBloc();
@@ -75,99 +66,32 @@ class _KeranjangState extends State<Keranjang> {
           SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  color: Colors.white,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  child: Row(
-                    children: [
-                      //make icon and text in one row dikirim ke rumah
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icon/map.svg",
-                            height: 24,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Dikirim ke ",
-                            style: TextStyle(
-                                color: ColorValue.neutralColor, fontSize: 14),
-                          ),
-                          Text(
-                            "Rumah",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          SvgPicture.asset(
-                            "assets/icon/arrow_down.svg",
-                            height: 10,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Transform.scale(
-                        scale: 1.4,
-                        child: Checkbox(
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          value: isChecked,
-                          tristate: false,
-                          //turn off hover
-                          hoverColor: Colors.transparent,
-                          checkColor: Colors.white,
-                          visualDensity: VisualDensity.compact,
-                          activeColor: ColorValue.primaryColor,
-
-                          onChanged: (bool? value) {
-                            setState(() {});
-                          },
+                BlocProvider(
+                  create: (_) => _cart,
+                  child: BlocListener<JsonBloc, JsonState>(
+                      listener: (context, state) {
+                    if (state is JsonError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isChecked = !isChecked;
-                          });
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          child: Text(
-                            "Pilih Semua",
-                            style: TextStyle(
-                              color: ColorValue.neutralColor,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                      );
+                    }
+                  }, child: BlocBuilder<JsonBloc, JsonState>(
+                          builder: (context, state) {
+                    if (state is JsonInitial) {
+                      return _selectAllButtonLoading();
+                    } else if (state is JsonLoading) {
+                      return _selectAllButtonLoading();
+                    } else if (state is JsonLoaded) {
+                      return _selectAllButton(state.jsonCartProduct);
+                    } else if (state is JsonError) {
+                      return Text(state.message);
+                    }
+                    return Container();
+                  })),
                 ),
-                _cardinfo(),
+                // _cardinfo(),
                 //make listview call card_keranjang
                 BlocProvider(
                   create: (_) => _jsonBloc,
@@ -368,6 +292,108 @@ class _KeranjangState extends State<Keranjang> {
     );
   }
 
+  Widget _selectAllButton(CartProductModel data) {
+    List status = [
+      for (var i = 0; i < data.data.length; i++)
+        for (var j = 0; j < data.data[i].getProductCart.length; j++)
+          data.data[i].getProductCart[j].status
+    ];
+    bool isTrue = status.every((element) => element == "true");
+    if (data.data.length == 0) {
+      return Container();
+    } else
+      return Container(
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        child: Row(
+          children: [
+            Transform.scale(
+              scale: 1.4,
+              child: Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                value: isTrue,
+                tristate: false,
+                //turn off hover
+                hoverColor: Colors.transparent,
+                checkColor: Colors.white,
+                visualDensity: VisualDensity.compact,
+                activeColor: ColorValue.primaryColor,
+                onChanged: (bool? value) async {
+                  setState(() {
+                    isTrue = value!;
+                  });
+                  await Cart().PilihSemua();
+                  setState(() {
+                    _jsonBloc.add(GetCartProductList());
+                    _cart.add(GetCartProductList());
+                    _subtotal.add(GetSubTotalCartList());
+                  });
+                },
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              color: Colors.transparent,
+              child: Text(
+                "Pilih Semua",
+                style: TextStyle(
+                  color: ColorValue.neutralColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+  }
+
+  Widget _selectAllButtonLoading() {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      child: Row(
+        children: [
+          Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Transform.scale(
+              scale: 1.4,
+              child: Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                value: false,
+                tristate: false,
+                //turn off hover
+                hoverColor: Colors.transparent,
+                checkColor: Colors.white,
+                visualDensity: VisualDensity.compact,
+                activeColor: ColorValue.primaryColor,
+                onChanged: (bool? value)  {
+                },
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Container(
+            color: Colors.transparent,
+            child: Text(
+              "Pilih Semua",
+              style: TextStyle(
+                color: ColorValue.neutralColor,
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _pesanButtonLoading() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
@@ -444,21 +470,44 @@ class _KeranjangState extends State<Keranjang> {
   }
 
   Widget _cartProductList(CartProductModel widget) {
-    return ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: widget.data.length,
-        itemBuilder: (context, index) {
-          return Card_keranjang(
-            kurang: () {
-              _cart.add(GetCartProductList());
-              _subtotal.add(GetSubTotalCartList());
-            },
+    if (widget.data.length == 0) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Column(
+          children: [
+            Spacer(),
+            LottieBuilder.asset(
+              "assets/icon/lottie/cart.json",
+              height: 250,
+            ),
+            Center(
+              child: Text(
+                "Keranjang kamu kosong",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else
+      return ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: widget.data.length,
+          itemBuilder: (context, index) {
+            return Card_keranjang(
+              kurang: () {
+                _cart.add(GetCartProductList());
+                _subtotal.add(GetSubTotalCartList());
+              },
               tambah: () {
                 _cart.add(GetCartProductList());
                 _subtotal.add(GetSubTotalCartList());
               },
-
               nama_toko: widget.data[index].namaToko,
               profil_toko: widget.data[index].imgProfile,
               alamat_toko: widget.data[index].alamatToko,
@@ -466,7 +515,6 @@ class _KeranjangState extends State<Keranjang> {
                 setState(() {
                   widget.data.removeAt(index);
                 });
-                widget.data.removeAt(index);
               },
               checklist: () {
                 _cart.add(GetCartProductList());
@@ -527,8 +575,9 @@ class _KeranjangState extends State<Keranjang> {
                     i++)
                   widget.data[index].getProductCart[i].status
               ],
-              cartId: []);
-        });
+              cartId: [],
+            );
+          });
   }
 
   Widget _cartProductListLoading() {
@@ -737,7 +786,8 @@ class _KeranjangState extends State<Keranjang> {
                                               0.4 -
                                           24,
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                           color: Colors.grey[300]),
                                       child: Row(
                                         mainAxisAlignment:

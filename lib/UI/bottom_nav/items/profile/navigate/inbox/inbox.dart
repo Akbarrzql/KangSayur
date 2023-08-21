@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/chat_list.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/detail_chat/detail_chat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/riwayat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/ulasan_anda.dart';
 import 'package:kangsayur/UI/detail/ulasan/ulasan.dart';
@@ -48,7 +49,7 @@ class _InboxState extends State<Inbox> {
               ],
             ),
             SizedBox(height: 20,),
-            _inbox_list(icon: "assets/icon/help_center.svg", title: "Pusat Bantuan", subtitle: "Status bantuan dari KangSayur", context: context, onTap: Inbox()),
+            _inbox_list(icon: "assets/icon/help_center.svg", title: "Pusat Bantuan", subtitle: "Status bantuan dari KangSayur", context: context, onTap: Detail_chat()),
           ],
         ),
       ),

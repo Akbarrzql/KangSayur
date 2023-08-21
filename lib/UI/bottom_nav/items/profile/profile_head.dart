@@ -53,67 +53,94 @@ class _Profile_headState extends State<Profile_head> {
   }
 }
 
-Widget _HeadProfile(BuildContext context, ProfileModel widget) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 24),
-    child: Row(
-      children: [
-        Container(
-          clipBehavior: Clip.antiAlias,
-          height: 70,
-          width: 70,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(100),
-          ),
-          child: Image.network(
-              "https://kangsayur.nitipaja.online/${widget.data.photo}" == null
-                  ? "https://avatars.githubusercontent.com/u/60261133?v=4"
-                  : "https://kangsayur.nitipaja.online/${widget.data.photo}",
-            fit: BoxFit.cover,
-          ),
-        ),
-        SizedBox(
-          width: 15,
-        ),
-        Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(widget.data.name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-              Text(
-                  widget.data.phoneNumber == null
-                      ? "Belom Beli No Hp"
-                      : widget.data.phoneNumber.toString(),
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-              Text(widget.data.email,
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-            ],
-          ),
-        ),
-        Spacer(),
-        GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Ubah_profile(
-                    name: widget.data.name,
-                    photo: widget.data.photo,
-                    email: widget.data.email,
-                    phone_number: widget.data.phoneNumber.toString(),
-                    tanggal_lahir: widget.data.tanggalLahir,
-                    address: widget.data.address,
-                    latitude: widget.data.latitude.toString(),
-                    longitude: widget.data.longitude.toString(),
-                    kelamin: widget.data.jenisKelamin.toString(),
-                  )));
+  Widget _HeadProfile(BuildContext context, ProfileModel widget) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: (){
+              OverlayEntry(
+                builder: (context) => Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: Center(
+                      child: Container(
+                        height: 200,
+                        width: 200,
+                        child: Image.network(
+                          "https://kangsayur.nitipaja.online/${widget.data.photo}" == null
+                              ? "https://avatars.githubusercontent.com/u/60261133?v=4"
+                              : "https://kangsayur.nitipaja.online/${widget.data.photo}",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
             },
-            child: SvgPicture.asset("assets/icon/edit.svg"))
-      ],
-    ),
-  );
-}
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              height: 70,
+              width: 70,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Image.network(
+                  "https://kangsayur.nitipaja.online/${widget.data.photo}" == null
+                      ? "https://avatars.githubusercontent.com/u/60261133?v=4"
+                      : "https://kangsayur.nitipaja.online/${widget.data.photo}",
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(widget.data.name,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                Text(
+                    widget.data.phoneNumber == null
+                        ? "Belom Beli No Hp"
+                        : widget.data.phoneNumber.toString(),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                Text(widget.data.email,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+              ],
+            ),
+          ),
+          Spacer(),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Ubah_profile(
+                      name: widget.data.name,
+                      photo: widget.data.photo,
+                      email: widget.data.email,
+                      phone_number: widget.data.phoneNumber.toString(),
+                      tanggal_lahir: widget.data.tanggalLahir,
+                      address: widget.data.address,
+                      latitude: widget.data.latitude.toString(),
+                      longitude: widget.data.longitude.toString(),
+                      kelamin: widget.data.jenisKelamin.toString(),
+                    )));
+              },
+              child: SvgPicture.asset("assets/icon/edit.svg"))
+        ],
+      ),
+    );
+  }
 
 Widget Loading() {
   return Center(
