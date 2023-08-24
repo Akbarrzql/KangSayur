@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/API/chat/chat.dart';
 import 'package:kangsayur/API/resource/api_provider.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/detail_chat/detail_chat.dart';
 import 'package:kangsayur/UI/detail/detail_content.dart';
@@ -33,6 +34,8 @@ class Detail extends StatefulWidget {
 
 class _DetailState extends State<Detail> {
   DetailProductModel? _data;
+  //loading chat
+  bool isChatLoading = false;
 
   final JsonBloc _jsonBloc = JsonBloc();
 
@@ -406,8 +409,12 @@ class _DetailState extends State<Detail> {
           child: Row(
             children: [
               GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Detail_chat())),
+                onTap: () {
+                  setState(() {
+                    isChatLoading = true;
+                  });
+                  ChatFunc().startConversation(widgetm.data.sellerId.toString(), widgetm.data.namaToko, widgetm.data.imgProfile, widgetm.data.tokoId.toString(), context);
+                },
                 child: Container(
                   height: 48,
                   width: MediaQuery.of(context).size.width * 0.28 - 24 - 24,

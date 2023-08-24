@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/pengaturan_akun/keamanan_profile/keaman_sendemail.dart';
 import 'package:kangsayur/common/color_value.dart';
 
 import '../../../../../../API/auth/Auth.dart';
@@ -46,7 +47,7 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const Keamanan_profile();
+                  return const KeamananSendEmail();
                 }));
               },
               child: Container(
@@ -237,46 +238,46 @@ class _Pengaturan_ProfileState extends State<Pengaturan_Profile> {
             const SizedBox(
               height: 14,
             ),
-
             if (!_isLoading)
-            GestureDetector(
-              onTap:() async {
-                setState(() {
-                  _isLoading = true;
-                });
-                await Auth.logout(context);
-                setState(() {
-                  _isLoading = false;
-                });
-              },
-              child: Container(
-                color: Colors.white,
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icon/logout.svg",
-                      width: 18,
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    const Text(
-                      "Keluar Akun",
-                      style: TextStyle(fontSize: 16, color: Color(0xffFF0000)),
-                    ),
-                  ],
+              GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  await Auth.logout(context);
+                  setState(() {
+                    _isLoading = false;
+                  });
+                },
+                child: Container(
+                  color: Colors.white,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icon/logout.svg",
+                        width: 18,
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      const Text(
+                        "Keluar Akun",
+                        style:
+                            TextStyle(fontSize: 16, color: Color(0xffFF0000)),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            if (_isLoading)
-            _logoutLoading(),
+            if (_isLoading) _logoutLoading(),
           ],
         ),
       ),
     );
   }
-  Widget _logoutLoading(){
-    return             Container(
+
+  Widget _logoutLoading() {
+    return Container(
       color: Colors.white,
       child: Row(
         children: [

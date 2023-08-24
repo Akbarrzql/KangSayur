@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:kangsayur/API/chat/chat.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' as loc;
 import 'package:http/http.dart' as http;
@@ -24,7 +26,7 @@ class Lacak_Pesanan extends StatefulWidget {
     required this.photorDriver,
     required this.platKendaraan,
     required this.nameKendaraan,
-    required this.photoKendaraan,
+    required this.photoKendaraan, required this.idDriver,
   }) : super(key: key);
   String idPesanan;
   double latitude;
@@ -34,6 +36,7 @@ class Lacak_Pesanan extends StatefulWidget {
   final String platKendaraan;
   final String nameKendaraan;
   final String photoKendaraan;
+  final int idDriver;
 
   @override
   State<Lacak_Pesanan> createState() => _Lacak_PesananState();
@@ -209,8 +212,17 @@ class _Lacak_PesananState extends State<Lacak_Pesanan> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
         title: const Text(
-          "Pinpoint Lokasi",
+          "Lacak Driver",
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         backgroundColor: Colors.white,
@@ -303,36 +315,135 @@ class _Lacak_PesananState extends State<Lacak_Pesanan> {
             left: 0,
             right: 0,
             child: Container(
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.25,
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 color: Colors.white,
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 4,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Color(0xffB6B6B6),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25,
+                      height: 20,
                     ),
                     Stack(
+                      clipBehavior: Clip.none,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(top: 20,left: 34),
-                          color: Colors.red,
+                          margin: EdgeInsets.only(top: 0, bottom: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 0,
+                                blurRadius: 5,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
                           child: Column(
                             children: [
-
+                              Container(
+                                height: 100,
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      widget.namaDriver,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      widget.platKendaraan,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      widget.nameKendaraan,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Sedang Mengantar",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                  color: ColorValue.primaryColor,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(15),
+                                      bottomRight: Radius.circular(15)),
+                                ),
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (){
+                                        ChatFunc().startConversation(widget.idDriver.toString(), widget.namaDriver, widget.photorDriver, widget.idDriver.toString(),context,);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(5),
+                                        height: 30,
+                                        width: 30,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: SvgPicture.asset(
+                                          "assets/icon/chat.svg",
+                                          color: ColorValue.primaryColor,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                         ),
+                        Positioned(
+                          top: 5,
+                          right: 24,
+                          child: Container(
+                              height: 80,
+                              width: 80,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  "https://kangsayur.nitipaja.online/" +
+                                      widget.photoKendaraan,
+                                  fit: BoxFit.cover,
+                                ),
+                              )),
+                        )
                       ],
                     )
                   ],

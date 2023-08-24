@@ -246,6 +246,7 @@ class BarangPesanan {
 }
 
 class Driver {
+  int driverId;
   String namaDriver;
   String fotoDriver;
   String platKendaraan;
@@ -253,6 +254,7 @@ class Driver {
   String photoKendaraan;
 
   Driver({
+    required this.driverId,
     required this.namaDriver,
     required this.fotoDriver,
     required this.platKendaraan,
@@ -261,6 +263,7 @@ class Driver {
   });
 
   factory Driver.fromJson(Map<String, dynamic> json) => Driver(
+    driverId: json["driver_id"],
     namaDriver: json["nama_driver"],
     fotoDriver: json["foto_driver"],
     platKendaraan: json["plat_kendaraan"],
@@ -269,6 +272,7 @@ class Driver {
   );
 
   Map<String, dynamic> toJson() => {
+    "driver_id": driverId,
     "nama_driver": namaDriver,
     "foto_driver": fotoDriver,
     "plat_kendaraan": platKendaraan,

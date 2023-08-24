@@ -375,6 +375,12 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
                 context,
                 MaterialPageRoute(
                   builder: (context) => Detail_Riwayat_Pembelian(
+                    idDriver: 0,
+                    nameKendaraan: "",
+                    platKendaraan: "",
+                    photorDriver: "",
+                    photoKendaraan: "",
+                    namaDriver: "",
                     StatusDiulas: [],
                     banyakBarang: [
                       for (int j = 0;
@@ -486,6 +492,12 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               context,
               MaterialPageRoute(
                 builder: (context) => Detail_Riwayat_Pembelian(
+                  idDriver: 0,
+                  namaDriver: "",
+                  photoKendaraan: "",
+                  photorDriver: "",
+                  platKendaraan: "",
+                  nameKendaraan: "",
                   StatusDiulas: [],
                   banyakBarang: [
                     for (int j = 0; j < data.data[i].barangPesanan.length; j++)
@@ -583,6 +595,7 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               context,
               MaterialPageRoute(
                 builder: (context) => Detail_Riwayat_Pembelian(
+                  idDriver: data.data[i].driver.driverId,
                   platKendaraan: data.data[i].driver.platKendaraan,
                   photorDriver: data.data[i].driver.fotoDriver,
                   photoKendaraan: data.data[i].driver.photoKendaraan,
@@ -688,6 +701,12 @@ class _Riwayat_transaksiState extends State<Riwayat_transaksi>
               context,
               MaterialPageRoute(
                 builder: (context) => Detail_Riwayat_Pembelian(
+                  nameKendaraan: "",
+                  idDriver: 0,
+                  platKendaraan: "",
+                  photorDriver: "",
+                  photoKendaraan: "",
+                  namaDriver: "",
                   StatusDiulas: [
                     for (int j = 0; j < data.data[i].barangPesanan.length; j++)
                       data.data[i].barangPesanan[j].statusDiulas

@@ -29,13 +29,14 @@ class Detail_Riwayat_Pembelian extends StatefulWidget {
     required this.transactionCode,
     required this.banyakBarang,
     required this.StatusDiulas,
-required this.latitude,
-required this.longitude,
-    this.namaDriver = "",
-    this.nameKendaraan = "",
-    this.photoKendaraan = "",
-    this.photorDriver = "",
-    this.platKendaraan = "",
+    required this.latitude,
+    required this.longitude,
+    required this.namaDriver,
+    required this.nameKendaraan,
+  required this.photoKendaraan ,
+    required   this.photorDriver ,
+    required this.platKendaraan ,
+    required this.idDriver ,
   }) : super(key: key);
   String Status;
   String Nama;
@@ -56,11 +57,12 @@ required this.longitude,
   double latitude, longitude;
   List<int> banyakBarang;
   String namaDriver;
-  String nameKendaraan ;
+  String nameKendaraan;
+  int idDriver;
+
   String photoKendaraan;
   String photorDriver;
   String platKendaraan;
-
 
   @override
   State<Detail_Riwayat_Pembelian> createState() =>
@@ -68,6 +70,13 @@ required this.longitude,
 }
 
 class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.namaDriver);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -300,49 +309,48 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
                     Spacer(),
                     if (widget.Status == 'Selesai')
                       if (widget.StatusDiulas[index] == 'menunggu diulas')
-                      Column(
-                        children: [
-                          Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: ColorValue.primaryColor,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Mengulas(
-                                                namaToko: widget.NamaToko,
-                                                gambarToko:
-                                                    widget.GambarToko,
-                                                alamatToko: widget.AlamatToko,
-                                                namaProduk:
-                                                    widget.NamaProduk[index],
-                                                gambarProduk: widget
-                                                    .GambarProduk[index],
-                                                productId: widget
-                                                    .produkId[index]
-                                                    .toString(),
-                                                tokoId:
-                                                    widget.tokoId.toString(),
-                                                variantId: widget
-                                                    .variantId[index]
-                                                    .toString(),
-                                                transactionCode:
-                                                    widget.transactionCode)));
-                                  },
-                                  child: Text('Review',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500)),
-                                ),
-                              )),
-                        ],
-                      ),
+                        Column(
+                          children: [
+                            Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: ColorValue.primaryColor,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Mengulas(
+                                                  namaToko: widget.NamaToko,
+                                                  gambarToko: widget.GambarToko,
+                                                  alamatToko: widget.AlamatToko,
+                                                  namaProduk:
+                                                      widget.NamaProduk[index],
+                                                  gambarProduk: widget
+                                                      .GambarProduk[index],
+                                                  productId: widget
+                                                      .produkId[index]
+                                                      .toString(),
+                                                  tokoId:
+                                                      widget.tokoId.toString(),
+                                                  variantId: widget
+                                                      .variantId[index]
+                                                      .toString(),
+                                                  transactionCode:
+                                                      widget.transactionCode)));
+                                    },
+                                    child: Text('Review',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
+                                )),
+                          ],
+                        ),
                   ]),
                   SizedBox(
                     height: 10,
@@ -450,14 +458,15 @@ class _Detail_Riwayat_PembelianState extends State<Detail_Riwayat_Pembelian> {
             context,
             MaterialPageRoute(
                 builder: (context) => Lacak_Pesanan(
-                  idPesanan: widget.transactionCode,
-                  latitude: widget.latitude,
-                  longitude: widget.longitude,
-                  namaDriver: widget.namaDriver,
-                  nameKendaraan: widget.nameKendaraan,
-                  photoKendaraan: widget.photoKendaraan,
-                  photorDriver: widget.photorDriver,
-                  platKendaraan: widget.platKendaraan,
+                  idDriver: widget.idDriver,
+                      idPesanan: widget.transactionCode,
+                      latitude: widget.latitude,
+                      longitude: widget.longitude,
+                      namaDriver: widget.namaDriver,
+                      nameKendaraan: widget.nameKendaraan,
+                      photoKendaraan: widget.photoKendaraan,
+                      photorDriver: widget.photorDriver,
+                      platKendaraan: widget.platKendaraan,
                     )));
       },
       child: Container(

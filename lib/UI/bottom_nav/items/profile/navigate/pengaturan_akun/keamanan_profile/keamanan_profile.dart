@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/API/auth/Auth.dart';
 import 'package:kangsayur/common/color_value.dart';
+import 'package:kangsayur/validator/validator.dart';
 import 'package:kangsayur/widget/textfieldcustom.dart';
 
 class Keamanan_profile extends StatefulWidget {
@@ -15,6 +17,8 @@ class _Keamanan_profileState extends State<Keamanan_profile> {
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -50,7 +54,7 @@ class _Keamanan_profileState extends State<Keamanan_profile> {
                   height: 10,
                 ),
                 const Text(
-                  "Kata sandi harus mengandung huruf dan angka. Sedikitnya 6 karakter",
+                  "Kata sandi harus mengandung huruf Sedikitnya 8 karakter",
                   style:
                       TextStyle(fontSize: 14, color: ColorValue.neutralColor),
                 ),
@@ -58,24 +62,26 @@ class _Keamanan_profileState extends State<Keamanan_profile> {
                   height: 17,
                 ),
                 CustomTextFormField(
-                  label: "Kata Sandi Lama",
-                  controller: oldPasswordController,
+                  label: "Kata Sandi Baru",
+                  controller: newPasswordController,
                   isPassword: true,
+                  validator: (value) => InputValidator.passwordValidator(value),
                 ),
                 const SizedBox(
                   height: 14,
                 ),
                 CustomTextFormField(
-                    label: "Kata Sandi Baru",
-                    controller: newPasswordController,
-                    isPassword: true),
-                const SizedBox(
-                  height: 14,
+                  label: "Konfirmasi Kata Sandi Baru",
+                  controller: confirmPasswordController,
+                  isPassword: true,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Confirm Password tidak boleh kosong";
+                    } else if (value != newPasswordController.text.toString()) {
+                      return "Confirm Password tidak sama";
+                    }
+                  },
                 ),
-                CustomTextFormField(
-                    label: "Konfirmasi Kata Sandi Baru",
-                    controller: newPasswordController,
-                    isPassword: true),
                 const SizedBox(
                   height: 14,
                 ),
@@ -85,20 +91,50 @@ class _Keamanan_profileState extends State<Keamanan_profile> {
                       TextStyle(fontSize: 14, color: ColorValue.neutralColor),
                 ),
                 const Spacer(),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: const Color(0xff009245),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: const Center(
-                    child: Text("Ubah Kata Sandi",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600)),
+                if (_isLoading)
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const Center(
+                      child: Text("Ubah Kata Sandi",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  )
+                else
+                  GestureDetector(
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await Auth.updatePassword(
+                            context, newPasswordController.text);
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
+                    },
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: const Color(0xff009245),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: const Center(
+                        child: Text("Ubah Kata Sandi",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600)),
+                      ),
+                    ),
                   ),
-                ),
                 const SizedBox(
                   height: 35,
                 )

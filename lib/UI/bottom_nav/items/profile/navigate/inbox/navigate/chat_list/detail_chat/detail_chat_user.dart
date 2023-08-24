@@ -15,12 +15,10 @@ import '../../../../../../../../../common/color_value.dart';
 import '../../../../../../../../../model/roomchatmodel.dart';
 
 class DetailChatPage extends StatefulWidget {
-  DetailChatPage({Key? key, required this.conversationId, required this.nameLawan, required this.photoLawan, required this.idLawan, required this.data}) : super(key: key);
+  DetailChatPage({Key? key, required this.conversationId, required this.nameLawan, required this.photoLawan,}) : super(key: key);
   final int conversationId;
   final String nameLawan;
   final String photoLawan;
-  final String idLawan;
-  final ListElement data;
 
   @override
   State<DetailChatPage> createState() => _DetailChatPageState();
@@ -183,7 +181,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
                                   imageSeller:
                                       'https://kangsayur.nitipaja.online${message.photo}',
                                   name: message.name.toString(),
-                                  nameSeller: widget.data.namaToko.toString(),
+                                  nameSeller: widget.nameLawan.toString(),
                                   message: message.message,
                                   date: DateFormat('HH:mm').format(
                                       DateTime.parse(
@@ -209,7 +207,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
                                   imageSeller:
                                       'https://kangsayur.nitipaja.online${message.photo}',
                                   name: message.name.toString(),
-                                  nameSeller: widget.data.namaToko.toString(),
+                                  nameSeller: widget.nameLawan.toString(),
                                   message: message.message,
                                   date: DateFormat('HH:mm').format(
                                       DateTime.parse(

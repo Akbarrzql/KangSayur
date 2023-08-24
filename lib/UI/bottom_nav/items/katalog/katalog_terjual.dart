@@ -66,14 +66,6 @@ class _Katalog_terjualState extends State<Katalog_terjual> {
                     "Paling banyak terjual",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
-                  Spacer(),
-                  Text(
-                    "Lihat semua",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF5F5F5F)),
-                  ),
                 ],
               ),
             ],

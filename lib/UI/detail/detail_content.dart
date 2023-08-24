@@ -251,26 +251,26 @@ class _Detail_contentState extends State<Detail_content> {
                   namaToko,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
-                Row(
-                  children: [
-                    Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                            color: Color(0xff25C570),
-                            borderRadius: BorderRadius.circular(50))),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      "Online",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black.withOpacity(0.5)),
-                    ),
-                  ],
-                )
+                // Row(
+                //   children: [
+                //     Container(
+                //         width: 8,
+                //         height: 8,
+                //         decoration: BoxDecoration(
+                //             color: Color(0xff25C570),
+                //             borderRadius: BorderRadius.circular(50))),
+                //     SizedBox(
+                //       width: 5,
+                //     ),
+                //     Text(
+                //       "Online",
+                //       style: TextStyle(
+                //           fontSize: 12,
+                //           fontWeight: FontWeight.w400,
+                //           color: Colors.black.withOpacity(0.5)),
+                //     ),
+                //   ],
+                // )
               ],
             ),
             Spacer(),

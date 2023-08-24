@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/detail_chat/detail_chat_user.dart';
+import 'package:kangsayur/model/startconverstationmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,9 +35,8 @@ class ChatFunc {
     }
   }
 
-  Future<bool> startConversation(String sellerId,
-  String conversationId, String nameLawan, String photoLawan, String idLawan,
-  BuildContext context, ListElement data) async {
+  Future<bool> startConversation(String sellerId  , String nameLawan, String photoLawan, String idLawan,
+  BuildContext context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? token = pref.getString('token');
     print(token);
@@ -52,12 +52,11 @@ class ChatFunc {
       print(response.statusCode);
 
       if (response.statusCode == 200) {
+        StartConversationModel startConversation = startConversationModelFromJson(response.body);
         Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            DetailChatPage(conversationId: int.parse(conversationId),
+            DetailChatPage(conversationId: int.parse(startConversation.convoId.toString()),
                 nameLawan: nameLawan,
                 photoLawan: photoLawan,
-                idLawan: idLawan,
-              data: data,
             ),));
         return true;
       } else {

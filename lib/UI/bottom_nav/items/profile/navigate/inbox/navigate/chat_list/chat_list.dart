@@ -158,9 +158,6 @@ class _Chat_listState extends State<Chat_list> {
                                   chatListModel.list[index].conversationId,
                               nameLawan: chatListModel.list[index].namaToko,
                               photoLawan: chatListModel.list[index].imgProfile,
-                              idLawan:
-                                  chatListModel.list[index].tokoId.toString(),
-                              data: chatListModel.list[index],
                             )));
               },
             ),

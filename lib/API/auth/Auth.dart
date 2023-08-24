@@ -175,7 +175,6 @@ class Auth {
     }
     return true;
   }
-
   static Future<bool> emailVerify(
       String email, String password, BuildContext context) async {
     //get api logout
@@ -213,4 +212,56 @@ class Auth {
     }
     return true;
   }
+  static Future<bool> sendEmailResetPassword(BuildContext context) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+
+    final response = await http.get(
+      Uri.parse('https://kangsayur.nitipaja.online/api/user/password/send/mail'),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    var data = response.body;
+    print(data);
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Email berhasil dikirim')));
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<bool> updatePassword(BuildContext context, String password) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+
+    final response = await http.post(
+      Uri.parse('https://kangsayur.nitipaja.online/api/user/password/send/mail'),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        'newPassword': password,
+      },
+    );
+
+    var data = response.body;
+    print(data);
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password berhasil diubah')));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Bottom_Nav()),
+              (route) => false);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
