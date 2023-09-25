@@ -2,6 +2,7 @@ import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/API/chat/chat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/profile_head.dart';
 import 'package:kangsayur/UI/seller_detail/seller_twobox.dart';
 import 'package:kangsayur/UI/seller_detail/tabbar/items/seller_beranda.dart';
@@ -55,7 +56,8 @@ class _Seller_DetailState extends State<Seller_Detail>
     // TODO: implement initState
     super.initState();
     _tokoDetailBloc.add(GetTokoDetailList(widget.tokoId));
-    _scrollController = ScrollController()..addListener(_scrollListener);
+    _scrollController = ScrollController()
+      ..addListener(_scrollListener);
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -72,189 +74,219 @@ class _Seller_DetailState extends State<Seller_Detail>
   Widget build(BuildContext context) {
     return Scaffold(
         body: NestedScrollView(
-      controller: _scrollController,
-      headerSliverBuilder: (context, isScrolled) {
-        return [
-          SliverAppBar(
-            elevation: 0,
-            floating: false,
-            pinned: true,
-            snap: false,
-            expandedHeight: 300 - kToolbarHeight,
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: _isShrink ? ColorValue.primaryColor : Colors.white,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            title: BlocBuilder<TokoDetailBloc, TokoDetailState>(
-              bloc: _tokoDetailBloc,
-              builder: (context, state) {
-                if (state is TokoDetailInitial) {
-                  return Container();
-                } else if (state is TokoDetailLoading) {
-                  return Container();
-                } else if (state is TokoDetailLoaded) {
-                  return _title(state.tokoDetailList);
-                } else if (state is TokoDetailError) {
-                  return Center(
-                    child: Text(state.message),
-                  );
-                } else {
-                  return Center(
-                    child: Text(""),
-                  );
-                }
-              },
-            ),
-            flexibleSpace: FlexibleSpaceBar(
-              background: SafeArea(
-                child: Column(
-                  children: [
-                    BlocBuilder<TokoDetailBloc, TokoDetailState>(
-                      bloc: _tokoDetailBloc,
-                      builder: (context, state) {
-                        if (state is TokoDetailInitial) {
-                          return _headLoading();
-                        } else if (state is TokoDetailLoading) {
-                          return _headLoading();
-                        } else if (state is TokoDetailLoaded) {
-                          return _head(state.tokoDetailList);
-                        } else if (state is TokoDetailError) {
-                          return Center(
-                            child: Text(state.message),
-                          );
-                        } else {
-                          return Center(
-                            child: Text(""),
-                          );
-                        }
-                      },
+          controller: _scrollController,
+          headerSliverBuilder: (context, isScrolled) {
+            return [
+              SliverAppBar(
+                elevation: 0,
+                floating: false,
+                pinned: true,
+                snap: false,
+                expandedHeight: 300 - kToolbarHeight,
+                backgroundColor: Colors.white,
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: _isShrink ? ColorValue.primaryColor : Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                title: BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                  bloc: _tokoDetailBloc,
+                  builder: (context, state) {
+                    if (state is TokoDetailInitial) {
+                      return Container();
+                    } else if (state is TokoDetailLoading) {
+                      return Container();
+                    } else if (state is TokoDetailLoaded) {
+                      return _title(state.tokoDetailList);
+                    } else if (state is TokoDetailError) {
+                      return Center(
+                        child: Text(state.message),
+                      );
+                    } else {
+                      return Center(
+                        child: Text(""),
+                      );
+                    }
+                  },
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  background: SafeArea(
+                    child: Column(
+                      children: [
+                        BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                          bloc: _tokoDetailBloc,
+                          builder: (context, state) {
+                            if (state is TokoDetailInitial) {
+                              return _headLoading();
+                            } else if (state is TokoDetailLoading) {
+                              return _headLoading();
+                            } else if (state is TokoDetailLoaded) {
+                              return _head(state.tokoDetailList);
+                            } else if (state is TokoDetailError) {
+                              return Center(
+                                child: Text(state.message),
+                              );
+                            } else {
+                              return Center(
+                                child: Text(""),
+                              );
+                            }
+                          },
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                          bloc: _tokoDetailBloc,
+                          builder: (context, state) {
+                            if (state is TokoDetailInitial) {
+                              return Container();
+                            } else if (state is TokoDetailLoading) {
+                              return Container();
+                            } else if (state is TokoDetailLoaded) {
+                              return _Chat(state.tokoDetailList);
+                            } else if (state is TokoDetailError) {
+                              return Center(
+                                child: Text(state.message),
+                              );
+                            } else {
+                              return Center(
+                                child: Text(""),
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    Seller_twobox()
-                  ],
+                  ),
                 ),
               ),
+              SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _SliverAppBarDelegate(
+                    TabBar(
+                      controller: _tabController,
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Colors.grey,
+                      indicatorColor: ColorValue.quaternaryColor,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      tabs: [
+                        Tab(
+                          text: "Produk",
+                        ),
+                        Tab(
+                          text: "Katalog",
+                        ),
+                        Tab(
+                          text: "Tentang",
+                        ),
+                      ],
+                    ),
+                  ))
+            ];
+          },
+          body: Container(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                SingleChildScrollView(
+                  child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                    bloc: _tokoDetailBloc,
+                    builder: (context, state) {
+                      if (state is TokoDetailInitial) {
+                        return _produkLoading();
+                      } else if (state is TokoDetailLoading) {
+                        return _produkLoading();
+                      } else if (state is TokoDetailLoaded) {
+                        return Seller_produk(
+                            tokoDetailModel: state.tokoDetailList);
+                      } else if (state is TokoDetailError) {
+                        return Center(
+                          child: Text(state.message),
+                        );
+                      } else {
+                        return Center(
+                          child: Text(""),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                    bloc: _tokoDetailBloc,
+                    builder: (context, state) {
+                      if (state is TokoDetailInitial) {
+                        return _produkLoading();
+                      } else if (state is TokoDetailLoading) {
+                        return _produkLoading();
+                      } else if (state is TokoDetailLoaded) {
+                        return Seller_katalog(
+                            tokoDetailModel: state.tokoDetailList);
+                      } else if (state is TokoDetailError) {
+                        return Center(
+                          child: Text(state.message),
+                        );
+                      } else {
+                        return Center(
+                          child: Text(""),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
+                    bloc: _tokoDetailBloc,
+                    builder: (context, state) {
+                      if (state is TokoDetailInitial) {
+                        return Loading();
+                      } else if (state is TokoDetailLoading) {
+                        return Loading();
+                      } else if (state is TokoDetailLoaded) {
+                        return Seller_tentang(
+                            tokoDetailModel: state.tokoDetailList);
+                      } else if (state is TokoDetailError) {
+                        return Center(
+                          child: Text(state.message),
+                        );
+                      } else {
+                        return Center(
+                          child: Text(""),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-          SliverPersistentHeader(
-              pinned: true,
-              delegate: _SliverAppBarDelegate(
-                TabBar(
-                  controller: _tabController,
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  indicatorColor: ColorValue.quaternaryColor,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  tabs: [
-                    Tab(
-                      text: "Produk",
-                    ),
-                    Tab(
-                      text: "Katalog",
-                    ),
-                    Tab(
-                      text: "Tentang",
-                    ),
-                  ],
-                ),
-              ))
-        ];
-      },
-      body: Container(
-        child: TabBarView(
-          controller: _tabController,
-          children: [
-            SingleChildScrollView(
-              child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
-                bloc: _tokoDetailBloc,
-                builder: (context, state) {
-                  if (state is TokoDetailInitial) {
-                    return _produkLoading();
-                  } else if (state is TokoDetailLoading) {
-                    return _produkLoading();
-                  } else if (state is TokoDetailLoaded) {
-                    return Seller_produk(tokoDetailModel: state.tokoDetailList);
-                  } else if (state is TokoDetailError) {
-                    return Center(
-                      child: Text(state.message),
-                    );
-                  } else {
-                    return Center(
-                      child: Text(""),
-                    );
-                  }
-                },
-              ),
-            ),
-            SingleChildScrollView(
-              child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
-                bloc: _tokoDetailBloc,
-                builder: (context, state) {
-                  if (state is TokoDetailInitial) {
-                    return _produkLoading();
-                  } else if (state is TokoDetailLoading) {
-                    return _produkLoading();
-                  } else if (state is TokoDetailLoaded) {
-                    return Seller_katalog(
-                        tokoDetailModel: state.tokoDetailList);
-                  } else if (state is TokoDetailError) {
-                    return Center(
-                      child: Text(state.message),
-                    );
-                  } else {
-                    return Center(
-                      child: Text(""),
-                    );
-                  }
-                },
-              ),
-            ),
-            SingleChildScrollView(
-              child: BlocBuilder<TokoDetailBloc, TokoDetailState>(
-                bloc: _tokoDetailBloc,
-                builder: (context, state) {
-                  if (state is TokoDetailInitial) {
-                    return Loading();
-                  } else if (state is TokoDetailLoading) {
-                    return Loading();
-                  } else if (state is TokoDetailLoaded) {
-                    return Seller_tentang(
-                        tokoDetailModel: state.tokoDetailList);
-                  } else if (state is TokoDetailError) {
-                    return Center(
-                      child: Text(state.message),
-                    );
-                  } else {
-                    return Center(
-                      child: Text(""),
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
+        ));
+  }
+
+  Widget _Chat (TokoDetailModel widgetm) {
+    return Seller_twobox(onTap: () =>
+        ChatFunc().startConversation(
+            widgetm.data.sellerId.toString(),
+            widgetm.data.namaToko,
+            widgetm.data.imgProfile,
+            widgetm.data.id.toString(), context),
+    );
   }
 
   Widget _title(TokoDetailModel data) {
     return _isShrink
         ? Text(
-            data.data.namaToko,
-            style: TextStyle(
-                color: ColorValue.primaryColor,
-                fontSize: 16,
-                fontWeight: FontWeight.bold),
-          )
+      data.data.namaToko,
+      style: TextStyle(
+          color: ColorValue.primaryColor,
+          fontSize: 16,
+          fontWeight: FontWeight.bold),
+    )
         : Container();
   }
 
@@ -262,7 +294,10 @@ class _Seller_DetailState extends State<Seller_Detail>
     return Column(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           height: 92,
           color: Colors.blueAccent,
         ),
@@ -277,7 +312,10 @@ class _Seller_DetailState extends State<Seller_Detail>
               left: 24,
               right: 24,
               child: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -303,7 +341,10 @@ class _Seller_DetailState extends State<Seller_Detail>
                         Padding(
                           padding: const EdgeInsets.only(top: 25.0, left: 5),
                           child: Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.5,
                             child: Text(data.data.namaToko,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -375,7 +416,10 @@ class _Seller_DetailState extends State<Seller_Detail>
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
           child: Container(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             height: 92,
             color: Colors.blueAccent,
           ),
@@ -391,7 +435,10 @@ class _Seller_DetailState extends State<Seller_Detail>
               left: 24,
               right: 24,
               child: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -417,7 +464,10 @@ class _Seller_DetailState extends State<Seller_Detail>
                             baseColor: Colors.grey[300]!,
                             highlightColor: Colors.grey[100]!,
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.5,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: Colors.grey,
@@ -540,8 +590,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height;
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset,
+      bool overlapsContent) {
     return new Container(
       color: Color(0xffF6F6F6),
       child: _tabBar,

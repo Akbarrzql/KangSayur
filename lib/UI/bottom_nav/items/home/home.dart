@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
                       child: Row(
                         children: const [
                           Text(
-                            "Biji kakao lokan andalan",
+                            "Biji kakao lokal andalan",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),

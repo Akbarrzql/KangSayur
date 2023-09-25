@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Sudah punya akun? ",
+                  Text("Belum punya akun? ",
                       style: TextStyle(
                           fontSize: 16,
                           color: ColorValue.secondaryColor,
