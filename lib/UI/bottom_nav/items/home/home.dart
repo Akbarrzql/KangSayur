@@ -64,11 +64,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Home_two(),
-                ),
-                SizedBox(
-                  height: 35,
-                ),
-                // Promo Kilat
+                ), // Promo Kilat
                 Promo_List(),
                 SizedBox(
                   height: 35,
@@ -84,12 +80,6 @@ class _HomeState extends State<Home> {
                             "Biji kakao lokan andalan",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          Spacer(),
-                          Text(
-                            "Lihat toko",
-                            style: TextStyle(
-                                fontSize: 14, color: Color(0xffA0A0A0)),
                           ),
                         ],
                       ),

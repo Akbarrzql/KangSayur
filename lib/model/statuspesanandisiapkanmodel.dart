@@ -176,7 +176,7 @@ class BarangPesanan {
     stok: json["stok"],
     hargaVariant: json["harga_variant"],
     namaProduk: json["nama_produk"],
-    rating: json["rating"]?.toDouble(),
+    rating: json["rating"]?.toDouble() ?? 0.0,
     kategoriId: json["kategori_id"],
     tokoId: json["toko_id"],
     ulasanId: json["ulasan_id"],

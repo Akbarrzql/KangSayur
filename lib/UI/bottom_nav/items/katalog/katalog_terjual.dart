@@ -92,7 +92,7 @@ class _Katalog_terjualState extends State<Katalog_terjual> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Detail(
-                                    id: data.data[index].produkId,
+                                    id: data.data[index].id,
                                   )));
                     },
                     child: CardProduk(

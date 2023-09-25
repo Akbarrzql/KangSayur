@@ -8,6 +8,7 @@ import 'package:kangsayur/model/iklanmodel.dart';
 import 'package:kangsayur/model/kategorimodel.dart';
 import 'package:kangsayur/model/menunggudiulasmodel.dart';
 import 'package:kangsayur/model/nearesttokomodel.dart';
+import 'package:kangsayur/model/notifikasilistmodel.dart';
 import 'package:kangsayur/model/productbycategorymodel.dart';
 import 'package:kangsayur/model/productmostpopularmodel.dart';
 import 'package:kangsayur/model/productusermostvisitmodel.dart';
@@ -142,6 +143,10 @@ class ApiRepository {
   Future<TokoProductCategoryModel> getTokoProductCategoryList(String kategoriId, String tokoId) async {
     return await _apiProvider.TokoProductCategory(kategoriId, tokoId);
   }
+  Future<NotifikasiListModel> getNotifikasiListList() async {
+    return await _apiProvider.NotifikasiList();
+  }
+
 
 
 }

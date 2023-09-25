@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kangsayur/API/chat/chat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/chat_list.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/chat_list/detail_chat/detail_chat.dart';
 import 'package:kangsayur/UI/bottom_nav/items/profile/navigate/inbox/navigate/ulasan_anda/riwayat.dart';
@@ -44,13 +45,20 @@ class _InboxState extends State<Inbox> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _inbox_list(icon: "assets/icon/reverse_chat.svg", title: "Chat", subtitle: "Percakapan pribadi anda ke seller", context: context, onTap: Chat_list()),
-                _inbox_list(icon: "assets/icon/star_outlined.svg", title: "Ulasan", subtitle: "Berikan penilaian dan ulasan", context: context, onTap: Ulasan_anda()),
+                _inbox_list(icon: "assets/icon/reverse_chat.svg", title: "Chat", subtitle: "Percakapan pribadi anda ke seller", context: context, onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Chat_list()));
+                }),
+
+                _inbox_list(icon: "assets/icon/star_outlined.svg", title: "Ulasan", subtitle: "Berikan penilaian dan ulasan", context: context, onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Ulasan_anda()));
+                }),
               ],
             ),
             SizedBox(height: 20,),
-            _inbox_list(icon: "assets/icon/help_center.svg", title: "Pusat Bantuan", subtitle: "Status bantuan dari KangSayur", context: context, onTap: Detail_chat()),
-          ],
+            _inbox_list(icon: "assets/icon/help_center.svg", title: "Pusat Bantuan", subtitle: "Status bantuan dari KangSayur", context: context, onTap: (){
+              ChatFunc().startConversation(4.toString(), "Admin", "/storage/user_profile/1684847191asa.jpg", 4.toString(), context);
+            },
+            )],
         ),
       ),
     );
@@ -62,14 +70,10 @@ Widget _inbox_list({
   required String title,
   required String subtitle,
   required BuildContext context,
-  required Widget onTap,
+  required VoidCallback onTap,
 }) {
   return GestureDetector(
-    onTap: (){
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return onTap;
-      },));
-    },
+    onTap: onTap,
     child: Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       height: 130,

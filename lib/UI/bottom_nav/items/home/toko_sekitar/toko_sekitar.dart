@@ -104,9 +104,6 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
-          toolbarHeight: 80,
           title: Text(
             "Toko Sekitar",
             style: TextStyle(color: Colors.black, fontSize: 16),
@@ -163,8 +160,8 @@ class _Toko_sekitarState extends State<Toko_sekitar> {
                               height: 80.0,
                               point: _currentPosition,
                               builder: (ctx) => const Icon(
-                                Icons.location_pin,
-                                size: 50,
+                                Icons.accessibility,
+                                size: 30,
                                 color: ColorValue.primaryColor,
                               ),
                             ),

@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -54,11 +54,10 @@ dependencies:
   http:
   shared_preferences: ^2.1.1
   flutter_map:
-  latlong:
   geolocator:
   location:
   geocoding:
-  latlong2:
+  latlong2: ^0.9.0
   sliding_up_panel:
   share_plus:
   expandable_text:
@@ -79,10 +78,19 @@ dependencies:
   firebase_dynamic_links:
   firebase_messaging:
   flutter_local_notifications:
+  timeago:
+  url_launcher: ^6.1.14
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/logo_kangsayur.png"
+
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

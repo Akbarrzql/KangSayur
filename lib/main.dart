@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,7 @@ import 'package:kangsayur/UI/payment/keranjang/keranjang.dart';
 import 'package:kangsayur/UI/payment/pembayaran/pembayaran.dart';
 import 'package:kangsayur/login/login.dart';
 import 'package:kangsayur/register/register.dart';
+import 'package:kangsayur/register/register_map.dart';
 import 'package:kangsayur/register/register_personal_information.dart';
 import 'package:kangsayur/splash_screen/splash_screen.dart';
 import 'package:kangsayur/UI/seller_detail/seller_detail.dart';
@@ -91,8 +94,7 @@ void _handleDeepLink(PendingDynamicLinkData? data) {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  const MyApp({Key? key}) : super(key: key);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

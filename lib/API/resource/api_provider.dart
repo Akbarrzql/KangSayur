@@ -27,6 +27,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/alamatmodel.dart';
 import '../../model/kategorimodel.dart';
+import '../../model/notifikasilistmodel.dart';
 import '../../model/productmostpopularmodel.dart';
 import '../../model/statuspesanandikemas.dart';
 import '../../model/statuspesananselesaiselesai.dart';
@@ -563,6 +564,25 @@ class ApiProvider {
           });
       print(response.body);
       return tokoProductCategoryModelFromJson(response.body);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      rethrow;
+    }
+  }
+  Future<NotifikasiListModel> NotifikasiList(
+      ) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    try {
+      var response = await http.get(
+          Uri.parse(_url +
+              '/user/inbox/data-inbox'),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          });
+      print(response.body);
+      return notifikasiListModelFromJson(response.body);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       rethrow;

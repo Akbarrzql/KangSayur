@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kangsayur/API/auth/Auth.dart';
 import 'package:location/location.dart' as loc;
+import 'package:http/http.dart' as http;
 import '../../../Constants/app_constants.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../common/color_value.dart';
@@ -38,6 +40,8 @@ class _Register_mapState extends State<Register_map> {
   LatLng _currentPosition = AppConstants.myLocation;
   final List<Marker> _markers = [];
   Marker? _currentMarker;
+  TextEditingController _searchController = TextEditingController();
+  List<String> _searchResults = [];
 
   // circle progress
   bool _isLoading = false;
@@ -51,7 +55,8 @@ class _Register_mapState extends State<Register_map> {
       _markers.add(
         Marker(
           point: tappedPoint,
-          builder: (context) => const Icon(
+          builder: (context) =>
+          const Icon(
             Icons.location_pin,
             size: 50,
             color: ColorValue.primaryColor,
@@ -59,6 +64,8 @@ class _Register_mapState extends State<Register_map> {
         ),
       );
     });
+
+
 
     // Mendapatkan alamat berdasarkan koordinat marker
     try {
@@ -68,7 +75,10 @@ class _Register_mapState extends State<Register_map> {
       if (placemarks.isNotEmpty) {
         Placemark currentPlacemark = placemarks[0];
         String formattedAddress =
-            "${currentPlacemark.street}, ${currentPlacemark.locality}, ${currentPlacemark.administrativeArea} ${currentPlacemark.postalCode}, ${currentPlacemark.country}";
+            "${currentPlacemark.street}, ${currentPlacemark
+            .locality}, ${currentPlacemark
+            .administrativeArea} ${currentPlacemark
+            .postalCode}, ${currentPlacemark.country}";
         setState(() {
           _currentAddress = formattedAddress;
         });
@@ -86,7 +96,10 @@ class _Register_mapState extends State<Register_map> {
       if (placemarks.isNotEmpty) {
         Placemark currentPlacemark = placemarks[0];
         String formattedAddress =
-            "${currentPlacemark.street}, ${currentPlacemark.locality}, ${currentPlacemark.administrativeArea} ${currentPlacemark.postalCode}, ${currentPlacemark.country}";
+            "${currentPlacemark.street}, ${currentPlacemark
+            .locality}, ${currentPlacemark
+            .administrativeArea} ${currentPlacemark
+            .postalCode}, ${currentPlacemark.country}";
         setState(() {
           _currentAddress = formattedAddress;
         });
@@ -135,6 +148,56 @@ class _Register_mapState extends State<Register_map> {
     text = text.replaceAll("┤", "").replaceAll("├", "");
     return text;
   }
+  Future<void> _searchMapboxAddress(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        _searchResults.clear();
+      });
+      return;
+    }
+
+    const apiKey = AppConstants.mapBoxAccessToken;
+    final apiUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/$query.json?access_token=$apiKey';
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      final data = json.decode(response.body);
+
+      final List<String> results = [];
+
+      for (var feature in data['features']) {
+        String address = feature['place_name'];
+        results.add(address);
+      }
+
+      setState(() {
+        _searchResults = results;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _selectAddress(String address) async {
+    List<Location> locations = await locationFromAddress(address);
+    setState(() {
+      _currentPosition = LatLng(locations[0].latitude, locations[0].longitude);
+      _currentAddress = address;
+      _markers.clear();
+      _markers.add(
+        Marker(
+          point: _currentPosition,
+          builder: (context) => const Icon(
+            Icons.location_pin,
+            size: 50,
+            color: ColorValue.primaryColor,
+          ),
+        ),
+      );
+    });
+    mapController.move(_currentPosition, 14.0);
+  }
+
 
   @override
   void initState() {
@@ -182,7 +245,8 @@ class _Register_mapState extends State<Register_map> {
                     width: 80.0,
                     height: 80.0,
                     point: _currentPosition,
-                    builder: (ctx) => const Icon(
+                    builder: (ctx) =>
+                    const Icon(
                       Icons.location_pin,
                       size: 50,
                       color: ColorValue.primaryColor,
@@ -191,6 +255,74 @@ class _Register_mapState extends State<Register_map> {
                 ],
               )
             ],
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 5.0,
+                        spreadRadius: 0.0,
+                        offset: Offset(0.0, 1.0), // shadow direction: bottom right
+                      )
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                        hintText: 'Cari alamat...',
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() {
+                              _searchResults.clear();
+                            });
+                          },
+                        )
+                    ),
+                    onChanged: _searchMapboxAddress,
+                    //icon clear textfield
+                  ),
+                ),
+                if (_searchResults.isNotEmpty)
+                // Tampilkan hasil pencarian alamat
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    height: 200,
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ListView.builder(
+                      itemCount: _searchResults.length,
+                      itemBuilder: (context, index) {
+                        String address = _searchResults[index];
+                        return ListTile(
+                          title: Text(address),
+                          onTap: () {
+                            _searchController.text = address;
+                            _selectAddress(address);
+                            setState(() {
+                              _searchResults.clear();
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
           ),
           Positioned(
             bottom: 0,
@@ -204,10 +336,14 @@ class _Register_mapState extends State<Register_map> {
                 children: [
                   Text(
                     'Alamat: $_currentAddress',
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: ColorValue.neutralColor,
-                        ),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .subtitle1!
+                        .copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: ColorValue.neutralColor,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   const SizedBox(height: 15),
@@ -219,7 +355,8 @@ class _Register_mapState extends State<Register_map> {
                         setState(() {
                           _isLoading = true;
                         });
-                        String? deviceToken = await FirebaseNotificationManager.getToken();
+                        String? deviceToken = await FirebaseNotificationManager
+                            .getToken();
                         print('Device Token: $deviceToken');
                         await Auth.register(
                             widget.name.toString(),
@@ -231,11 +368,12 @@ class _Register_mapState extends State<Register_map> {
                             widget.dateOfBirth,
                             context,
                             _currentPosition.latitude.toDouble().toString(),
-                            _currentPosition.longitude.toDouble().toString()).then((value) {
-                              if (value == true) {
-                                Auth.deviceToken(widget.email, widget.password,
-                                    deviceToken!, context);
-                              }
+                            _currentPosition.longitude.toDouble().toString())
+                            .then((value) {
+                          if (value == true) {
+                            Auth.deviceToken(widget.email, widget.password,
+                                deviceToken!, context);
+                          }
                         });
                         setState(() {
                           _isLoading = false;
@@ -251,14 +389,15 @@ class _Register_mapState extends State<Register_map> {
                           child: Center(
                             child: Text(
                               'Pilih Lokasi & Daftar',
-                              style: Theme.of(context)
+                              style: Theme
+                                  .of(context)
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
                             ),
                           )),
                     )
@@ -282,11 +421,15 @@ class _Register_mapState extends State<Register_map> {
         child: Center(
           child: Text(
             'Pilih Lokasi & Daftar',
-            style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
+            style: Theme
+                .of(context)
+                .textTheme
+                .subtitle1!
+                .copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
           ),
         ));
   }

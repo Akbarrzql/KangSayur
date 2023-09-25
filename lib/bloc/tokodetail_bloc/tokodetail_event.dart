@@ -7,6 +7,6 @@ abstract class TokoDetailEvent extends Equatable {
 }
 
 class GetTokoDetailList extends TokoDetailEvent {
-  final String id;
+  final String  id;
   const GetTokoDetailList(this.id);
 }

@@ -98,15 +98,15 @@ class _SearchState extends State<Search> {
             create: (_) => _jsonBloc,
             child: BlocListener<JsonBloc, JsonState>(
                 listener: (context, state) {
-              if (state is JsonError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                  ),
-                );
-              }
-            }, child:
-                    BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
+                  if (state is JsonError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                      ),
+                    );
+                  }
+                }, child:
+            BlocBuilder<JsonBloc, JsonState>(builder: (context, state) {
               if (state is JsonInitial) {
                 return Text("cari Pencarian mu");
               } else if (state is JsonLoading) {
@@ -114,8 +114,8 @@ class _SearchState extends State<Search> {
               } else if (state is JsonLoaded) {
                 return Expanded(
                     child: _searchResult(
-                  widget: state.jsonSearchProduct,
-                ));
+                      widget: state.jsonSearchProduct,
+                    ));
               } else if (state is JsonError) {
                 return Text(state.message);
               }
@@ -134,7 +134,7 @@ class _SearchState extends State<Search> {
       );
     } else {
       return GridView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24),
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

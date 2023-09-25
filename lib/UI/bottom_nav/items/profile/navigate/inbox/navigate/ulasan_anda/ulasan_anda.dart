@@ -113,19 +113,15 @@ class _Ulasan_andaState extends State<Ulasan_anda>
                     bloc: historyReviewBloc,
                     builder: (context, state) {
                       if (state is HistoryReviewLoading) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return _riwayatDiulasListLoading();
                       } else if (state is HistoryReviewLoaded) {
                         return Riwayat_ulasan(
                           historyReviewModel: state.history,
                         );
                       } else if (state is HistoryReviewError) {
-                        return Container();
+                        return _riwayatDiulasListLoading();
                       } else {
-                        return Center(
-                          child: Text(""),
-                        );
+                        return _riwayatDiulasListLoading();
                       }
                     },
                   ),
@@ -145,7 +141,7 @@ class _Ulasan_andaState extends State<Ulasan_anda>
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Container(
-          margin: EdgeInsets.symmetric(horizontal: 24),
+          margin: EdgeInsets.symmetric(horizontal: 24, vertical:8 ),
           height: 123,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(

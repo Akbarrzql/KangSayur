@@ -15,34 +15,16 @@ class _Home_twoState extends State<Home_two> {
     return               Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          height: 40,
-          width: 146,
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 0.2),
-              borderRadius: BorderRadius.circular(5)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Promo anda",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 12),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              SvgPicture.asset("assets/icon/promo.svg")
-            ],
-          ),
-        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
         GestureDetector(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => Toko_sekitar(),));
           },
           child: Container(
             height: 40,
-            width: 146,
+            width: MediaQuery.of(context).size.width - 48,
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 0.2),
                 borderRadius: BorderRadius.circular(5)),
@@ -64,6 +46,7 @@ class _Home_twoState extends State<Home_two> {
         ),
       ],
     )
-    ;
+      ],
+    );
   }
 }

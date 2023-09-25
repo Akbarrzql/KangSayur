@@ -22,7 +22,7 @@ class _Menunggu_diulasState extends State<Menunggu_diulas> {
       children: [
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.only(top: 19),
+            padding: EdgeInsets.only(top: 20),
             itemCount: widget.menungguDiulasModel.data.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {

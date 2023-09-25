@@ -239,6 +239,11 @@ class _DetailChatPageState extends State<DetailChatPage> {
                             child: TextField(
                               controller: _messageController,
                               // Tambahkan controller
+                              style: TextStyle(
+                                color: ColorValue.neutralColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
                               decoration: InputDecoration(
                                 hintText: 'Ketik pesan...',
                                 hintStyle: TextStyle(

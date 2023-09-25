@@ -4,7 +4,6 @@ import '../../common/color_value.dart';
 
 class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
-    super.key,
     required this.label,
     this.textInputType = TextInputType.text,
     this.maxLines = 1,
@@ -50,12 +49,16 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       autocorrect: !widget.isPassword,
       enableSuggestions: !widget.isPassword,
       onChanged: widget.onChanged,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: ColorValue.neutralColor,
       ),
       decoration: InputDecoration(
+        errorStyle: const TextStyle(
+          fontSize: 10.5,
+          color: Colors.red,
+        ),
         hintText: widget.label,
         hintStyle: textTheme.bodyMedium,
         filled: true,

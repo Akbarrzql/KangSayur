@@ -60,18 +60,6 @@ class _PanelWidgetState extends State<PanelWidget> {
                 const SizedBox(
                   height: 30,
                 ),
-                Row(
-                  children: [
-                    const Text(
-                      "Toko disekitar",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 26,
-                ),
                 BlocProvider(
                   create: (_) => _jsonBloc,
                   child: BlocListener<JsonBloc, JsonState>(
@@ -111,7 +99,6 @@ class _PanelWidgetState extends State<PanelWidget> {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
-      physics: const NeverScrollableScrollPhysics(),
       itemCount: 5,
       itemBuilder: (context, index) {
         return Padding(

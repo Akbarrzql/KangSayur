@@ -69,6 +69,9 @@ class _Promo_ListState extends State<Promo_List> {
     }
     return Column(
       children: [
+        SizedBox(
+          height: 20,
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -85,11 +88,6 @@ class _Promo_ListState extends State<Promo_List> {
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Spacer(),
-                      Text(
-                        "Lihat semua",
-                        style:
-                            TextStyle(fontSize: 14, color: Color(0xffA0A0A0)),
-                      ),
                     ],
                   ),
                   Row(

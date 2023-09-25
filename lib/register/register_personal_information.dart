@@ -28,9 +28,9 @@ class Register_Personal_Information extends StatefulWidget {
 class _Register_Personal_InformationState
     extends State<Register_Personal_Information> {
   final ImagePicker _picker = ImagePicker();
-  File? _imageFile;
+  File? _imageFile = null;
 
-   DateTime? _dateTime;
+  DateTime? _dateTime;
 
   void _bukaCalendar() {
     showDatePicker(
@@ -75,6 +75,7 @@ class _Register_Personal_InformationState
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
+  TextEditingController _phoneRealController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -190,23 +191,61 @@ class _Register_Personal_InformationState
                       const SizedBox(
                         height: 20,
                       ),
-                      CustomTextFormField(
-                        label: "No. Handphone",
-                        controller: _phoneController,
-                        textInputType: TextInputType.phone,
-                        inputFormatter:
-                        // inputformatter hapus 0 saat pertama
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: ColorValue.hinttext,
+                            width: 0.5,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: TextFormField(
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              // cannot input 0 as first number
+                              if (_phoneController.text.isEmpty)
+                                FilteringTextInputFormatter.deny("0"),
 
-                          TextInputFormatter.withFunction((oldValue, newValue) {
-                            if (oldValue.text == '' && newValue.text == '0') {
-                              return oldValue.copyWith(text: '');
-                            }
-                            return newValue;
-                          }),
-                        
-
-                        validator: (value) =>
-                            InputValidator.phoneValidator(value),
+                            ],
+                            validator: (value) =>
+                                InputValidator.phoneValidator(value),
+                            autofillHints: const [
+                              AutofillHints.telephoneNumber
+                            ],
+                            maxLength: 11,
+                            buildCounter: (BuildContext context,
+                                    {int? currentLength,
+                                    int? maxLength,
+                                    bool? isFocused}) =>
+                                null,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              prefixText: "+62 ",
+                              prefixStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
+                                    color: ColorValue.primaryColor,
+                                  ),
+                              hintText: "Masukkan No. HP",
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
+                                    color: ColorValue.hinttext,
+                                  ),
+                            ),
+                          ),
+                        ),
                       ),
                       const SizedBox(
                         height: 20,
@@ -224,37 +263,56 @@ class _Register_Personal_InformationState
                         padding: const EdgeInsets.only(bottom: 37),
                         child: GestureDetector(
                           onTap: () {
-                            if (_formKey.currentState!.validate())
+                            if (_formKey.currentState!
+                                .validate()) {
                               if (_imageFile == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text(
-                                        'Mohon pilih foto terlebih dahulu'),
+                                    content:
+                                    Text('Mohon pilih foto terlebih dahulu'),
                                   ),
                                 );
                               }
-                            if (_dateTime == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Mohon pilih tanggal lahir terlebih dahulu'),
-                                ),
-                              );
-                            }
-                            else
-                            Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Register_map(
-                                            name: _nameController.text,
-                                            image: _imageFile!,
-                                            email: widget.email,
-                                            password: widget.password,
-                                            dateOfBirth: _dateTime!,
-                                            address: _addressController.text,
-                                            phone: _phoneController.text,
-                                          )));
-                          },
+                              if (_dateTime == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Mohon pilih tanggal lahir terlebih dahulu'),
+                                  ),
+                                );
+                              }
+                              if (_imageFile != null &&
+                                  _dateTime != null) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Register_map(
+                                              name: _nameController.text,
+                                              image: _imageFile!,
+                                              email: widget.email,
+                                              password: widget.password,
+                                              dateOfBirth: _dateTime!,
+                                              address: _addressController.text,
+                                              phone: _phoneController.text,
+                                            )));
+                              }}
+
+                              else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Register_map(
+                                              name: _nameController.text,
+                                              image: _imageFile!,
+                                              email: widget.email,
+                                              password: widget.password,
+                                              dateOfBirth: _dateTime!,
+                                              address: _addressController.text,
+                                              phone: _phoneController.text,
+                                            )));
+                              }},
                           child: Container(
                             height: 50,
                             decoration: BoxDecoration(
